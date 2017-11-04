@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.example.saubhagyam.thetalklist.com.Application.saubhagyam.thetalklist.Message">
+
+    <LinearLayout
+        android:id="@+id/chatroom_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="3">
+
+        <FrameLayout
+            android:layout_marginStart="-30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+
+            <ImageView
+                android:id="@+id/SenderImg"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:layout_marginStart="0dp"
+                android:src="@drawable/user2" />
+
+            <ImageView
+                android:id="@+id/messagelist_indicator"
+                android:visibility="gone"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/green_circle"
+                android:layout_gravity="center_horizontal"
+                />
+        </FrameLayout>
+
+        <TextView      
+            android:id="@+id/senderName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:singleLine="true"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-30dp"
+            android:layout_weight="1"
+            android:text="Kelly Metz-Mathews"
+            android:textColor="#B2BABB"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="7dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView      
+                android:id="@+id/Messageday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="Yesterday"
+                android:textAlignment="textEnd"
+                android:textColor="#B2BABB"
+                android:textSize="10sp" />
+
+            <TextView      
+                android:id="@+id/Messagetime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="Yesterday"
+                android:textAlignment="textEnd"
+                android:textColor="#B2BABB"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <!--     <TextView
+                 android:id="@+id/MessageTime"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_marginLeft="2dp"
+                 android:layout_weight="1"
+                 android:text="2:30p.m."
+                 android:textColor="#B2BABB"
+                 android:textSize="10sp" />-->
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <me.grantland.widget.AutofitTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="FAQS"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            autofit:minTextSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="1) How is this tutoring different than other online tutoring sites?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="We have the power of an open education network which is cheaper, faster, and available around the clock. Anyone can earn (tutor) or learn (student)."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="2) How does payment work?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="You pay as you go. There is no setup or monthly fees. You purchase virtual credits to load your account and the cost of each session will be debited."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="3) How do the credits work?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="Purchase our virtual credits.  Then use them at your convenience only when you need personal help.  Unlike monthly subscriptions, there is not a use it or lose it policy if your account is active."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="4) How does the charging work?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="Make a call to the tutor of your choice.  The first minute is free to ensure you have a good connection.  Thereafter, you are charged on a per minute basis."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="5) Do I need to commit to a series of sessions?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="No. TheTalkList is flexible as it allows you to choose one or many sessions anytime you need help."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="6) How can I become a tutor?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="Simply sign up.  You’ll be prompted to fill out some biographical details, set a rate, and upload a flattering photo and video greeting."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="7) What are the tutor's qualifications?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="Our power comes from enlisting tutors from all different locations and subjects.Anyone can be a student and anyone can be a tutor.  Peer reviews and profiles help you pick the best tutor at a price you can afford."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="8) How do I earn money?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="You name your tutoring rate.  As you perform tutoring sessions, watch your account balance grow.  Whenever you like, you can cashout credits to your PayPal account."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="9) How are session prices determined?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="We have a free market model. You set your own price. This might be related to your experience, availability, or subject. TheTalkList adds its maintenance fee on top of that. "
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="10) What if the call accidentally drops?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="Just dial your tutor again.  A new call record will be generated that tallies your minutes."
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="11) What if I encounter inappropriate behavior?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="Either the student or the tutor can terminate the call. Students will fill out a feedback form. Note the inappropriate behavior and we will investigate whether someone should be removed from our platform. Being good is the rule!"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="12) What happens to my feedback?"
+                android:textColor="#3399CC"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                
+                android:text="Ratings and comments are automatically tabulated within each tutor's profile. We honor your opinions of the tutors with complete transparency. "
+                android:textColor="#000000"
+                android:textSize="15dp"
+                autofit:minTextSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

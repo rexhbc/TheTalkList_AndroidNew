@@ -1,0 +1,413 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.saubhagyam.thetalklist.TTL_Score">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="vertical">
+
+
+            <!-- <ProgressBar
+                 android:id="@+id/progressBar6"
+                 style="?android:attr/progressBarStyle"
+                 android:layout_width="match_parent"
+                 android:layout_height="200dp"
+                 android:indeterminate="false"
+                 android:layout_weight="7.06"
+                 android:max="100"
+                 android:progress="65"
+                 android:indeterminateDrawable="@drawable/circular_progressbar" />
+ -->
+
+
+            <!--  <com.mrn.customprogressbar.CircleProgressBar
+                  android:id="@+id/progressBar6"
+                  android:layout_width="match_parent"
+                  android:layout_height="200dp"
+                  app:progress="35"
+                  app:progressBarThickness="4dp"
+
+                  />
+  -->
+            <!--<RelativeLayout-->
+            <!--   <ProgressBar
+                android:id="@+id/progressBar6"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="7.06" />-->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+               <!-- <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">-->
+
+
+                    <!--<ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/green_circle" />-->
+
+
+
+                                    <ImageView
+                                        android:layout_gravity="center"
+                                        android:layout_width="180dp"
+                                        android:src="@drawable/green_circle_actual"
+                                        android:layout_height="180dp" />
+                    <com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar
+                        android:id="@+id/holoCircularProgressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        app:progress_background_color="@color/lightGrey"
+                        app:progress_color="@color/orange" />
+
+                    <!--</com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar>-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+
+                        <!--  <TextView
+                              android:id="@+id/ttl_score_count"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="85"
+                              android:textColor="#ffffff"
+                              android:textSize="30dp"
+                              android:textStyle="bold" />-->
+
+                        <TextView      
+                            android:id="@+id/ttl_score_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="85"
+                            android:textColor="#000000"
+                            android:textSize="30dp"
+                            android:textStyle="bold" />
+
+                        <TextView      
+                            android:id="@+id/ttl_score_needed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="Needed"
+                            android:textColor="#000000"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+                <!--</LinearLayout>-->
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:weightSum="3">
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+
+                <Button
+                    android:id="@+id/ttlscore_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:text="More..."
+                    android:textAllCaps="false"
+                    android:textColor="#03A9F4"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ttlscore_point_system"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView      
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Point System"
+                        android:textSize="20sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#000000" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="29dp"
+                    android:layout_marginTop="20dp"
+                    android:weightSum="1">
+
+                    <!--android:id="@+id/textView12"-->
+                    <TextView      
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:text="@string/pointSystem"
+                        android:textAlignment="viewStart"
+                        android:textColor="#616A6B"
+                        android:textSize="12sp" />
+
+                    <!--  <LinearLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="match_parent"
+                          android:layout_gravity="center"
+                          android:layout_weight="1"
+                          android:gravity="center">
+
+                      </LinearLayout>-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="29dp"
+                        android:weightSum="1">
+
+                        <TextView      
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="0.59"
+                            android:gravity="center"
+                            android:text="@string/pointtxt1"
+                            android:textAlignment="viewStart"
+                            android:textColor="#616A6B"
+                            android:textSize="12sp" />
+
+                        <!--android:id="@+id/textView12"-->
+                        <!-- <LinearLayout
+                         android:layout_width="143dp"
+                         android:layout_height="match_parent"
+                         android:layout_gravity="center"
+                         android:gravity="center">
+
+                     </LinearLayout>-->
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="29dp"
+                        android:weightSum="1">
+
+                        <TextView      
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="0.54"
+                            android:gravity="center"
+                            android:text="@string/pointtxt2"
+                            android:textAlignment="viewStart"
+                            android:textColor="#616A6B"
+                            android:textSize="12sp" />
+
+                        <!-- <LinearLayout
+                         android:layout_width="43dp"
+                         android:layout_height="match_parent"
+                         android:layout_gravity="center"
+                         android:gravity="center">
+
+                     </LinearLayout>-->
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="29dp"
+                        android:weightSum="1">
+
+                        <TextView      
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="0.59"
+                            android:gravity="center"
+                            android:text="@string/pointtxt3"
+                            android:textAlignment="viewStart"
+                            android:textColor="#616A6B"
+                            android:textSize="12sp" />
+
+                        <!--<LinearLayout
+                        android:layout_width="111dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+
+                    </LinearLayout>-->
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView      
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="Rewards"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#000000" />
+            </LinearLayout>
+
+            <!-- <android.support.v4.view.ViewPager
+                android:id="@+id/viewpagerTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    -->
+            <!--<android.support.v4.view.ViewPager
+                android:id="@+id/ttl_score_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical" />-->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:weightSum="1">
+
+                    <TextView      
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:text="@string/awardtxt2"
+                        android:textColor="#616A6B"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="50dp"
+                        android:layout_weight="1"
+                        android:gravity="end">
+
+                        <Button
+                            android:id="@+id/redeem_travel"
+                            android:layout_width="70dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/capt"
+                            android:gravity="center"
+                            android:text="Redeem"
+                            android:textAllCaps="false"
+                            android:textColor="#ffffff" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:weightSum="1">
+
+                    <TextView      
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:text= "@string/awardtxt3"
+                        android:textColor="#616A6B"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="50dp"
+                        android:layout_weight="1"
+                        android:gravity="end">
+
+                        <Button
+                            android:id="@+id/redeem_free_session"
+                            android:layout_width="70dp"
+                            android:layout_height="29dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/capt"
+                            android:gravity="center"
+                            android:text="Redeem"
+                            android:textAllCaps="false"
+                            android:textColor="#ffffff" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</FrameLayout>
