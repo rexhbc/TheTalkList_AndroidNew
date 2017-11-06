@@ -181,10 +181,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:backgroundTint="#00000000"
-                android:hint="Enter Title"
+                android:hint=" Enter Title"
                 android:maxLength="40"
                 android:padding="15dp"
-                android:textSize="15dp" />
+                android:textSize="15.5dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -197,9 +197,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:backgroundTint="#00000000"
-                android:hint="Enter Description"
+                android:hint=" Enter Description"
                 android:padding="15dp"
-                android:textSize="15dp" />
+                android:textSize="15.5dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -239,7 +239,7 @@
                         android:layout_height="90dp"
                         android:src="@drawable/video_recording_blue_white"
 
-                        />
+                        android:layout_weight="0.03" />
                     <!--android:src="@drawable/video_recording_blue_white"-->
                     <TextView
                         android:layout_width="wrap_content"
@@ -259,7 +259,7 @@
 
                     <ImageView
                         android:id="@+id/upload_video_gallery"
-                        android:layout_width="85dp"
+                        android:layout_width="93dp"
                         android:layout_height="80dp"
                         android:layout_marginBottom="1dp"
                         android:src="@drawable/video_upload"
