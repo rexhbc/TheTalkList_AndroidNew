@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TheTalkList</string>
     <string name="facebook_app_id">1759804367682975</string>
+    <string name="fb_login_protocol_scheme">fb1759804367682975</string>
     <string name="login_forget_password">Forgot Password?</string>
     <string name="title_activity_intro_screen_swipe">IntroScreenSwipe</string>
     <string name="action_settings">Settings</string>
