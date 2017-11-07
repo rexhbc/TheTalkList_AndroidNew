@@ -61,7 +61,8 @@
                 android:backgroundTint="#00000000"
                 android:entries="@array/sub"
                 android:hint="Select Subject"
-                android:padding="15.5dp" />
+                android:padding="11.2dp"
+                android:textSize="15.5dp"/>
 
             <View
                 android:layout_width="match_parent"
