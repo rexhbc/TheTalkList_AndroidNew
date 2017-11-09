@@ -180,14 +180,15 @@
                 <Button
                     android:id="@+id/desiredTutor_save_button"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="30dp"
                     android:background="@drawable/capt"
                     android:text="Submit"
                     android:textAllCaps="false"
                     android:textColor="#ffffff"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
 
