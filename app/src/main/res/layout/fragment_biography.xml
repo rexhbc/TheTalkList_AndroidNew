@@ -617,6 +617,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/myBioLinearLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
