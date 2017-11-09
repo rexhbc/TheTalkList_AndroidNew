@@ -130,7 +130,7 @@
                         android:id="@+id/upload_video"
                         android:layout_width="99dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/VIDEO_RECORD"
+                        android:src="@drawable/video_record"
 
                         />
                     <!--android:src="@drawable/video_recording_blue_white"-->
@@ -157,7 +157,7 @@
                         android:layout_width="132dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="1dp"
-                        android:src="@drawable/VIDEO_UPLOAD" />
+                        android:src="@drawable/video_upload" />
 
                     <TextView
                         android:layout_width="wrap_content"

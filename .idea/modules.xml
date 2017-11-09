@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\Phillip\Desktop\TheTalkList_AndroidNew\app\app.iml" filepath="C:\Users\Phillip\Desktop\TheTalkList_AndroidNew\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/TheTalkList_AndroidNew.iml" filepath="$PROJECT_DIR$/TheTalkList_AndroidNew.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
