@@ -180,7 +180,7 @@ endTime.setText("2:20 PM");
                                     min_txt = "00";
 
                                     startTime.setText(hourOfDay + ":" + min_txt+ " " + format);
-                                }else startTime.setText(hourOfDay + ":" + minute + " " + format);
+                                }else startTime.setText(hourOfDay + ":" + String.format("%02d",minute) + " " + format);
                             }
                         }, hour, minute, false);
                 timePickerDialog.show();
@@ -217,7 +217,7 @@ endTime.setText("2:20 PM");
                                     min_txt = "00";
 
                                     endTime.setText(hourOfDay + ":" + min_txt+ " " + format);
-                                }else endTime.setText(hourOfDay + ":" + minute + " " + format);
+                                }else endTime.setText(hourOfDay + ":" + String.format("%02d",minute) + " " + format);
                             }
                         }, hour, minute, false);
                 timePickerDialog.show();

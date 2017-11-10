@@ -260,7 +260,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 final int icon = R.mipmap.ttlg2;
                 notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                notificationIntent.putExtra("payment", "yes");
+                notificationIntent.putExtra("message", "no");
 
 
                 PendingIntent contentIntent = PendingIntent.getActivity(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

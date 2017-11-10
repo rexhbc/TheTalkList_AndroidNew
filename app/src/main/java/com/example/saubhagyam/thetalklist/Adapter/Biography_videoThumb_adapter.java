@@ -75,7 +75,7 @@ public class Biography_videoThumb_adapter extends RecyclerView.Adapter<Biography
         this.biography_video_ary = biography_video_ary;
         this.playerView=playerView;
         componentListener=new ComponentListener();
-        player=playerView.getPlayer();
+//        player=this.playerView.getPlayer();
     }
 
 
@@ -101,7 +101,7 @@ public class Biography_videoThumb_adapter extends RecyclerView.Adapter<Biography
                     try {
 //                        String  link = "https://www.thetalklist.com/uploads/video/" + thumbObj.getString("source");
 //                        String  link = "http://52.8.60.79/uploads/video/" + thumbObj.getString("source");
-                        String  link = "http://www.thetalklist.com/uploads/video/" + thumbObj.getString("source");
+                        String  link = "https://www.thetalklist.com/uploads/video/" + thumbObj.getString("source");
                         InitializePLayer(link);
 
 

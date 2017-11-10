@@ -356,7 +356,7 @@
 
                         <EditText
                             android:id="@+id/biography_rate_edittext"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:layout_gravity="bottom"
                             android:gravity="bottom"
@@ -521,6 +521,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical"
+                        android:layout_marginLeft="15dp"
                         android:weightSum="2">
 
                         <TextView
@@ -528,21 +529,32 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="15dp"
                             android:text="Tutoring Subjects: "
                             android:textColor="#616A6B"
                             android:textSize="15dp"
                             android:textStyle="bold" />
 
+
+                        <WebView
+                            android:id="@+id/biography_languages_webview"
+                            android:layout_width="match_parent"
+                            android:layout_below="@+id/textView9"
+                            android:layout_marginLeft="-3dp"
+                            android:layout_gravity="fill_vertical"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="start"
+                            android:layout_height="wrap_content"/>
                         <TextView
                             android:id="@+id/biography_languages"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@+id/textView9"
                             android:layout_gravity="fill_vertical"
-                            android:layout_marginLeft="15dp"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="start"
                             android:maxLines="15"
                             android:text=""
+                            android:visibility="gone"
                             android:textSize="12dp" />
                         <!--<LinearLayout
 

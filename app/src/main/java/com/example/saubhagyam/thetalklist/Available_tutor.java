@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,6 +68,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.content.Context.WINDOW_SERVICE;
 import static com.example.saubhagyam.thetalklist.R.id.keyWord;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -127,7 +130,7 @@ public class Available_tutor extends Fragment {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_available_tutor, container, false);
 
@@ -153,6 +156,10 @@ public class Available_tutor extends Fragment {
         ((ImageView) getActivity().findViewById(R.id.imageView13)).setImageDrawable(getResources().getDrawable(R.drawable.new_tabuser_bottomlayout_yellow));
         ((ImageView) getActivity().findViewById(R.id.settingFlyout_bottomcontrol_payments_Img)).setImageDrawable(getResources().getDrawable(R.drawable.dollar));
         ((ImageView) getActivity().findViewById(R.id.settingFlyout_bottomcontrol_MessageImg)).setImageDrawable(getResources().getDrawable(R.drawable.message_icon_bottombar));
+
+
+
+
 
 
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -266,12 +273,17 @@ public class Available_tutor extends Fragment {
 
                             final int min = (int) (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) / credit);
 
-                            tv.setText("Your credits are low and ths call will expire in " + min + " minutes.");
+                            if (min>1)
+                            tv.setText("Your credits are low and this call will expire in " + min + " minutes.");
+
+                            if (min==1)
+                                tv.setText("Your credits are low and this call will expire in " + min + " minute.");
 
 
                             okButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    popupWindow.dismiss();
                                     Intent i = new Intent(getContext(), New_videocall_activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     i.putExtra("from", "availabletutor");
                                     i.putExtra("min",min);
@@ -286,6 +298,7 @@ public class Available_tutor extends Fragment {
                             buyCredits.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    popupWindow.dismiss();
                                     fragmentManager.beginTransaction().replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
                                     FragmentStack.getInstance().push(new Available_tutor());
                                 }
@@ -311,6 +324,70 @@ public class Available_tutor extends Fragment {
             });
 
 
+        }
+        {
+            if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f)< 3.0f) {
+                if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("roleId", 0)==0) {
+//                Toast.makeText(getContext(), "less than 3 credits", Toast.LENGTH_SHORT).show();
+
+//            LayoutInflater layoutInflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view3 = inflater.inflate(R.layout.talknow_criticalcredit, null);
+
+                    final PopupWindow popupWindow7 = new PopupWindow(view3, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                popupWindow7.showAtLocation(inflater.inflate(R.layout.fragment_available_tutor, container, false), Gravity.CENTER, 0, 0);
+                            }catch (WindowManager.BadTokenException e){
+                                Toast.makeText(getApplicationContext(),"Token null", Toast.LENGTH_SHORT).show();
+                            }
+                            return;
+
+                        }
+                    }, 3000);
+
+
+                    popupWindow7.setFocusable(true);
+                    popupWindow7.setOutsideTouchable(false);
+
+
+                    Button okButton = (Button) view3.findViewById(R.id.talknow_ok);
+                    Button buyCredits = (Button) view3.findViewById(R.id.talknow_buycredits);
+                    TextView tv = (TextView) view3.findViewById(R.id.talknow_text);
+
+//                final int min = (int) (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) / credit);
+
+
+                    tv.setText("Your credits are low.\n" +
+                            "Need more?");
+
+                    okButton.setText("Yes");
+
+                    okButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow7.dismiss();
+                            FragmentStack.getInstance().push(new Available_tutor());
+                            fragmentManager.beginTransaction().replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
+
+
+                        }
+                    });
+
+                    buyCredits.setText("No");
+
+                    buyCredits.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow7.dismiss();
+
+                        }
+                    });
+                }
+            }
         }
 
         linearLayout = (LinearLayout) view.findViewById(R.id.AvailableTutor_ProgressBar);

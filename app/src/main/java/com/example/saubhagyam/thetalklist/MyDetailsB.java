@@ -92,6 +92,7 @@ public class MyDetailsB extends Fragment {
     int gen1111;
     View view;
     View view1;
+    String URL;
 
     SharedPreferences pref;
     SharedPreferences.Editor editorpref;
@@ -105,8 +106,10 @@ public class MyDetailsB extends Fragment {
         view1 = inflater.inflate(R.layout.tab_layout_and_viewpager, null);
 
 
+
         pref111=getActivity().getSharedPreferences("loginStatus",Context.MODE_PRIVATE);
         editor111=pref111.edit();
+        URL = "https://www.thetalklist.com/api/login?email=" + pref111.getString("email","") + "&password=" + pref111.getString("pass", "");;
         int status = 0;
 
         status = pref111.getInt("status", 1);
@@ -837,7 +840,14 @@ public class MyDetailsB extends Fragment {
             final SharedPreferences pref = getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
 //                final String url = "https://www.thetalklist.com/api/fblogin?email=" + pref.getString("email", "") + "&facebook_id=" + pref.getInt("facebook_id", 0) + "&firstname=" + pref.getString("first_name", "") + "&lastname=" + pref.getString("last_name", "") + "&gender=" + pref.getString("gender", "") + "&birthdate=" + pref.getString("birthday", "");
             final SharedPreferences.Editor editor = pref.edit();
-            final String url="https://www.thetalklist.com/api/fblogin?facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("first_name", "")+"&lastname="+pref.getString("last_name", "") ;
+
+
+            String url="";
+            if (pref.getInt("gender", 0)==0)
+                url="https://www.thetalklist.com/api/fblogin?email="+pref.getString("email", "")+"&facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("firstName", "")+"&lastname="+pref.getString("lastName", "")+"&gender=female&birthdate="+"";
+            else
+                url="https://www.thetalklist.com/api/fblogin?email="+pref.getString("email", "")+"&facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("firstName", "")+"&lastname="+pref.getString("lastName", "")+"&gender=male&birthdate="+"";
+            //            final String url="https://www.thetalklist.com/api/fblogin?email="+email+"&facebook_id="+loginResult.getAccessToken().getUserId()+"&firstname="+first_name+"&lastname="+last_name+"&gender="+gender+"&birthdate="+"";
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -853,7 +863,7 @@ public class MyDetailsB extends Fragment {
                             editor.putString("LoginWay", "FacebookLogin");
                             editor.putString("loginResponse", response);
                             editor.putString("email", resObj.getString("username"));
-                            editor.putInt("facebook_id", resObj.getInt("facebook_id"));
+                            editor.putString("facebook_id", resObj.getString("facebook_id"));
                             editor.putInt("id", resObj.getInt("id"));
                             editor.putInt("gender", resObj.getInt("gender"));
                             editor.putInt("country", resObj.getInt("country"));
@@ -891,6 +901,7 @@ public class MyDetailsB extends Fragment {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     Toast.makeText(getApplicationContext(), "Login Unsucessful..!", Toast.LENGTH_SHORT).show();
+                    Log.e("fb login error",volleyError.toString());
                     editor.clear().apply();
                 }
             });
@@ -898,7 +909,7 @@ public class MyDetailsB extends Fragment {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             queue.add(stringRequest);
         }else {
-            String URL = "https://www.thetalklist.com/api/login?email=" + pref111.getString("email","") + "&password=" + getContext().getSharedPreferences("loginStatus",Context.MODE_PRIVATE).getString("pass", "");;
+
 
 
             StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {

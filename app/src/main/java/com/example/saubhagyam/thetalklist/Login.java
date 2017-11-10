@@ -29,7 +29,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -38,12 +37,14 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -51,7 +52,7 @@ import java.util.Arrays;
 
 public class Login extends Activity {
     EditText email_address, pwd;
-   public Button signIn, create_account, forgetPassword;
+    public Button signIn, create_account, forgetPassword;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     public LoginButton loginButton;
@@ -59,7 +60,7 @@ public class Login extends Activity {
     String email;
     String pass;
     Typeface typeface;
-Dialog dialog;
+    Dialog dialog;
 
 
     @Override
@@ -74,8 +75,6 @@ Dialog dialog;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.example.saubhagyam.thetalklist",
@@ -90,23 +89,38 @@ Dialog dialog;
         } catch (NoSuchAlgorithmException e) {
 
         }
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         setContentView(R.layout.activity_login);
-
-       /* loginButton.setReadPermissions(Arrays.asList(
+        loginButton = (LoginButton) findViewById(R.id.facebook_login_btn);
+        loginButton.setReadPermissions("email,publish_actions");
+        /*loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));*/
-        loginButton.setReadPermissions("email");
+
+
         pref = getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
         editor = pref.edit();
 
+        callbackManager = CallbackManager.Factory.create();
+      /*  loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+
+            }
+        });*/
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
-                Log.e("token", String.valueOf(loginResult.getAccessToken()));
 
-                getUserDetails(loginResult);
+//                Toast.makeText(getApplicationContext(), "Login Sucessfully \n Hello" + loginResult.getAccessToken().getUserId(), Toast.LENGTH_SHORT).show();
+/*
+                Toast.makeText(getApplicationContext(), "login token" + loginResult.getAccessToken().getToken(), Toast.LENGTH_SHORT).show();
+                Log.e("fbtoken",loginResult.getAccessToken().getToken());
+*/
 
+                graph(loginResult);
 
 
 
@@ -116,13 +130,135 @@ Dialog dialog;
             public void onCancel() {
 
                 Toast.makeText(getApplicationContext(), "Login Cancelled", Toast.LENGTH_SHORT).show();
+                editor.clear().apply();
+//                AppEventsLogger.deactivateApp(Login.this);
+//                loginButton.unregisterCallback(callbackManager);
+//                finish();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(getApplicationContext()  , "error "+error, Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
+
+    }
+
+    public void graph(final LoginResult loginResult){
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.e("LoginActivity", response.toString());
+
+                        // Application code
+                        try {
+
+                            final String email = object.getString("email");
+//                            final String birthday = object.getString("birthday");
+                            final int id = object.getInt("id");
+
+                            final String name = object.getString("name");
+                            final String gender = object.getString("gender");
+                            final String first_name = object.getString("first_name");
+                            final String last_name = object.getString("last_name");
+
+
+                            Log.e("in graph request","in graph request yeeeeeeeeeeeeeeeeeeeeee");
+                            Profile profile=Profile.getCurrentProfile();
+                            profile.getProfilePictureUri(200,200);
+
+                            final String url="https://www.thetalklist.com/api/fblogin?email="+email+"&facebook_id="+loginResult.getAccessToken().getUserId()+"&firstname="+first_name+"&lastname="+last_name+"&gender="+gender+"&birthdate="+"";
+
+
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.e("facebook login url", url);
+                                    Log.e("facebook login response", response);
+
+                                    try {
+                                        JSONObject obj=new JSONObject(response);
+                                        if (obj.getInt("status")==0) {
+                                            JSONObject resObj=obj.getJSONObject("result");
+                                            SharedPreferences pref = getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = pref.edit();
+//                                                    final int roleId = resObj.getInt("roleId");
+                                            editor.putString("LoginWay", "FacebookLogin");
+                                            editor.putString("loginResponse", response);
+                                            editor.putString("firstname", resObj.getString("firstName"));
+                                            editor.putString("lastname", resObj.getString("lastName"));
+                                            editor.putString("email", resObj.getString("email"));
+                                            BigInteger fbId=new BigInteger(loginResult.getAccessToken().getUserId());
+
+                                            editor.putString("facebook_id", fbId.toString());
+                                            editor.putInt("id", resObj.getInt("id"));
+                                            editor.putInt("roleId",resObj.getInt("roleId"));
+                                            editor.putInt("gender", resObj.getInt("gender"));
+                                            editor.putInt("country", resObj.getInt("country"));
+                                            editor.putInt("province", resObj.getInt("province"));
+                                            editor.putString("cell", resObj.getString("cell"));
+                                            if (obj.getInt("login")==1)
+                                                editor.putInt("status",0);
+                                            else editor.putInt("status",1);
+                                            editor.putString("city", resObj.getString("city"));
+                                            editor.putString("nativeLanguage", resObj.getString("nativeLanguage"));
+                                            editor.putString("otherLanguage", resObj.getString("otherLanguage"));
+                                            editor.putFloat("frMoney", (float) resObj.getDouble("frMoney"));
+                                            editor.putFloat("hRate", Float.parseFloat(resObj.getString("hRate")));
+                                            if (resObj.getString("avgRate").equals(""))
+                                                editor.putFloat("avgRate", 0.0f);
+                                            else
+                                                editor.putFloat("avgRate", Float.parseFloat(resObj.getString("avgRate")));
+                                            if (resObj.getString("ttl_points").equals(""))
+                                                editor.putFloat("ttl_points", 0.0f);
+                                            else
+                                                editor.putFloat("ttl_points", Float.parseFloat(resObj.getString("ttl_points")));
+
+                                            if (gender.equals("male"))
+                                                editor.putInt("gender", 1);
+                                            else editor.putInt("gender", 0);
+//                                                    editor.putString("birthdate", birthday);
+                                            editor.apply();
+
+//                                                    Toast.makeText(Login.this, "Login Sucessfully..!", Toast.LENGTH_SHORT).show();
+                                            SettingFlyout settingFlyout = new SettingFlyout();
+                                            Intent i = new Intent(getApplicationContext(), settingFlyout.getClass());
+                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(i);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+                                    Toast.makeText(Login.this, "Something wemt wrong..!", Toast.LENGTH_SHORT).show();
+                                }
+                            }) ;
+
+                            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                            queue.add(stringRequest);
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email,gender,birthday,first_name,last_name");
+        request.setParameters(parameters);
+        request.executeAsync();
 
     }
 
@@ -130,10 +266,10 @@ Dialog dialog;
     @Override
     protected void onStart() {
         super.onStart();
-         typeface = Typeface.createFromAsset(getAssets(), "fonts/GothamBookRegular.ttf");
+        typeface = Typeface.createFromAsset(getAssets(), "fonts/GothamBookRegular.ttf");
 
-        loginButton = (LoginButton) findViewById(R.id.facebook_login_btn);
-        callbackManager = CallbackManager.Factory.create();
+
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -162,8 +298,10 @@ Dialog dialog;
     protected void onResume() {
         super.onResume();
 
-splashScreen=new SplashScreen();
-        AppEventsLogger.activateApp(this);
+        splashScreen=new SplashScreen();
+
+
+//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,20 +387,21 @@ splashScreen=new SplashScreen();
                                     editor.putString("cell", resultObj.getString("cell"));
                                     editor.putFloat("hRate", Float.parseFloat(resultObj.getString("hRate")));
                                     if (resultObj.getString("avgRate").equals(""))
-                                    editor.putFloat("avgRate", 0.0f);
+                                        editor.putFloat("avgRate", 0.0f);
                                     else
-                                    editor.putFloat("avgRate", Float.parseFloat(resultObj.getString("avgRate")));
+                                        editor.putFloat("avgRate", Float.parseFloat(resultObj.getString("avgRate")));
 
 
                                     if (resultObj.getString("ttl_points").equals(""))
-                                    editor.putFloat("ttl_points", 0.0f);
+                                        editor.putFloat("ttl_points", 0.0f);
                                     else
-                                    editor.putFloat("ttl_points", Float.parseFloat(resultObj.getString("ttl_points")));
+                                        editor.putFloat("ttl_points", Float.parseFloat(resultObj.getString("ttl_points")));
 
 
                                     editor.putInt("country", resultObj.getInt("country"));
                                     editor.putInt("province", resultObj.getInt("province"));
                                     editor.putFloat("money", 0.0f);
+                                    editor.putFloat("frMoney", (float) resultObj.getDouble("frMoney"));
                                     editor.putString("email", mail);
                                     editor.apply();
 
@@ -276,9 +415,9 @@ splashScreen=new SplashScreen();
                                     i.putExtra("username", UserName);
                                     startActivity(i);
                                 }
-                                } catch(JSONException e){
-                                    e.printStackTrace();
-                                }
+                            } catch(JSONException e){
+                                e.printStackTrace();
+                            }
 
 
                         }
@@ -342,145 +481,6 @@ splashScreen=new SplashScreen();
     public void onBackPressed() {
         finish();
         moveTaskToBack(false);
-    }
-
-    protected void getUserDetails(final LoginResult loginResult) {
-        Log.e("token", String.valueOf(AccessToken.getCurrentAccessToken()));
-        Log.e("login result", String.valueOf(loginResult));
-        Toast.makeText(Login.this, "token "+loginResult.getAccessToken(), Toast.LENGTH_SHORT).show();
-
-        if (loginResult.getAccessToken()!=null){
-            GraphRequest request = GraphRequest.newMeRequest(
-                    /*loginResult.getAccessToken()*/AccessToken.getCurrentAccessToken(),
-                    new GraphRequest.GraphJSONObjectCallback() {
-                        @Override
-                        public void onCompleted(JSONObject object, GraphResponse response) {
-                            Log.e("LoginActivity", response.toString());
-
-                            // Application code
-                            try {
-
-//                                    final String email = object.getString("email");
-//                                    final String birthday = object.getString("birthday");
-                                final int id = object.getInt("id");
-
-                                final String name = object.getString("name");
-                                final String gender = object.getString("gender");
-                                final String first_name = object.getString("first_name");
-                                final String last_name = object.getString("last_name");
-
-
-                                Log.e("facebook id", String.valueOf(id));
-                                Log.e("facebook name",name);
-                                Log.e("facebook fn",first_name);
-                                Log.e("facebook ln",last_name);
-
-
-                                Log.e("in graph request","in graph request yeeeeeeeeeeeeeeeeeeeeee");
-                                Profile profile=Profile.getCurrentProfile();
-                                profile.getProfilePictureUri(200,200);
-
-                                final String url="https://www.thetalklist.com/api/fblogin?email="+email+"&facebook_id="+loginResult.getAccessToken().getUserId()+"&firstname="+first_name+"&lastname="+last_name+"&gender="+gender+"&birthdate="+"";
-//                                    final String url="https://www.thetalklist.com/api/fblogin?facebook_id="+loginResult.getAccessToken().getUserId()+"&firstname="+first_name+"&lastname="+last_name;
-//                                    final String url="http://52.8.60.79/api/fblogin?facebook_id="+id+"&firstname="+first_name+"&lastname="+last_name;
-                                SharedPreferences pref = getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
-                                final SharedPreferences.Editor editor = pref.edit();
-
-                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        Log.e("facebook login url", url);
-                                        Log.e("facebook login response", response);
-
-                                        try {
-                                            JSONObject obj=new JSONObject(response);
-                                            if (obj.getInt("status")==0) {
-                                                JSONObject resObj=obj.getJSONObject("result");
-
-                                                final int roleId = resObj.getInt("roleId");
-                                                editor.putString("LoginWay", "FacebookLogin");
-                                                editor.putString("loginResponse", response);
-                                                editor.putString("firstname", first_name);
-                                                editor.putString("lastname", last_name);
-//                                                    editor.putString("email", email);
-                                                editor.putString("facebook_id", loginResult.getAccessToken().getUserId());
-                                                editor.putInt("id", resObj.getInt("id"));
-                                                editor.putInt("roleId",roleId);
-                                                editor.putInt("gender", resObj.getInt("gender"));
-                                                editor.putInt("country", resObj.getInt("country"));
-                                                editor.putInt("province", resObj.getInt("province"));
-                                                editor.putString("cell", resObj.getString("cell"));
-                                                if (obj.getInt("login")==1)
-                                                    editor.putInt("status",0);
-                                                else editor.putInt("status",1);
-                                                editor.putString("city", resObj.getString("city"));
-                                                editor.putString("nativeLanguage", resObj.getString("nativeLanguage"));
-                                                editor.putString("otherLanguage", resObj.getString("otherLanguage"));
-                                                editor.putFloat("hRate", Float.parseFloat(resObj.getString("hRate")));
-                                                if (resObj.getString("avgRate").equals(""))
-                                                    editor.putFloat("avgRate", 0.0f);
-                                                else
-                                                    editor.putFloat("avgRate", Float.parseFloat(resObj.getString("avgRate")));
-                                                if (resObj.getString("ttl_points").equals(""))
-                                                    editor.putFloat("ttl_points", 0.0f);
-                                                else
-                                                    editor.putFloat("ttl_points", Float.parseFloat(resObj.getString("ttl_points")));
-
-                                                if (gender.equals("male"))
-                                                    editor.putInt("gender", 1);
-                                                else editor.putInt("gender", 0);
-//                                                    editor.putString("birthdate", birthday);
-                                                editor.apply();
-
-//                                                    Toast.makeText(Login.this, "Login Sucessfully..!", Toast.LENGTH_SHORT).show();
-                                                SettingFlyout settingFlyout = new SettingFlyout();
-                                                Intent i = new Intent(getApplicationContext(), settingFlyout.getClass());
-                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(i);
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-
-
-
-
-                                    }
-                                }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError volleyError) {
-                                        Toast.makeText(Login.this, "Something wemt wrong..!", Toast.LENGTH_SHORT).show();
-                                        editor.clear().apply();
-                                    }
-                                }) ;
-
-                                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                                queue.add(stringRequest);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-
-            );
-            Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,email,gender,birthday,first_name,last_name");
-            request.setParameters(parameters);
-            request.executeAsync();
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "recall callbacks", Toast.LENGTH_SHORT).show();
-            loginButton.performClick();
-        }
-
-
-       /* Bundle permission_param = new Bundle();
-        permission_param.putString("fields", "id,name,email,picture.width(120).height(120)");
-        data_request.setParameters(permission_param);
-        data_request.executeAsync();*/
-
     }
 
     @Override

@@ -17,9 +17,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.saubhagyam.thetalklist.Bean.MessageModel;
 import com.example.saubhagyam.thetalklist.CircleTransform;
 import com.example.saubhagyam.thetalklist.R;
+import com.example.saubhagyam.thetalklist.TTL;
 import com.rockerhieu.emojicon.EmojiconTextView;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;;
 import java.text.ParseException;
@@ -41,10 +45,26 @@ public class MessageRecyclarAdapter extends RecyclerView.Adapter<MessageRecyclar
     private List<MessageModel> messageModelList;
     String pic;
 
+    String op;
+    String min;
+    String hr;
+
+    String time;
+
     public MessageRecyclarAdapter(Context context, List<MessageModel> messageModelList,String pic) {
         this.context = context;
         this.messageModelList = messageModelList;
         this.pic=pic;
+    }
+
+
+    public MessageRecyclarAdapter(Context context, List<MessageModel> messageModelList,String pic,String op,String min,String hr) {
+        this.context = context;
+        this.messageModelList = messageModelList;
+        this.pic=pic;
+        this.op=op;
+        this.min=min;
+        this.hr=hr;
     }
 
     public void addMsg(MessageModel m) {
@@ -115,13 +135,13 @@ public class MessageRecyclarAdapter extends RecyclerView.Adapter<MessageRecyclar
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.senderImg);
 
-
+        }
             String date=messageModelList.get(position).getTime();
             Date date_txt=null;
             String[] months={"Jan","Feb","Mar","April","may","June","July","Aug","Sep","Oct","Nov","Dec"};
             try {
             if (date!=null) {
-                date_txt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse(date);
+                date_txt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US).parse(date);
 
                 int hour= Integer.parseInt(new SimpleDateFormat("HH", Locale.US).format(date_txt));
                 int month= Integer.parseInt(new SimpleDateFormat("MM", Locale.US).format(date_txt));
@@ -130,12 +150,29 @@ public class MessageRecyclarAdapter extends RecyclerView.Adapter<MessageRecyclar
                 String newStr= new SimpleDateFormat("HH:mm", Locale.US).format(date_txt); // 9:00
                 String h= new SimpleDateFormat("HH", Locale.US).format(date_txt); // 9:00
                 String m= new SimpleDateFormat("mm", Locale.US).format(date_txt); // 9:00
-                if (hour>12){
-                    String time=/*newStr+" "+*/months[month-1]+" "+String.valueOf(day);
+
+                hour=Integer.parseInt(h)+Integer.parseInt(hr)+8;
+                int minf=Integer.parseInt(m)+Integer.parseInt(min);
+
+
+                if (hour>24){
+                    if (minf>60) {
+                       time = months[month - 1] + " " + String.valueOf(day+1) + " " + (hour - 24 + 1) + ":" + (minf - 60);
+                    }else{
+                        time = months[month - 1] + " " + String.valueOf(day+1) + " " + (hour - 24 ) + ":" + minf ;
+                    }
                     holder.sender_time.setText(time);
+                    holder.receiver_time.setText(time);
+
                 }else{
-                    String time=/*newStr+" "+*/months[month-1]+" "+String.valueOf(day);
+                    if (minf>60) {
+                        time = months[month - 1] + " " + String.valueOf(day) + " " + (hour  + 1) + ":" + (minf - 60);
+                    }else{
+                        time = months[month - 1] + " " + String.valueOf(day) + " " + hour  + ":" + minf ;
+                    }
+                    String time=/*newStr+" "+*/months[month-1]+" "+String.valueOf(day)+" "+hour+":"+minf;
                     holder.sender_time.setText(time);
+                    holder.receiver_time.setText(time);
                 }
             }
 
@@ -144,7 +181,9 @@ public class MessageRecyclarAdapter extends RecyclerView.Adapter<MessageRecyclar
             }
 
 
-        }
+
+
+//notifyDataSetChanged();
 
     }
 
@@ -156,7 +195,7 @@ public class MessageRecyclarAdapter extends RecyclerView.Adapter<MessageRecyclar
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         final EmojiconTextView user_msg, sender_msg;
-        TextView sender_time;
+        TextView sender_time,receiver_time;
         final LinearLayout senderLayout, userLayout;
         final ImageView senderImg, userImg;
 
@@ -171,6 +210,7 @@ public class MessageRecyclarAdapter extends RecyclerView.Adapter<MessageRecyclar
             sender_msg = (EmojiconTextView) itemView.findViewById(R.id.chat_sender_text);
             user_msg = (EmojiconTextView) itemView.findViewById(R.id.chat_user_text);
             sender_time = (TextView) itemView.findViewById(R.id.sender_time);
+            receiver_time = (TextView) itemView.findViewById(R.id.receiver_time);
         }
     }
 }

@@ -69,6 +69,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.parse.ParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,6 +79,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,22 +195,22 @@ public class SettingFlyout extends AppCompatActivity {
         settingFlyout_bottomcontrol = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol);
 
 
-        ratingBar= (RatingBar) view1.findViewById(R.id.ratingBar);
+        ratingBar = (RatingBar) view1.findViewById(R.id.ratingBar);
 
         if (preferences.getFloat("avgRate", 0.0f) != 0.0f)
             ratingBar.setRating(preferences.getFloat("avgRate", 0.0f));
 //        Toast.makeText(getApplicationContext(), "Ratings :"+preferences.getFloat("avgRate", 0.0f) , Toast.LENGTH_SHORT).show();
 //ratingBar.setRating(1.0f);
 
-        if (ttl.isCall){
+        if (ttl.isCall) {
             return_to_call.setVisibility(View.VISIBLE);
         }
 
-        return_to_call= (LinearLayout) findViewById(R.id.return_to_call);
+        return_to_call = (LinearLayout) findViewById(R.id.return_to_call);
         return_to_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),New_videocall_activity.class);
+                Intent i = new Intent(getApplicationContext(), New_videocall_activity.class);
                 startActivity(i);
             }
         });
@@ -258,10 +262,13 @@ public class SettingFlyout extends AppCompatActivity {
 
         new firebase_regId_store().execute();
         pref = getSharedPreferences("loginStatus", MODE_PRIVATE);
-        LoginService loginService=new LoginService();
-        loginService.login(pref.getString("email",""),pref.getString("pass",""),getApplicationContext());
+        LoginService loginService = new LoginService();
+        loginService.login(pref.getString("email", ""), pref.getString("pass", ""), getApplicationContext());
 
-        num_ttlScore.setText(String.valueOf(pref.getFloat("ttl_points", 0.0f)));
+
+        if (pref.getFloat("ttl_points", 0.0f) > 0.0)
+            num_ttlScore.setText(String.valueOf((int) pref.getFloat("ttl_points", 0.0f)));
+        else num_ttlScore.setText("0");
         editor = pref.edit();
         email = pref.getString("email", "");
         pass = pref.getString("pass", "");
@@ -287,6 +294,121 @@ public class SettingFlyout extends AppCompatActivity {
             }
         };
 
+        {
+            if (pref.getInt("roleId",0)!=0) {
+                SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+                Date x1 = new Date();
+                final String dayOfTheWeek = sdf.format(x1);
+                Log.e("today dayofweek",dayOfTheWeek);
+
+                String url1 = "https://www.thetalklist.com/api/tutor_availability_info?uid=" + pref.getInt("id", 0);
+
+                StringRequest sr = new StringRequest(Request.Method.POST, url1, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+//                Toast.makeText(getContext(), "Response "+response, Toast.LENGTH_SHORT).show();
+                        Log.e("response availablity ", response);
+                        try {
+                            JSONObject res = new JSONObject(response);
+                            if (res.getInt("status") == 0) {
+
+                                JSONObject info = res.getJSONObject("info");
+
+                                try {
+
+                                    String string1 = info.getString("start_time");
+                                    Date time1 = new SimpleDateFormat("HH:mm:ss").parse(string1);
+                                    Calendar calendar1 = Calendar.getInstance();
+                                    calendar1.setTime(time1);
+
+                                    String string2 = info.getString("end_time");
+                                    Date time2 = new SimpleDateFormat("HH:mm:ss").parse(string2);
+                                    Calendar calendar2 = Calendar.getInstance();
+                                    calendar2.setTime(time2);
+                                    calendar2.add(Calendar.DATE, 1);
+
+                                    String someRandomTime = "01:00:00";
+                                    Date d = new SimpleDateFormat("HH:mm:ss").parse(someRandomTime);
+                                    Calendar calendar3 = Calendar.getInstance();
+                                    calendar3.setTime(d);
+                                    calendar3.add(Calendar.DATE, 1);
+
+                                    Date x = calendar3.getTime();
+                                    if (x.after(calendar1.getTime()) && x.before(calendar2.getTime())) {
+                                        //checkes whether the current time is between 14:49:00 and 20:11:13.
+                                        System.out.println(true);
+                                    }
+
+
+
+                                    if (info.getInt("sunday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
+                                            talkNow.setChecked(true);
+                                            talkNow.setSelected(true);
+                                        }
+
+                                    }
+
+                                    if (Integer.parseInt(info.getString("monday")) == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Bonday")) {
+                                            talkNow.setChecked(true);
+                                            talkNow.setSelected(true);
+                                        }
+                                    }
+                                    if (info.getInt("tuesday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Tuesday")) {
+                                            talkNow.setChecked(true);
+                                            talkNow.setSelected(true);
+                                        }
+                                    }
+                                    if (info.getInt("wednesday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Wednesday")) {
+                                            talkNow.setChecked(true);
+                                            talkNow.setSelected(true);
+                                        }
+                                    }
+                                    if (info.getInt("thursday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Thursday")) {
+                                            talkNow.setChecked(true);
+                                            talkNow.setSelected(true);
+                                        }
+                                    }
+                                    if (info.getInt("friday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Friday")) {
+                                            talkNow.setChecked(true);
+                                            talkNow.setSelected(true);
+                                        }
+                                    }
+                                    if (info.getInt("saturday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Saturday")) {
+                                            talkNow.setChecked(true);
+                                            talkNow.setSelected(true);
+                                        }
+                                    }
+
+                                } catch (java.text.ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "error " + error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                Volley.newRequestQueue(getApplicationContext()).add(sr);
+            }
+
+        }
 
         final FragmentStack fragmentStack = FragmentStack.getInstance();
         final TTL ttl = (TTL) getApplicationContext();
@@ -405,7 +527,6 @@ public class SettingFlyout extends AppCompatActivity {
         status = pref.getInt("status", 1);
 
 
-
         String username = preferences.getString("usernm", "");
 
 
@@ -449,7 +570,7 @@ public class SettingFlyout extends AppCompatActivity {
 
         tabBackStack = TabBackStack.getInstance();
 
-        if (preferences.getInt("roleId", 0)==0){
+        if (preferences.getInt("roleId", 0) == 0) {
             talkNow.setChecked(false);
             talkNow.setClickable(false);
             talkNow.setFocusable(false);
@@ -458,9 +579,17 @@ public class SettingFlyout extends AppCompatActivity {
 
         fragmentTransaction.addToBackStack(null);
         if (status == 0) {
+
+           /* if (getIntent().hasExtra("payment")){
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
+            }*/
+
             String ofMessage = getIntent().getStringExtra("message");
             String firstName = getIntent().getStringExtra("uname");
             int uid = getIntent().getIntExtra("senderId", 0);
+
+
 
 
           /*  if (ofpayment !=null){
@@ -470,21 +599,29 @@ public class SettingFlyout extends AppCompatActivity {
                 ft.replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
             }*/
 
-             if (ofMessage != null) {
+            if (ofMessage != null) {
                 Log.e("message", ofMessage);
                 Log.e("uid", String.valueOf(uid));
 
 
-                SharedPreferences chatPref = getSharedPreferences("chatPref", Context.MODE_PRIVATE);
-                final SharedPreferences.Editor chatPrefEditor = chatPref.edit();
+                if (ofMessage.equals("no")) {
+                    FragmentStack.getInstance().push(new Available_tutor());
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
+                } else {
 
-                chatPrefEditor.putString("firstName", firstName);
-                chatPrefEditor.putInt("receiverId", uid).apply();
 
-                FragmentStack.getInstance().push(new Available_tutor());
+                    SharedPreferences chatPref = getSharedPreferences("chatPref", Context.MODE_PRIVATE);
+                    final SharedPreferences.Editor chatPrefEditor = chatPref.edit();
 
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.viewpager, new MessageOneToOne()).commit();
+                    chatPrefEditor.putString("firstName", firstName);
+                    chatPrefEditor.putInt("receiverId", uid).apply();
+
+                    FragmentStack.getInstance().push(new Available_tutor());
+
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.viewpager, new MessageOneToOne()).commit();
+                }
             } else
                 fragmentTransaction.replace(R.id.viewpager, new Available_tutor()).commit();
         } else {
@@ -767,14 +904,14 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
                 }
                 String Url = "https://www.thetalklist.com/api/tutor_online?uid=" + getSharedPreferences("loginStatus", MODE_PRIVATE).getInt("id", 0) + "&bit=" + online;
 
-                Log.e("tutor online url",Url);
+                Log.e("tutor online url", Url);
 
                 StringRequest strRequest = new StringRequest(Request.Method.POST, Url,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
 
-                                Log.e("tutor online res",response);
+                                Log.e("tutor online res", response);
 
                                 try {
                                     JSONObject obj = new JSONObject(response);
@@ -976,55 +1113,58 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
                     NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.cancelAll();
 
-                        String URL = "https://www.thetalklist.com/api/signout?uid=" + pref.getInt("id", 0);
-                        StringRequest sr1 = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
+                    String URL = "https://www.thetalklist.com/api/signout?uid=" + pref.getInt("id", 0);
+                    StringRequest sr1 = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
-                                try {
-                                    JSONObject obj=new JSONObject(response);
-                                    if (obj.getInt("status")!=0){
-                                        Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                                    }else {
-                                        pref = getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
-                                        SharedPreferences Desired_pref = getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE);
-                                        SharedPreferences.Editor desiredEditor = Desired_pref.edit();
-                                        desiredEditor.clear().apply();
-                                        editor = pref.edit();
-                                        editor.clear().apply();
-                                        fragmentStack.clear();
-                                        ttl.ExitBit = 1;
-                                        SharedPreferences pref11 = getApplicationContext().getSharedPreferences("firstTime", Context.MODE_PRIVATE);
-                                        final SharedPreferences.Editor ed = pref11.edit();
-                                        ed.clear().apply();
+                            try {
+                                JSONObject obj = new JSONObject(response);
+                                if (obj.getInt("status") != 0) {
+                                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                                } else {
 
-                                        edavailabe.clear().apply();
-                                        edvideo.putInt("position", 0).apply();
 
-                                        try {
-                                            FirebaseInstanceId.getInstance().deleteInstanceId();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Intent i = new Intent(getApplicationContext(), Login.class);
-                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(i);
-                                        finish();
+                                    pref = getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
+
+                                    LoginManager.getInstance().logOut();
+                                    SharedPreferences Desired_pref = getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor desiredEditor = Desired_pref.edit();
+                                    desiredEditor.clear().apply();
+                                    editor = pref.edit();
+                                    editor.clear().apply();
+                                    fragmentStack.clear();
+                                    ttl.ExitBit = 1;
+                                    SharedPreferences pref11 = getApplicationContext().getSharedPreferences("firstTime", Context.MODE_PRIVATE);
+                                    final SharedPreferences.Editor ed = pref11.edit();
+                                    ed.clear().apply();
+
+                                    edavailabe.clear().apply();
+                                    edvideo.putInt("position", 0).apply();
+
+                                    try {
+                                        FirebaseInstanceId.getInstance().deleteInstanceId();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Intent i = new Intent(getApplicationContext(), Login.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(i);
+                                    finish();
                                 }
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getApplicationContext(), "status " + error, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        Volley.newRequestQueue(getApplicationContext()).add(sr1);
 
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "status " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    Volley.newRequestQueue(getApplicationContext()).add(sr1);
 
 
                     break;
@@ -1398,6 +1538,49 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
         rQueue.add(request);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String ofMessage = intent.getStringExtra("message");
+        String firstName = intent.getStringExtra("uname");
+        int uid = intent.getIntExtra("senderId", 0);
 
+        FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
+
+
+          /*  if (ofpayment !=null){
+                FragmentStack.getInstance().push(new Available_tutor());
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
+            }*/
+
+        if (ofMessage != null) {
+            Log.e("message", ofMessage);
+            Log.e("uid", String.valueOf(uid));
+
+
+            if (ofMessage.equals("no")) {
+                FragmentStack.getInstance().push(new Available_tutor());
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
+            } else {
+
+
+                SharedPreferences chatPref = getSharedPreferences("chatPref", Context.MODE_PRIVATE);
+                final SharedPreferences.Editor chatPrefEditor = chatPref.edit();
+
+                chatPrefEditor.putString("firstName", firstName);
+                chatPrefEditor.putInt("receiverId", uid).apply();
+
+                FragmentStack.getInstance().push(new Available_tutor());
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.viewpager, new MessageOneToOne()).commit();
+            }
+        } else
+
+            ft1.replace(R.id.viewpager, new Available_tutor()).commit();
+    }
 }
 

@@ -13,13 +13,17 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -89,7 +93,8 @@ ProgressDialog progressDialog;
 				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				progressDialog.show();
 
-				new UploadFileToServer().execute();
+				String response= String.valueOf(new UploadFileToServer().execute());
+				Log.e("video response vstring",response);
 			}
 		});
 
@@ -113,6 +118,8 @@ ProgressDialog progressDialog;
 	 * Uploading the file to server
 	 * */
 	private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+
+		String responseString ;
 		@Override
 		protected void onPreExecute() {
 			// setting progress bar to zero
@@ -140,7 +147,7 @@ ProgressDialog progressDialog;
 
 		@SuppressWarnings("deprecation")
 		private String uploadFile() {
-			String responseString = null;
+
 
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost("https://www.thetalklist.com/api/video_upload_test");
@@ -164,7 +171,12 @@ ProgressDialog progressDialog;
 				entity.addPart("title", new StringBody(title));
 				entity.addPart("description", new StringBody(description));
 
+				SharedPreferences bio_videoPref=getApplicationContext().getSharedPreferences("bio_video", Context.MODE_PRIVATE);
+				SharedPreferences.Editor bio_Editor=bio_videoPref.edit();
 
+				if (bio_videoPref.getBoolean("biography",false))
+					entity.addPart("bio",new StringBody("1"));
+else entity.addPart("bio",new StringBody("0"));
 				totalSize = entity.getContentLength();
 				httppost.setEntity(entity);
 
@@ -175,6 +187,8 @@ ProgressDialog progressDialog;
 				int statusCode = response.getStatusLine().getStatusCode();
 				if (statusCode == 200) {
 					responseString = EntityUtils.toString(r_entity);
+					Log.e("video response",responseString);
+					bio_Editor.clear().apply();
 				} else {
 					responseString = "Error occurred! Http Status Code: "
 							+ statusCode;
@@ -194,7 +208,15 @@ ProgressDialog progressDialog;
 		protected void onPostExecute(String result) {
 			Log.e(TAG, "Response from server: " + result);
 
-			Toast.makeText(UploadActivity.this, "Upload successful!", Toast.LENGTH_SHORT).show();
+			try {
+				JSONObject jsonObject=new JSONObject(responseString);
+				if (jsonObject.getInt("status")==1){
+					Toast.makeText(UploadActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+				}else
+				Toast.makeText(UploadActivity.this, "Upload successful!", Toast.LENGTH_SHORT).show();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 			onBackPressed();
 
 			super.onPostExecute(result);

@@ -45,7 +45,14 @@ if(pref.getString("LoginWay","").equals("FacebookLogin")){
     final SharedPreferences pref = getApplicationContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
 //                final String url = "https://www.thetalklist.com/api/fblogin?email=" + pref.getString("email", "") + "&facebook_id=" + pref.getInt("facebook_id", 0) + "&firstname=" + pref.getString("first_name", "") + "&lastname=" + pref.getString("last_name", "") + "&gender=" + pref.getString("gender", "") + "&birthdate=" + pref.getString("birthday", "");
     final SharedPreferences.Editor editor = pref.edit();
-    final String url="https://www.thetalklist.com/api/fblogin?facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("first_name", "")+"&lastname="+pref.getString("last_name", "") ;
+//    final String url="https://www.thetalklist.com/api/fblogin?facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("first_name", "")+"&lastname="+pref.getString("last_name", "") ;
+
+
+    String url="";
+    if (pref.getInt("gender", 0)==0)
+        url="https://www.thetalklist.com/api/fblogin?email="+pref.getString("email", "")+"&facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("firstName", "")+"&lastname="+pref.getString("lastName", "")+"&gender=female&birthdate="+"";
+    else
+        url="https://www.thetalklist.com/api/fblogin?email="+pref.getString("email", "")+"&facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("firstName", "")+"&lastname="+pref.getString("lastName", "")+"&gender=male&birthdate="+"";
 
     StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
         @Override
@@ -61,7 +68,7 @@ if(pref.getString("LoginWay","").equals("FacebookLogin")){
                     editor.putString("LoginWay", "FacebookLogin");
                     editor.putString("loginResponse", response);
                     editor.putString("email", resObj.getString("username"));
-                    editor.putInt("facebook_id", resObj.getInt("facebook_id"));
+                    editor.putString("facebook_id", resObj.getString("facebook_id"));
                     editor.putInt("id", resObj.getInt("id"));
                     editor.putInt("gender", resObj.getInt("gender"));
                     editor.putInt("country", resObj.getInt("country"));
@@ -80,6 +87,7 @@ if(pref.getString("LoginWay","").equals("FacebookLogin")){
                         editor.putFloat("ttl_points", Float.parseFloat(resObj.getString("ttl_points")));
                     editor.putString("nativeLanguage", resObj.getString("nativeLanguage"));
                     editor.putString("otherLanguage", resObj.getString("otherLanguage"));
+                    editor.putFloat("frMoney", (float) resObj.getDouble("frMoney"));
                     editor.putInt("roleId",roleId);
                     editor.putInt("status",0);
                     editor.apply();
@@ -171,6 +179,7 @@ if(pref.getString("LoginWay","").equals("FacebookLogin")){
                     editor.putInt("province", resultObj.getInt("province"));
                     editor.putInt("status", 0);
                     editor.putFloat("money", Float.parseFloat(resultObj.getString("money")));
+                    editor.putFloat("frMoney", (float) resultObj.getDouble("frMoney"));
                     editor.putString("email", resultObj.getString("email"));
                     editor.apply();
 

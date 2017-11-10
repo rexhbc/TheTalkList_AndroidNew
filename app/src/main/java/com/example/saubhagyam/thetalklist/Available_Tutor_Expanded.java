@@ -17,6 +17,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.webkit.WebView;
 import android.widget.*;
 
 import com.android.volley.Request;
@@ -101,8 +102,9 @@ public class Available_Tutor_Expanded extends Fragment {
 
     View view1;
 
-    TextView TutorExpanded_tutorin_languages;
+//    TextView TutorExpanded_tutorin_languages;
 
+    WebView TutorExpanded_tutorin_languages_webview;
     int roleId, roleIdUser;
     String pic, hRate, avgRate;
 
@@ -195,12 +197,14 @@ ImageView expanded_fullscreen;
             TutorExpanded_review_ratingBar1.setRating(0f);
         } else {
             Float rate = Float.parseFloat(avgRate);
+//            Toast.makeText(getContext(), "rate "+rate, Toast.LENGTH_SHORT).show();
             ratingBar.setRating(rate);
             TutorExpanded_review_ratingBar1.setRating(rate);
         }
 
-        TutorExpanded_tutorin_languages = (TextView) convertView.findViewById(R.id.TutorExpanded_tutorin_languages);
-
+//        TutorExpanded_tutorin_languages = (TextView) convertView.findViewById(R.id.TutorExpanded_tutorin_languages);
+        TutorExpanded_tutorin_languages_webview = (WebView) convertView.findViewById(R.id.TutorExpanded_tutorin_languages_webview);
+        TutorExpanded_tutorin_languages_webview.setHorizontalScrollbarOverlay(false);
 
         buttonTogglepro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -427,7 +431,7 @@ ImageView expanded_fullscreen;
                         if (res.getInt("status")==0){
                             JSONArray reviewAry=res.getJSONArray("review");
 
-                            ((TextView)convertView.findViewById(R.id.TutorExpanded_review_count)).setText((String.valueOf(reviewAry.length())));
+                            ((TextView)convertView.findViewById(R.id.TutorExpanded_review_count)).setText((String.valueOf(res.getInt("total_session"))));
 
                             for (int i=0;i<reviewAry.length();i++)
                             {
@@ -791,10 +795,12 @@ ImageView expanded_fullscreen;
                             expandableTextViewedu.setText(obj.getString("academic"));
                             expandableTextViewpro.setText(obj.getString("professional"));
 
+                            final String htmlText = " %s ";
 
 
                             if (obj.getString("tutoring_subjects").equalsIgnoreCase("")) {
-                                TutorExpanded_tutorin_languages.setText("No subjects Here");
+                                TutorExpanded_tutorin_languages_webview.setVisibility(View.VISIBLE);
+                                TutorExpanded_tutorin_languages_webview.loadData(String.format(htmlText, ""), "text/html", "utf-8");
                                 convertView.findViewById(R.id.TutorExpanded_tutorin_languages_progress).setVisibility(View.GONE);
                             } else {
 
@@ -807,11 +813,16 @@ ImageView expanded_fullscreen;
                                     if (sub.equals("")){
                                         sub=ar.getString(i);
                                     }else {
-                                        sub=sub+","+ar.getString(i);
+                                        sub=sub+", "+ar.getString(i);
                                     }
                                 }
 //                                TutorExpanded_tutorin_languages.setText(sub);
-                                TutorExpanded_tutorin_languages.setText(Html.fromHtml(sub));
+                                TutorExpanded_tutorin_languages_webview.setVisibility(View.VISIBLE);
+                                TutorExpanded_tutorin_languages_webview.loadData(String.format(htmlText, "<html>\n" +
+                                        "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
+                                        "\t "+sub+"\n" +
+                                        "\t </body>\n" +
+                                        "</Html>"), "text/html", "utf-8");
                                 convertView.findViewById(R.id.TutorExpanded_tutorin_languages_progress).setVisibility(View.GONE);
 
                             }
