@@ -11,43 +11,69 @@
     <LinearLayout
         android:id="@+id/chat_user_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="5dp"
         android:textAlignment="viewEnd"
         android:visibility="visible">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="40dp"
+            android:minWidth="150dp"
+            android:baselineAligned="true"
+            android:layout_gravity="end"
+            android:orientation="vertical">
 
             <com.rockerhieu.emojicon.EmojiconTextView
                 android:id="@+id/chat_user_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="6"
-                android:padding="8dp"
                 android:background="@drawable/chat_rounded_cornorx"
+                android:padding="8dp"
                 android:text="hi i am user."
+                android:layout_gravity="end"
                 android:textColor="#000" />
+            <TextView
+                android:id="@+id/receiver_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:text="10:00 pm"
+                android:textSize="10dp" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="-10dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-             />
-        <!--android:src="@drawable/arrow_bg1"-->
-        <ImageView
-            android:id="@+id/chat_user_img"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/chat_user_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                 />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:visibility="gone"
+                android:layout_marginStart="-10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1" />
+            <!--android:src="@drawable/arrow_bg1"-->
+        </LinearLayout>
+
 
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/chat_sender_layout"

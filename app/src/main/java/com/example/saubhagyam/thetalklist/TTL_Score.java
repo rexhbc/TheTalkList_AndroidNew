@@ -140,7 +140,7 @@ public class TTL_Score extends Fragment {
         ttl_score_needed = (TextView) view.findViewById(R.id.ttl_score_needed);
 
 
-        setFragment(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f));
+        setFragment((int)getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f));
       /*  if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f) < 200) {
             ttl_score_count.setText(String.valueOf(200.0f - getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f)));
             mHoloCircularProgressBar.setProgress((float) 1-(200.0f - getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f))/200);
@@ -186,7 +186,7 @@ public class TTL_Score extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (Float.parseFloat(main_credit.getText().toString())>200.0f) {
+                if (Float.parseFloat(main_credit.getText().toString())>=200.0f) {
 
                     String Url = "https://www.thetalklist.com/api/ttl_points_rewards_travel?uid=" + pref.getInt("id", 0)
                             + "&name=" + pref.getString("usernm", "").replace(" ", "%20") + "&redemption=Prize&ttl_points=" + pref.getFloat("money", 0.0f);
@@ -222,7 +222,7 @@ public class TTL_Score extends Fragment {
                                             redeem_free_session.setBackgroundColor(Color.parseColor("#9E9E9E"));
                                         }
                                     }
-                                    setFragment((float) obj.getDouble("total_points"));
+                                    setFragment((int) obj.getDouble("total_points"));
 //                                main_credit.setText("text");
                                 }
 
@@ -247,7 +247,7 @@ public class TTL_Score extends Fragment {
         redeem_free_session.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Float.parseFloat(main_credit.getText().toString())>200.00f) {
+                if (Float.parseFloat(main_credit.getText().toString())>=200.00f) {
                     String Url = "https://www.thetalklist.com/api/ttl_points_rewards_credit?uid=" + pref.getInt("id", 0)
                             + "&name=" + pref.getString("usernm", "").replace(" ", "%20") + "&redemption=Prize&ttl_points=" + pref.getFloat("money", 0.0f);
                     StringRequest sr = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
@@ -289,7 +289,7 @@ public class TTL_Score extends Fragment {
                                         }
 //                                main_credit.setText("text");
                                     }
-                                    setFragment((float) obj.getDouble("total_points"));
+                                    setFragment((int) obj.getDouble("total_points"));
                                 }
 
 
@@ -375,10 +375,10 @@ public class TTL_Score extends Fragment {
 
 
 
-   public void setFragment(float points){
+   public void setFragment(int points){
        if (points < 200) {
-           ttl_score_count.setText(String.valueOf(200.0f - points));
-           mHoloCircularProgressBar.setProgress((float) 1-(200.0f - getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f))/200);
+           ttl_score_count.setText(String.valueOf(200 - points));
+           mHoloCircularProgressBar.setProgress((float) 1-(200 - (int)getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f))/200);
            redeem_travel.setClickable(false);
            redeem_free_session.setClickable(false);
 
@@ -422,7 +422,7 @@ public class TTL_Score extends Fragment {
            redeem_free_session.setBackgroundColor(Color.parseColor("#9E9E9E"));
            mHoloCircularProgressBar.setProgress((float) 1-(200.0f - points)/200);
 
-           if (points<0.0f){
+           if (points<0){
                mHoloCircularProgressBar.setProgress(0f);
 //               ttl_score_count.setText("0.00");
 //               main_credit.setText("0.00");

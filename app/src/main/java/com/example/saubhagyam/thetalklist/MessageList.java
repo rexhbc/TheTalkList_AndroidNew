@@ -1,5 +1,7 @@
 package com.example.saubhagyam.thetalklist;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
@@ -105,6 +107,10 @@ public class MessageList extends Fragment {
             Volley.newRequestQueue(getApplicationContext()).add(sr);
         }
 
+        final Dialog dialog=new Dialog(getContext());
+        dialog.setContentView(R.layout.threedotprogressbar);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         String URL = "https://www.thetalklist.com/api/chatroom_list?sender_id="+getContext().getSharedPreferences("loginStatus",Context.MODE_PRIVATE).getInt("id",0);;
         Log.e("chatroom list url",URL);
         queue = Volley.newRequestQueue(getContext());
@@ -190,6 +196,8 @@ public class MessageList extends Fragment {
                                         }
                                     })
                             );*/
+
+                           dialog.dismiss();
                         }
 
                     }

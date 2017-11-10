@@ -139,14 +139,14 @@ public class VideoList extends Fragment {
                 InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 searchView.clearFocus();
-                 dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.threedotprogressbar);
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.show();
+
 
                 String newQuery=query.replace(" ","%20");
                 final String URL = "https://www.thetalklist.com/api/videosearch?keyword="+newQuery;
-
+                dialog=new Dialog(getContext());
+                dialog.setContentView(R.layout.threedotprogressbar);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
                 JsonObjectRequest getRequest = new JsonObjectRequest(com.android.volley.Request.Method.POST, URL, null, new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -249,6 +249,15 @@ public class VideoList extends Fragment {
     RequestQueue queue1;
 
     public class VideoPlayService extends AsyncTask<Void, Void, Void> {
+        Dialog dialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog=new Dialog(getContext());
+            dialog.setContentView(R.layout.threedotprogressbar);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -283,6 +292,12 @@ setRecycler(jsonArray);
             getRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue1.add(getRequest);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            dialog.dismiss();
         }
     }
 

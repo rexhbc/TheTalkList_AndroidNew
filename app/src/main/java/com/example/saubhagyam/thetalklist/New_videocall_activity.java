@@ -1,24 +1,19 @@
 package com.example.saubhagyam.thetalklist;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
-import android.net.Uri;
-import android.opengl.GLSurfaceView;
 import android.os.Handler;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -41,11 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.saubhagyam.thetalklist.OpenTokConfig;
-import com.example.saubhagyam.thetalklist.R;
 import com.example.saubhagyam.thetalklist.Services.LoginService;
-import com.example.saubhagyam.thetalklist.WebServiceCoordinator;
-import com.example.saubhagyam.thetalklist.util.NotificationUtils;
 import com.opentok.android.Connection;
 import com.opentok.android.Session;
 import com.opentok.android.Stream;
@@ -91,7 +82,7 @@ public class New_videocall_activity extends AppCompatActivity
 
     BroadcastReceiver callEndReceiver;
 
-    NotificationManager mNotificationManager;
+    ImageView msg_during_call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +105,18 @@ public class New_videocall_activity extends AppCompatActivity
             }
         };
         registerReceiver(callEndReceiver,new IntentFilter("callEnd"));
+
+       /* msg_during_call= (ImageView) findViewById(R.id.msg_during_call);
+        msg_during_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog fbDialogue = new Dialog(getApplicationContext(), android.R.style.Theme_Black_NoTitleBar);
+//                fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
+                fbDialogue.setContentView(R.layout.message_one_to_one);
+                fbDialogue.setCancelable(true);
+                fbDialogue.show();
+            }
+        });*/
     }
 
      /* Activity lifecycle methods */
@@ -689,6 +692,11 @@ finish();
             videoCallRootLayout.setVisibility(View.VISIBLE);
 
 
+            SharedPreferences Sessionpref=getSharedPreferences("sessionPref",MODE_PRIVATE);
+            SharedPreferences.Editor editor=Sessionpref.edit();
+
+            editor.putString("sessionId",mSession.getSessionId()).apply();
+
             String Url = "https://www.thetalklist.com/api/veesession_connect?cid=" + preferences.getInt("classId", 0);
             connectionApiCall(Url);
 
@@ -784,10 +792,19 @@ finish();
 
         Log.d(LOG_TAG, "onStreamDestroyed: Publisher Stream Destroyed. Own stream " + stream.getStreamId());
         if (!i.getStringExtra("from").equals("callActivity")){
-            callEnd.performClick();
+//            callEnd.performClick();
+
+
 startActivity(new Intent(getApplicationContext(),SettingFlyout.class));
         }
+
 //        Toast.makeText(getApplicationContext(), "call dropped", Toast.LENGTH_SHORT).show();
+        SharedPreferences totalCostPref=getSharedPreferences("totalCostPref",MODE_PRIVATE);
+        SharedPreferences.Editor totaEditor=totalCostPref.edit();
+
+        totaEditor.putString("disconnect","https://www.thetalklist.com/api/veesession_disconnect?cid="+ preferences.getInt("classId", 0));
+        totaEditor.putString("totalcost","https://www.thetalklist.com/api/total_cost?cid=" + preferences.getInt("classId", 0) + "&amount=" + getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f) + "&time=" + TimeCount).apply();
+
     }
 
     @Override

@@ -68,11 +68,21 @@ public class StudentFeedBack extends AppCompatActivity {
                 
                 if (student_feedback_ratingBar.getRating()!=0.0f) {
 
-                    final String URL = "https://www.thetalklist.com/api/student_feedback_form?cid=" + preferences.getInt("classId", 0) + "&sid=" + preferences.getInt("studentId", 0) + "&tid=" + preferences.getInt("tutorId", 0) + "&user_given_rating=" + student_feedback_ratingBar.getRating() + "&report_inappropriate=" + bit + "&feedback_msg=" + student_feedback_msg.getText().toString().replace(" ", "%20");
+                    SharedPreferences Sessionpref=getSharedPreferences("sessionPref",MODE_PRIVATE);
+                    final SharedPreferences.Editor editor=Sessionpref.edit();
+
+
+
+                    final String URL = "https://www.thetalklist.com/api/student_feedback_form?cid=" + preferences.getInt("classId", 0) + "&sid=" +
+                            preferences.getInt("studentId", 0) + "&tid=" + preferences.getInt("tutorId", 0) + "&user_given_rating=" +
+                            student_feedback_ratingBar.getRating() + "&report_inappropriate=" + bit +
+                            "&feedback_msg=" + student_feedback_msg.getText().toString().replace(" ", "%20")+"d&session_id="+Sessionpref.getString("sessionId","");
                     StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
 
+
+                            editor.clear().apply();
                             Log.e("feedback url", URL);
                             Log.e("feedback resp", response);
                             Intent i = new Intent(getApplicationContext(), new SettingFlyout().getClass());

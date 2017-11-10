@@ -65,6 +65,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import rx.Observable;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -112,6 +114,10 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
         Log.e("Message list url", URL);
 
         messageModelList.clear();
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.threedotprogressbar);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -122,6 +128,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getInt("status") == 0) {
+                        dialog.dismiss();
                         JSONArray msgAry = jsonObject.getJSONArray("messages");
                         String pic = jsonObject.getString("tutor_pic");
                         if (msgAry.length() == 0) {
@@ -140,7 +147,43 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                            recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
                             recyclerView.removeAllViews();
-                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, pic);
+//                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, pic);
+                            Log.e("locale android ", new TTL().getUserCountry(getContext()));
+
+
+                            try {
+                                JSONArray timeZoneObj=new JSONArray(new TTL().json);
+
+                                for (int i=0;i<timeZoneObj.length();i++){
+                                    JSONObject obj=timeZoneObj.getJSONObject(i);
+                                    if (obj.getString("IsoAlpha2").equalsIgnoreCase( new TTL().getUserCountry(getContext()).toUpperCase())){
+                                        JSONArray winAry=obj.getJSONArray("WindowsTimeZones");
+                                        JSONObject o=winAry.getJSONObject(0);
+                                        String name=o.getString("Name");
+
+                                        String userName = name.substring(name.lastIndexOf("(") + 1, name.lastIndexOf(")"));
+                                        String time=userName.replace("UTC","");
+                                        Log.e("time diff ",time);
+
+
+                                        if (time.contains("+"))
+                                            op="plus";
+                                        else op="minus";
+                                        time= (String) time.subSequence(1,time.length());
+                                        String[] splitStr=time.split(":");
+
+                                        Log.e("operator",op);
+                                        Log.e("hour",splitStr[0]);
+                                        Log.e("min",splitStr[1]);
+
+                                        messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, pic,op,splitStr[1],splitStr[0]);
+                                    }
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             recyclerView.setAdapter(messageRecyclarAdapter);
                             messageRecyclarAdapter.notifyDataSetChanged();
                         }
@@ -305,7 +348,43 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                                         recyclerView.setLayoutManager(mLayoutManager);
                                         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                                        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
-                                        messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
+//                                        messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
+                                        Log.e("locale android ", new TTL().getUserCountry(getContext()));
+
+
+                                        try {
+                                            JSONArray timeZoneObj=new JSONArray(new TTL().json);
+
+                                            for (int i=0;i<timeZoneObj.length();i++){
+                                                JSONObject obj=timeZoneObj.getJSONObject(i);
+                                                if (obj.getString("IsoAlpha2").equalsIgnoreCase( new TTL().getUserCountry(getContext()).toUpperCase())){
+                                                    JSONArray winAry=obj.getJSONArray("WindowsTimeZones");
+                                                    JSONObject o=winAry.getJSONObject(0);
+                                                    String name=o.getString("Name");
+
+                                                    String userName = name.substring(name.lastIndexOf("(") + 1, name.lastIndexOf(")"));
+                                                    String time=userName.replace("UTC","");
+                                                    Log.e("time diff ",time);
+
+
+                                                    if (time.contains("+"))
+                                                        op="plus";
+                                                    else op="minus";
+                                                    time= (String) time.subSequence(1,time.length());
+                                                    String[] splitStr=time.split(":");
+
+                                                    Log.e("operator",op);
+                                                    Log.e("hour",splitStr[0]);
+                                                    Log.e("min",splitStr[1]);
+
+                                                    messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"),op,splitStr[1],splitStr[0]);
+                                                }
+                                            }
+
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                         recyclerView.setAdapter(messageRecyclarAdapter);
                                         messageRecyclarAdapter.notifyDataSetChanged();
                                     }
@@ -371,10 +450,8 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
         super.onResume();
 
 
-        final Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.threedotprogressbar);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+
+//        RefreshFragment();
         String URL = "https://www.thetalklist.com/api/all_messages?sender_id=" + sender_id + "&receiver_id=" + receiver_id;
         Log.e("Message list url", URL);
 
@@ -391,7 +468,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                         JSONArray msgAry = jsonObject.getJSONArray("messages");
                         String pic = jsonObject.getString("tutor_pic");
                         if (msgAry.length() == 0) {
-                            dialog.dismiss();
+//                            dialog.dismiss();
                         } else {
                             for (int i = 0; i < msgAry.length(); i++) {
                                 JSONObject msgObj = msgAry.getJSONObject(i);
@@ -406,10 +483,46 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                             recyclerView.setLayoutManager(mLayoutManager);
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                            recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
-                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
+//                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
+                            Log.e("locale android ", new TTL().getUserCountry(getContext()));
+
+
+                            try {
+                                JSONArray timeZoneObj=new JSONArray(new TTL().json);
+
+                                for (int i=0;i<timeZoneObj.length();i++){
+                                    JSONObject obj=timeZoneObj.getJSONObject(i);
+                                    if (obj.getString("IsoAlpha2").equalsIgnoreCase( new TTL().getUserCountry(getContext()).toUpperCase())){
+                                        JSONArray winAry=obj.getJSONArray("WindowsTimeZones");
+                                        JSONObject o=winAry.getJSONObject(0);
+                                        String name=o.getString("Name");
+
+                                        String userName = name.substring(name.lastIndexOf("(") + 1, name.lastIndexOf(")"));
+                                        String time=userName.replace("UTC","");
+                                        Log.e("time diff ",time);
+
+
+                                        if (time.contains("+"))
+                                            op="plus";
+                                        else op="minus";
+                                        time= (String) time.subSequence(1,time.length());
+                                        String[] splitStr=time.split(":");
+
+                                        Log.e("operator",op);
+                                        Log.e("hour",splitStr[0]);
+                                        Log.e("min",splitStr[1]);
+
+                                        messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"),op,splitStr[1],splitStr[0]);
+                                    }
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             recyclerView.setAdapter(messageRecyclarAdapter);
                             messageRecyclarAdapter.notifyDataSetChanged();
-                            dialog.dismiss();
+//                            dialog.dismiss();
                         }
                     }
                 } catch (JSONException e) {
@@ -488,6 +601,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
         });
 
     }
+    String op;
 
     @Override
     public void onPause() {
@@ -510,66 +624,118 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
             @Override
             public void onResponse(String response) {
 
+
+
+
                 Log.e("message send response", response);
 
+                try {
+                    JSONObject jsonObject=new JSONObject(response);
+                    if (jsonObject.getInt("status")==0){
+//                        RefreshFragment();
 
-                String URL = "https://www.thetalklist.com/api/all_messages?sender_id=" + sender_id + "&receiver_id=" + receiver_id;
-                Log.e("Message list url", URL);
+                        String URL = "https://www.thetalklist.com/api/all_messages?sender_id=" + sender_id + "&receiver_id=" + receiver_id;
+                        Log.e("Message list url", URL);
 
-                messageModelList.clear();
-                StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                        messageModelList.clear();
+                        StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
 
-                        Log.e("message response", response);
+                                Log.e("message response", response);
 
 
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.getInt("status") == 0) {
-                                JSONArray msgAry = jsonObject.getJSONArray("messages");
-                                String pic = jsonObject.getString("tutor_pic");
-                                if (msgAry.length() == 0) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    if (jsonObject.getInt("status") == 0) {
+                                        JSONArray msgAry = jsonObject.getJSONArray("messages");
+                                        String pic = jsonObject.getString("tutor_pic");
+                                        if (msgAry.length() == 0) {
 
-                                } else {
-                                    for (int i = 0; i < msgAry.length(); i++) {
-                                        JSONObject msgObj = msgAry.getJSONObject(i);
-                                        MessageModel messageModel = new MessageModel();
-                                        messageModel.setMsg_id(msgObj.getInt("id"));
-                                        messageModel.setMsg_text(msgObj.getString("message"));
-                                        messageModel.setSender_id(msgObj.getInt("user_id"));
-                                        messageModel.setSender_name(msgObj.getString("user_name"));
-                                        messageModelList.add(0, messageModel);
-                                    }
-                                    recyclerView.setLayoutManager(mLayoutManager);
-                                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                        } else {
+                                            for (int i = 0; i < msgAry.length(); i++) {
+                                                JSONObject msgObj = msgAry.getJSONObject(i);
+                                                MessageModel messageModel = new MessageModel();
+                                                messageModel.setMsg_id(msgObj.getInt("id"));
+                                                messageModel.setMsg_text(msgObj.getString("message"));
+                                                messageModel.setSender_id(msgObj.getInt("user_id"));
+                                                messageModel.setSender_name(msgObj.getString("user_name"));
+                                                messageModel.setTime(msgObj.getString("time"));
+                                                messageModelList.add(0, messageModel);
+                                            }
+                                            recyclerView.setLayoutManager(mLayoutManager);
+                                            recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                                    recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
-                                    recyclerView.removeAllViews();
-                                    messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, pic);
-                                    recyclerView.setAdapter(messageRecyclarAdapter);
-                                    messageRecyclarAdapter.notifyDataSetChanged();
+                                            recyclerView.removeAllViews();
+
+                                            Log.e("locale android ", new TTL().getUserCountry(getContext()));
+
+
+                                            try {
+                                                JSONArray timeZoneObj=new JSONArray(new TTL().json);
+
+                                                for (int i=0;i<timeZoneObj.length();i++){
+                                                    JSONObject obj=timeZoneObj.getJSONObject(i);
+                                                    if (obj.getString("IsoAlpha2").equalsIgnoreCase( new TTL().getUserCountry(getContext()).toUpperCase())){
+                                                        JSONArray winAry=obj.getJSONArray("WindowsTimeZones");
+                                                        JSONObject o=winAry.getJSONObject(0);
+                                                        String name=o.getString("Name");
+
+                                                        String userName = name.substring(name.lastIndexOf("(") + 1, name.lastIndexOf(")"));
+                                                        String time=userName.replace("UTC","");
+                                                        Log.e("time diff ",time);
+
+
+                                                        if (time.contains("+"))
+                                                            op="plus";
+                                                        else op="minus";
+                                                        time= (String) time.subSequence(1,time.length());
+                                                        String[] splitStr=time.split(":");
+
+                                                        Log.e("operator",op);
+                                                        Log.e("hour",splitStr[0]);
+                                                        Log.e("min",splitStr[1]);
+
+                                                        messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, pic,op,splitStr[1],splitStr[0]);
+                                                    }
+                                                }
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            recyclerView.setAdapter(messageRecyclarAdapter);
+                                            messageRecyclarAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
+
+
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getContext(), "error "+error.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        queue.add(sr);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Subject not getting", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                queue.add(sr);
+
 
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Subject not getting", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "error t "+error, Toast.LENGTH_SHORT).show();
             }
         });
         queue1.add(sr);
