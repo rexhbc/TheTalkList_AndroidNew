@@ -84,7 +84,7 @@ import static com.example.saubhagyam.thetalklist.R.array.sub;
 public class Biography extends Fragment {
 
     ImageView biography_btn, video_btn, ratings_btn, biography_subject_btn, TutorImgBiography,videoPlay_VideoCallBtn;
-    LinearLayout biography_11, video_11, ratings_11,  biography_subject_11;
+    LinearLayout biography_11, video_11, ratings_11,  biography_subject_11, myBioLinearLayout;
     TextView biographyFirstName;
     Button biography_rate_edit;
 //    TextView biography_languages;
@@ -574,6 +574,7 @@ else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
         final int entry = 10;
 
         biography_11 = (LinearLayout) view.findViewById(R.id.biography_11);
+        myBioLinearLayout = (LinearLayout) view.findViewById(R.id.myBioLinearLayout);
         video_11 = (LinearLayout) view.findViewById(R.id.video_11);
         ratings_11 = (LinearLayout) view.findViewById(R.id.ratings_11);
         biography_subject_11 = (LinearLayout) view.findViewById(R.id.biography_subject_11);
@@ -587,7 +588,7 @@ else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
 
         final int height = biography_biographyfrag_layout.getHeight();
 
-        biography_11.setOnClickListener(new View.OnClickListener()
+        myBioLinearLayout.setOnClickListener(new View.OnClickListener()
 
         {
             @Override

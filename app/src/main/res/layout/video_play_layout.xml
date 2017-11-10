@@ -37,19 +37,19 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/exo_player_view"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="250dp" />
 
         <ImageView
             android:id="@+id/expanded_fullscreen"
-            android:layout_alignParentRight="true"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignParentRight="true"
             android:src="@mipmap/ic_full_screen"
-            android:textAlignment="viewEnd"
-            />
+            android:textAlignment="viewEnd" />
     </RelativeLayout>
 
     <LinearLayout
