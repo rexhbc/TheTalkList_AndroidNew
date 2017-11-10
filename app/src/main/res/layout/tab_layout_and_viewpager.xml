@@ -15,7 +15,7 @@
         app:tabBackground="@drawable/tab_color_selector"
         app:tabGravity="fill"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="#ffffff"
+        app:tabSelectedTextColor="#424242"
         app:tabTextAppearance="@style/tabAppearance" />
 
     <android.support.v4.view.ViewPager

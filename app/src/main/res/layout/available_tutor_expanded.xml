@@ -516,21 +516,19 @@
                                     </LinearLayout>
 
                                     <RelativeLayout
-                                        android:gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent">
                                         <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
                                             android:orientation="horizontal"
+                                            android:gravity="center"
                                             android:weightSum="4">
 
                                             <me.grantland.widget.AutofitTextView
 
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:layout_marginRight="5dp"
                                                 android:text="Ratings"
 
                                                 android:textColor="#616A6B"
@@ -538,8 +536,9 @@
 
 
                                             <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
+                                                android:layout_marginTop="3dp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
                                                 android:layout_gravity="center"
                                                 android:layout_weight="3.5"
                                                 android:gravity="center">
@@ -548,25 +547,23 @@
                                                 <!--<TextView-->
                                                 <me.grantland.widget.AutofitTextView
                                                     android:id="@+id/autofitTextView"
-                                                    android:layout_width="match_parent"
+                                                    android:layout_width="wrap_content"
                                                     android:layout_height="match_parent"
                                                     android:layout_gravity="center"
-                                                    android:layout_weight="1"
                                                     android:gravity="center"
                                                     android:text="Sessions: "
                                                     android:textAlignment="viewEnd"
                                                     android:textColor="#616A6B"
-                                                    android:textSize="10sp" />
+                                                    android:textSize="13sp" />
 
                                                 <me.grantland.widget.AutofitTextView
                                                     android:id="@+id/TutorExpanded_review_count"
-                                                    android:layout_width="match_parent"
+                                                    android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:layout_weight="1"
                                                     android:text="10"
                                                     android:textAlignment="viewStart"
                                                     android:textColor="#616A6B"
-                                                    android:textSize="10sp" />
+                                                    android:textSize="13sp" />
 
                                             </LinearLayout>
 
@@ -581,32 +578,34 @@
                                                 android:src="@drawable/minus"
                                                 android:visibility="gone" />
 
-                                        </LinearLayout>
-                                        <LinearLayout
-                                            android:layout_marginTop="3dp"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:layout_alignParentRight="true"
-                                            android:gravity="center">
 
-
-                                            <RatingBar
-                                                android:id="@+id/TutorExpanded_review_ratingBar1"
-                                                style="?android:attr/ratingBarStyleSmall"
+                                            <LinearLayout
+                                                android:layout_marginTop="2dp"
                                                 android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_margin="5dp"
-                                                android:clickable="false"
-                                                android:focusable="false"
-                                                android:layout_marginTop="3dp"
-                                                android:layout_gravity="center"
-                                                android:focusableInTouchMode="false"
-                                                android:isIndicator="true"
-                                                android:maxHeight="20dp"
-                                                android:minHeight="5dp"
-                                                android:numStars="5"
-                                                android:progressTint="@color/yellow" />
+                                                android:layout_height="25dp"
+                                                android:layout_alignParentRight="true"
+                                                android:gravity="center">
+
+
+                                                <RatingBar
+                                                    android:id="@+id/TutorExpanded_review_ratingBar1"
+                                                    style="?android:attr/ratingBarStyleSmall"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_margin="5dp"
+                                                    android:clickable="false"
+                                                    android:focusable="false"
+                                                    android:layout_marginTop="3dp"
+                                                    android:layout_gravity="center"
+                                                    android:focusableInTouchMode="false"
+                                                    android:isIndicator="true"
+                                                    android:maxHeight="20dp"
+                                                    android:minHeight="5dp"
+                                                    android:numStars="5"
+                                                    android:progressTint="@color/yellow" />
+                                            </LinearLayout>
                                         </LinearLayout>
+
                                     </RelativeLayout>
 
 
