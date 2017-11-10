@@ -431,6 +431,7 @@ public class Available_tutor extends Fragment {
         available_tutor_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentStack.getInstance().push(new Available_tutor());
                 fragmentTransaction.replace(R.id.viewpager, new DesiredTutor()).commit();
                 edi.clear().apply();
             }

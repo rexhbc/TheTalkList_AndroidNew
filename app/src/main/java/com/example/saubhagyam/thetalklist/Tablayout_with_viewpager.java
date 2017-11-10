@@ -96,7 +96,7 @@ public class Tablayout_with_viewpager extends android.support.v4.app.Fragment {
         tabBackStack.setClassName("class Tablayout_with_viewpager");
 
 
-        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#4DB806"));
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#BDBDBD"));
         tabLayout.getTabAt(tabBackStack.getTabPosition()).select();
 
     }

@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -98,13 +99,18 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
+import org.apache.http.util.ByteArrayBuffer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -633,107 +639,22 @@ public class Video_Play extends Fragment {
         videoPlay_fbBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getContext(), "fbshare onclick", Toast.LENGTH_SHORT).show();
-
-                getImage();
-/*
-                    final ShareLinkContent content = new ShareLinkContent.Builder()
-                            .setContentUrl(Uri.parse(source))
-    //                            .setImageUrl(Uri.parse("https://upload.wikimedia.org/wikipedia/commons/5/57/LA_Skyline_Mountains2.jpg"))
-                            .setImageUrl(Uri.parse(imageUrl))
-                                    .setContentTitle( name)
-                            .setContentDescription(desc)
-                            .setQuote(name + "\n" + desc)
-                            .build();*/
 
 
-              /*  ShareOpenGraphObject object = new ShareOpenGraphObject.Builder()
-                        .putString("og:type", "books.book")
-                        .putString("og:title", name)
-                        .putString("og:description", desc)
+               /* ShareLinkContent content = new ShareLinkContent.Builder()
+                        .setContentTitle(name)
+                        .setImageUrl(Uri.parse(imageUrl))
+                                        .setContentDescription(desc)
+                                                        .setContentUrl(Uri.parse(source))
+                                                                        .build();*/
+//                        ShareDialog.show(getActivity(), content);
+
+
+                ShareLinkContent content = new ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse("https://www.thetalklist.com/en/search/videosearch/?v="+id))
+                        .setImageUrl(Uri.parse(source+".jpg"))
                         .build();
-
-                ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
-                        .setActionType("books.reads")
-                        .putObject("book", object)
-                        .putPhoto("image",new SharePhoto())
-
-                        .build();
-
-                ShareOpenGraphContent content = new ShareOpenGraphContent.Builder()
-                        .setPreviewPropertyName("book")
-                        .setAction(action)
-                        .build();*/
-
-
-
-              /*  ShareOpenGraphObject object = null;
-                try {
-                    object = new ShareOpenGraphObject.Builder()
-                            .putString("og:type", "video.other")
-                            .putString("og:title", name)
-                            .putString("og:description", desc)
-                            .putString("og:image:alt",  name)
-                            .putString("fb:app_id", getResources().getString(R.string.facebook_app_id))
-                            .putString("org:image","https://www.thetalklist.com/uploads/image/" + jsonObject.getString("source")+".JPG" )
-                            .build();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
-                        .setActionType("video.other")
-                        .putObject("og:video", object)
-                        .build();
-                ShareOpenGraphContent content = new ShareOpenGraphContent.Builder()
-                        .setPreviewPropertyName("video.other")
-                        .setAction(action)
-                        .setContentUrl(Uri.parse(source))
-                        .build();*/
-
-
-
-               /* try {
-                    Bundle params = new Bundle();
-                    params.putString("name", name);
-                    params.putString("caption", name);
-                    params.putString("description", desc);
-                    params.putString("source",source);
-                    params.putString("image","https://www.thetalklist.com/uploads/image/" + jsonObject.getString("source")+".JPG");
-                    new GraphRequest(
-                            AccessToken.getCurrentAccessToken(),
-                            "/"+name.replace(" ",""),
-                            params,
-                            HttpMethod.POST,
-                            new GraphRequest.Callback() {
-                                public void onCompleted(GraphResponse response) {
-                                    Toast.makeText(getContext(), "response "+response.toString(), Toast.LENGTH_SHORT).show();
-                                    Log.e("response fbgraph",response.toString());
-            *//* handle the result *//*
-                                }
-                            }
-                    ).executeAsync();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
-
-
-
-            /*    ContentValues content = new ContentValues(4);
-                content.put(MediaStore.Video.VideoColumns.DATE_ADDED,
-                        System.currentTimeMillis() / 1000);
-                content.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
-                content.put(MediaStore.Video.Media.DATA, source);
-                ContentResolver resolver = getContext().getContentResolver();
-                Uri uri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, content);
-
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("video*//*");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,name);
-                sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM,uri);
-                startActivity(Intent.createChooser(sharingIntent,"share:"));
-*/
-//                ShareDialog.show(getActivity(), content);
-
+                ShareDialog.show(getActivity(), content);
 
             }
         });
@@ -925,42 +846,6 @@ public class Video_Play extends Fragment {
         super.onPause();
     }
 
-    private void getImage(){
-        new DownloadImgTask().execute(imageUrl);
-    }
-
-    private void postFB(Bitmap bm){
-        SharePhoto photo = new SharePhoto.Builder().setBitmap(bm).build();
-        SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
-        ShareDialog dialog = new ShareDialog(this);
-        if (ShareDialog.canShow(SharePhotoContent.class)){
-            ShareDialog.show(getActivity(), content);
-        }
-        else{
-            Log.d("Activity", "you cannot share photos :(");
-        }
-
-    }
-
-    private class DownloadImgTask extends AsyncTask<String, Void, Bitmap>{
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bm = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bm = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bm;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            postFB(result);
-        }
-    }
 
 
 }

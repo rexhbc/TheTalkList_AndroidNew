@@ -569,6 +569,7 @@ ImageView expanded_fullscreen;
 
 
     private void InitializePLayer(String link) throws android.net.ParseException {
+
         if (player==null){
             TrackSelection.Factory factory=new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
 
@@ -867,6 +868,7 @@ ImageView expanded_fullscreen;
                             String link = obj.getString("vedio");
                             if (!link.equals("")) {
                                 link = "https://www.thetalklist.com/uploads/video/" + link;
+
 
                                 InitializePLayer(link);
 
