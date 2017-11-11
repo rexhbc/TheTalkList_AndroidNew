@@ -358,6 +358,7 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
                                     editor.putFloat("ttl_points", Float.parseFloat(resultObj.getString("ttl_points")));
                                 editor.putInt("status", 0);
                                 editor.putFloat("money", Float.parseFloat(resultObj.getString("money")));
+                                editor.putFloat("frMoney", (float) resultObj.getDouble("frMoney"));
                                 editor.putString("email", resultObj.getString("email"));
                                 editor.apply();
                                 Log.e("result obj", resultObj.toString());
@@ -418,12 +419,21 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
                 queue.add(sr);
             } else if (pref.getString("LoginWay", "").equals("FacebookLogin")) {
 
+           /*     Intent i = new Intent(getApplicationContext(), Login.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);*/
+
                 // Code here when the LoginWay is FacebookLogin
                 SharedPreferences pref = getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
 //                final String url = "https://www.thetalklist.com/api/fblogin?email=" + pref.getString("email", "") + "&facebook_id=" + pref.getInt("facebook_id", 0) + "&firstname=" + pref.getString("first_name", "") + "&lastname=" + pref.getString("last_name", "") + "&gender=" + pref.getString("gender", "") + "&birthdate=" + pref.getString("birthday", "");
+                String url="";
+                if (pref.getInt("gender", 0)==0)
+                    url="https://www.thetalklist.com/api/fblogin?email="+pref.getString("email", "")+"&facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("firstName", "")+"&lastname="+pref.getString("lastName", "")+"&gender=female&birthdate="+"";
+                else
+                    url="https://www.thetalklist.com/api/fblogin?email="+pref.getString("email", "")+"&facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("firstName", "")+"&lastname="+pref.getString("lastName", "")+"&gender=male&birthdate="+"";
 
-                final String url="https://www.thetalklist.com/api/fblogin?facebook_id="+pref.getString("facebook_id", "")+"&firstname="+pref.getString("first_name", "")+"&lastname="+pref.getString("last_name", "") ;
 
+                Log.e("splash fb login url",url);
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -439,7 +449,7 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
                                 editor.putString("LoginWay", "FacebookLogin");
                                 editor.putString("loginResponse", response);
                                 editor.putString("email", resObj.getString("username"));
-                                editor.putInt("facebook_id", resObj.getInt("facebook_id"));
+                                editor.putString("facebook_id", resObj.getString("facebook_id"));
                                 editor.putInt("id", resObj.getInt("id"));
                                 editor.putInt("gender", resObj.getInt("gender"));
                                 editor.putInt("country", resObj.getInt("country"));
@@ -458,6 +468,7 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
                                     editor.putFloat("ttl_points", Float.parseFloat(resObj.getString("ttl_points")));
                                 editor.putString("nativeLanguage", resObj.getString("nativeLanguage"));
                                 editor.putString("otherLanguage", resObj.getString("otherLanguage"));
+                                editor.putFloat("frMoney", (float) resObj.getDouble("frMoney"));
                                 editor.putInt("roleId",roleId);
                                 editor.putInt("status",0);
                                 editor.apply();

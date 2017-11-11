@@ -1,6 +1,7 @@
 package com.example.saubhagyam.thetalklist;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,8 +17,10 @@ import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.ParseException;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -46,15 +50,24 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.saubhagyam.thetalklist.Adapter.VideoListAdapter;
 import com.example.saubhagyam.thetalklist.Decorations.DividerItemDecoration;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.share.ShareApi;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareContent;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.ShareMediaContent;
+import com.facebook.share.model.ShareOpenGraphAction;
+import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.model.ShareOpenGraphObject;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.model.ShareVideo;
 import com.facebook.share.model.ShareVideoContent;
 import com.facebook.share.widget.ShareButton;
@@ -86,10 +99,18 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
+import org.apache.http.util.ByteArrayBuffer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -142,6 +163,8 @@ public class Video_Play extends Fragment {
     boolean playWhenReady = true;
     JSONObject jsonObject;
 
+    String imageUrl;
+
     //exo player over
 
     @Override
@@ -165,6 +188,7 @@ public class Video_Play extends Fragment {
             name = jsonObject.getString("name");
             desc = jsonObject.getString("desc");
             source = "https://www.thetalklist.com/uploads/video/" + jsonObject.getString("source");
+            imageUrl = "https://www.thetalklist.com/uploads/image/" + jsonObject.getString("source")+".jpg";
 //            source = "https://www.thetalklist.com/uploads/video/" + source;
             Log.e("source", source);
             Log.e("play objrct", jsonObject.toString());
@@ -318,6 +342,8 @@ public class Video_Play extends Fragment {
         });
 
 
+
+
         return view;
     }
 
@@ -379,6 +405,32 @@ public class Video_Play extends Fragment {
 
         //        MediaSource mediaSource = buildMediaSource(Uri.parse("https://www.youtube.com/watch?v=NVoEDjvuhNI"));
         player.prepare(mediaSource, true, false);
+
+
+        Volley.newRequestQueue(getApplicationContext()).add(new StringRequest(Request.Method.POST, "https://www.thetalklist.com/api/video_views?uid=" +
+                getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0) + "&vid=" + id, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("view count respo",response);
+                Log.e("view count url","https://www.thetalklist.com/api/video_views?uid=" +
+                        getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0) + "&vid=" + id);
+                try {
+                    JSONObject obj=new JSONObject(response);
+                    if (obj.getInt("status")!=0){
+                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }));
+
+
     }
 
 
@@ -512,6 +564,7 @@ public class Video_Play extends Fragment {
 
 
     VideoListAdapter videoListAdapter;
+    Bitmap image ;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -586,88 +639,22 @@ public class Video_Play extends Fragment {
         videoPlay_fbBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getContext(), "fbshare onclick", Toast.LENGTH_SHORT).show();
 
 
-                final ShareLinkContent content = new ShareLinkContent.Builder()
-                        .setContentUrl(Uri.parse(source))
-                        /*    .setImageUrl(Uri.parse("https://upload.wikimedia.org/wikipedia/commons/5/57/LA_Skyline_Mountains2.jpg"))
-//                        .setImageUrl(Uri.parse(source+".jpg"))
-                                .setContentTitle( name)
-                        .setContentDescription(desc)*/
-                        .setQuote(name + "\n" + desc)
+               /* ShareLinkContent content = new ShareLinkContent.Builder()
+                        .setContentTitle(name)
+                        .setImageUrl(Uri.parse(imageUrl))
+                                        .setContentDescription(desc)
+                                                        .setContentUrl(Uri.parse(source))
+                                                                        .build();*/
+//                        ShareDialog.show(getActivity(), content);
+
+
+                ShareLinkContent content = new ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse("https://www.thetalklist.com/en/search/videosearch/?v="+id))
+                        .setImageUrl(Uri.parse(source+".jpg"))
                         .build();
                 ShareDialog.show(getActivity(), content);
-            /*
-                videoplay_fbshare.setShareContent(content);
-
-                CallbackManager callbackManager = CallbackManager.Factory.create();
-                shareDialog = new ShareDialog(getActivity());
-
-                // this part is optional
-                shareDialog.registerCallback(callbackManager, callback);
-                videoplay_fbshare.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>(){
-                    @Override
-                    public void onSuccess(Sharer.Result result) {
-                        Toast.makeText(getContext(), "res "+result.toString(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                    }
-
-                    @Override
-                    public void onError(FacebookException error) {
-
-                    }
-                });
-*/
-
-
-
-
-/*
-                ContentValues content = new ContentValues(4);
-                content.put(MediaStore.Video.VideoColumns.DATE_ADDED,
-                        System.currentTimeMillis() / 1000);
-                content.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
-                ContentResolver resolver = getContext().getContentResolver();
-                content.put(MediaStore.Video.Media.DATA, source);
-                Uri uri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, content);
-
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("video*//*");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Title");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM,uri);
-                startActivity(Intent.createChooser(sharingIntent,"share:"));*/
-
-
-
-      /*          ShareVideo shareVideo1 = new ShareVideo.Builder()
-                        .setLocalUrl(Uri.parse(source))
-                        .build();
-
-                ShareContent shareContent = new ShareMediaContent.Builder()
-                        .addMedium(shareVideo1)
-                        .build();
-                shareDialog.show(shareContent);*/
-//                ShareApi.share(shareContent,null);
-
-//                shareAppLinkViaFacebook(source);
-//                }
-               /* ShareVideo shareVideo = new ShareVideo.Builder()
-                        .setLocalUrl(Uri.parse(source))
-                        .build();
-
-//                if (ShareDialog.canShow(ShareVideoContent.class)) {
-                    ShareVideoContent shareVideoContent = new ShareVideoContent.Builder()
-                            .setVideo(shareVideo)
-                            .setContentTitle(name)
-                            .setContentDescription(desc)
-                            .build();
-                    ShareDialog.show(getActivity(),shareVideoContent);*/
-//                }
 
             }
         });
@@ -677,51 +664,46 @@ public class Video_Play extends Fragment {
         videoPlay_msgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  MessageList messageList = new MessageList();
-
-                fragmentStack.push(new Video_Play());
-                fragmentStack.add(new Video_Play());
-                fragmentTransaction.replace(R.id.viewpager, messageList).commit();*/
-
-
                 try {
-                    String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" + jsonObject.getInt("uid");
-                    Log.e("url", url);
-                    StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.e("tutor details", response);
+                    if (getContext().getSharedPreferences("loginStatus",Context.MODE_PRIVATE).getInt("id",0)!=jsonObject.getInt("uid")) {
+                        String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" + jsonObject.getInt("uid");
+                        Log.e("url", url);
+                        StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.e("tutor details", response);
 
-                            try {
-                                JSONObject obj = new JSONObject(response);
-                                if (obj.getInt("status") == 0) {
+                                try {
+                                    JSONObject obj = new JSONObject(response);
+                                    if (obj.getInt("status") == 0) {
 
-                                    JSONArray ary = obj.getJSONArray("tutor");
-                                    final JSONObject o = ary.getJSONObject(0);
+                                        JSONArray ary = obj.getJSONArray("tutor");
+                                        final JSONObject o = ary.getJSONObject(0);
 
-                                    tutorName = o.getString("firstName");
-                                    int id=o.getInt("id");
+                                        tutorName = o.getString("firstName");
+                                        int id = o.getInt("id");
 
-                                    MessageOneToOne messageList = new MessageOneToOne();
-                                    chatPrefEditor.putString("firstName", tutorName);
-                                    chatPrefEditor.putInt("receiverId", id).apply();
-                                    TTL ttl = (TTL) getContext().getApplicationContext();
-                                    ttl.ExitBit = 1;
-                                    fragmentStack.push(new Video_Play());
-                                    fragmentTransaction.replace(R.id.viewpager, messageList).commit();
+                                        MessageOneToOne messageList = new MessageOneToOne();
+                                        chatPrefEditor.putString("firstName", tutorName);
+                                        chatPrefEditor.putInt("receiverId", id).apply();
+                                        TTL ttl = (TTL) getContext().getApplicationContext();
+                                        ttl.ExitBit = 1;
+                                        fragmentStack.push(new Video_Play());
+                                        fragmentTransaction.replace(R.id.viewpager, messageList).commit();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                        }
-                    });
-                    Volley.newRequestQueue(getContext()).add(sr);
-
+                            }
+                        });
+                        Volley.newRequestQueue(getContext()).add(sr);
+                    }
+                    else Toast.makeText(getContext(), "You can not chat with yourself.", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -738,199 +720,121 @@ public class Video_Play extends Fragment {
 
 
                 try {
-                    String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" + jsonObject.getInt("uid");
-                    Log.e("url", url);
-                    StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.e("tutor details", response);
-                            try {
-                                JSONObject obj = new JSONObject(response);
-                                if (obj.getInt("status") == 0) {
+                    if (getContext().getSharedPreferences("loginStatus",Context.MODE_PRIVATE).getInt("id",0)!=jsonObject.getInt("uid")) {
+                        String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" + jsonObject.getInt("uid");
+                        Log.e("url", url);
+                        StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.e("tutor details", response);
+                                try {
+                                    JSONObject obj = new JSONObject(response);
+                                    if (obj.getInt("status") == 0) {
 
 
-                                    JSONArray ary = obj.getJSONArray("tutor");
-                                    final JSONObject o = ary.getJSONObject(0);
+                                        JSONArray ary = obj.getJSONArray("tutor");
+                                        final JSONObject o = ary.getJSONObject(0);
 
-                                    tutorName = o.getString("firstName") + " ";
-                                    credit = Float.parseFloat(String.valueOf(o.getDouble("hRate")));
+                                        tutorName = o.getString("firstName") + " ";
+                                        credit = Float.parseFloat(String.valueOf(o.getDouble("hRate")));
 
-                                    View view1 = LayoutInflater.from(getContext()).inflate(R.layout.talknow_confirmation_layout, null);
-                                    final PopupWindow popupWindow = new PopupWindow(view1, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-                                    popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-                                    popupWindow.setFocusable(true);
-                                    popupWindow.setOutsideTouchable(false);
+                                        View view1 = LayoutInflater.from(getContext()).inflate(R.layout.talknow_confirmation_layout, null);
+                                        final PopupWindow popupWindow = new PopupWindow(view1, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+                                        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                                        popupWindow.setFocusable(true);
+                                        popupWindow.setOutsideTouchable(false);
 
-                                    final View view2 = LayoutInflater.from(getContext()).inflate(R.layout.talknow_insufficient_layout, null);
-                                    final PopupWindow popupWindow1 = new PopupWindow(view2, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-
-
-                                    TextView confirmation_tutorCredits = (TextView) view1.findViewById(R.id.confirmation_tutorCredits);
-                                    TextView confirmation_tutorName = (TextView) view1.findViewById(R.id.confirmation_tutorName);
-
-                                    confirmation_tutorName.setText(tutorName);
-                                    confirmation_tutorCredits.setText(new DecimalFormat("##.##").format(credit));
+                                        final View view2 = LayoutInflater.from(getContext()).inflate(R.layout.talknow_insufficient_layout, null);
+                                        final PopupWindow popupWindow1 = new PopupWindow(view2, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
 
 
-                                    Button yesbtn = (Button) view1.findViewById(R.id.yesbtn);
-                                    final Button nobtn = (Button) view1.findViewById(R.id.nobtn);
+                                        TextView confirmation_tutorCredits = (TextView) view1.findViewById(R.id.confirmation_tutorCredits);
+                                        TextView confirmation_tutorName = (TextView) view1.findViewById(R.id.confirmation_tutorName);
 
-                                    yesbtn.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            popupWindow.dismiss();
-                                            if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) <= getContext().getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f)) {
-
-                                                popupWindow1.showAtLocation(view, Gravity.CENTER, 0, 0);
-                                                popupWindow1.setFocusable(true);
-                                                popupWindow1.setOutsideTouchable(false);
+                                        confirmation_tutorName.setText(tutorName);
+                                        confirmation_tutorCredits.setText(new DecimalFormat("##.##").format(credit));
 
 
-                                                Button okbtn = (Button) view2.findViewById(R.id.okbtn);
+                                        Button yesbtn = (Button) view1.findViewById(R.id.yesbtn);
+                                        final Button nobtn = (Button) view1.findViewById(R.id.nobtn);
 
-                                                okbtn.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        popupWindow1.dismiss();
-                                                        TTL ttl = (TTL) getApplicationContext();
-                                                        ttl.ExitBit = 2;
-                                                        startActivity(new Intent(getApplicationContext(), new StripePaymentActivity().getClass()));
+                                        yesbtn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                                popupWindow.dismiss();
+                                                if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) <= getContext().getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f)) {
+
+                                                    popupWindow1.showAtLocation(view, Gravity.CENTER, 0, 0);
+                                                    popupWindow1.setFocusable(true);
+                                                    popupWindow1.setOutsideTouchable(false);
+
+
+                                                    Button okbtn = (Button) view2.findViewById(R.id.okbtn);
+
+                                                    okbtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            popupWindow1.dismiss();
+                                                            TTL ttl = (TTL) getApplicationContext();
+                                                            ttl.ExitBit = 2;
+                                                            startActivity(new Intent(getApplicationContext(), new StripePaymentActivity().getClass()));
+                                                        }
+                                                    });
+                                                } else {
+
+
+                                                    try {
+                                                        editor.putString("tutorName", o.getString("firstName"));
+                                                        editor.putInt("flag", 1);
+                                                        SharedPreferences pref = getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
+                                                        editor.putInt("studentId", pref.getInt("id", 0));
+                                                        editor.putString("tutorName", o.getString("firstName"));
+                                                        editor.putInt("tutorId", Integer.parseInt(o.getString("id")));
+                                                        editor.putFloat("hRate", Float.parseFloat(o.getString("hRate")));
+                                                        editor.putFloat("credit", pref.getFloat("money", 0.0f)).apply();
+                                                        Intent i = new Intent(getContext(), New_videocall_activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        i.putExtra("from", "availabletutor");
+                                                        getContext().startActivity(i);
+                                                        getActivity().onBackPressed();
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
                                                     }
-                                                });
-                                            } else {
 
-
-                                                try {
-                                                    editor.putString("tutorName", o.getString("firstName"));
-                                                    editor.putInt("flag", 1);
-                                                    SharedPreferences pref = getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
-                                                    editor.putInt("studentId", pref.getInt("id", 0));
-                                                    editor.putString("tutorName", o.getString("firstName"));
-                                                    editor.putInt("tutorId", Integer.parseInt(o.getString("id")));
-                                                    editor.putFloat("hRate", Float.parseFloat(o.getString("hRate")));
-                                                    editor.putFloat("credit", pref.getFloat("money", 0.0f)).apply();
-                                                    Intent i = new Intent(getContext(), New_videocall_activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    i.putExtra("from", "availabletutor");
-                                                    getContext().startActivity(i);
-                                                    getActivity().onBackPressed();
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
                                                 }
 
+
                                             }
+                                        });
+                                        nobtn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                TTL ttl = (TTL) getApplicationContext();
+                                                ttl.ExitBit = 2;
+                                                popupWindow.dismiss();
 
-
-                                        }
-                                    });
-                                    nobtn.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            TTL ttl = (TTL) getApplicationContext();
-                                            ttl.ExitBit = 2;
-                                            popupWindow.dismiss();
-
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(getContext(), "This user is not tutor. You can not call a student user.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } else {
+                                        Toast.makeText(getContext(), "This user is not tutor. You can not call a student user.", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
                             }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    });
-                    Volley.newRequestQueue(getContext()).add(sr);
-
+                            }
+                        });
+                        Volley.newRequestQueue(getContext()).add(sr);
+                    }else Toast.makeText(getContext(), "You can not call yourself.", Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
-
-
-
-
-              /*  fragmentStack.push(new Video_Play());
-//                fragmentStack.add(new Video_Play());
-                Bundle bundle = new Bundle();
-                bundle.putInt("flag", 1);
-                bundle.putInt("credit", 0);
-
-                fragmentTransaction.replace(R.id.viewpager, new Available_tutor(preferences.getInt("flag",0), preferences.getFloat("credit",0),preferences.getString("tutorName",""))).commit();*/
-
-
-
-
-               /* View view1 = LayoutInflater.from(getContext()).inflate(R.layout.talknow_confirmation_layout, null);
-                final PopupWindow popupWindow = new PopupWindow(view1, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-                popupWindow.setFocusable(true);
-                popupWindow.setOutsideTouchable(false);
-
-                final View view2 = LayoutInflater.from(getContext()).inflate(R.layout.talknow_insufficient_layout, null);
-                final PopupWindow popupWindow1 = new PopupWindow(view2, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-
-
-                TextView confirmation_tutorCredits = (TextView) view1.findViewById(R.id.confirmation_tutorCredits);
-                TextView confirmation_tutorName = (TextView) view1.findViewById(R.id.confirmation_tutorName);
-
-                confirmation_tutorName.setText(tutorName);
-                confirmation_tutorCredits.setText(new DecimalFormat("##.##").format(credit));
-
-
-                Button yesbtn = (Button) view1.findViewById(R.id.yesbtn);
-                final Button nobtn = (Button) view1.findViewById(R.id.nobtn);
-
-                yesbtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        popupWindow.dismiss();
-                        if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) <= getContext().getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f)) {
-
-                            popupWindow1.showAtLocation(view, Gravity.CENTER, 0, 0);
-                            popupWindow1.setFocusable(true);
-                            popupWindow1.setOutsideTouchable(false);
-
-
-                            Button okbtn = (Button) view2.findViewById(R.id.okbtn);
-
-                            okbtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    popupWindow1.dismiss();
-                                    TTL ttl = (TTL) getApplicationContext();
-                                    ttl.ExitBit = 2;
-                                    startActivity(new Intent(getApplicationContext(), new StripePaymentActivity().getClass()));
-                                }
-                            });
-                        } else {
-                            Intent i = new Intent(getContext(), New_videocall_activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            i.putExtra("from", "availabletutor");
-                            getContext().startActivity(i);
-                            getActivity().onBackPressed();
-                        }
-
-
-                    }
-                });
-                nobtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        TTL ttl = (TTL) getApplicationContext();
-                        ttl.ExitBit = 2;
-                        popupWindow.dismiss();
-                        getActivity().onBackPressed();
-                    }
-                });*/
             }
         });
 
@@ -942,19 +846,6 @@ public class Video_Play extends Fragment {
         super.onPause();
     }
 
-    /*private void shareAppLinkViaFacebook(String urlToShare) {
-        try {
-            Intent intent1 = new Intent();
-            intent1.setClassName("com.facebook.katana", "com.facebook.katana.activity.composer.ImplicitShareIntentHandler");
-            intent1.setAction("android.intent.action.SEND");
-            intent1.setType("text/plain");
-            intent1.putExtra("android.intent.extra.TEXT", urlToShare);
-            startActivity(intent1);
-        } catch (Exception e) {
-            // If we failed (not native FB app installed), try share through SEND
-            String sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=" + urlToShare;
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
-            startActivity(intent);
-        }
-    }*/
+
+
 }

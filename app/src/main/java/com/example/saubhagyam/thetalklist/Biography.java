@@ -18,6 +18,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -78,13 +79,16 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.example.saubhagyam.thetalklist.R.array.sub;
+
 public class Biography extends Fragment {
 
     ImageView biography_btn, video_btn, ratings_btn, biography_subject_btn, TutorImgBiography,videoPlay_VideoCallBtn;
     LinearLayout biography_11, video_11, ratings_11,  biography_subject_11, myBioLinearLayout;
     TextView biographyFirstName;
     Button biography_rate_edit;
-    TextView biography_languages;
+//    TextView biography_languages;
+    WebView biography_languages_webview;
 //    ProgressBar biography_languages_progress;
     SharedPreferences preferences;
 
@@ -127,7 +131,7 @@ public class Biography extends Fragment {
 
     //exo player over
 
-//    ImageView expanded_fullscreen;
+    ImageView expanded_fullscreen;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -155,7 +159,7 @@ public class Biography extends Fragment {
         componentListener = new ComponentListener();
         playerView = (SimpleExoPlayerView) view.findViewById(R.id.exo_player_view);
 
-//        expanded_fullscreen= (ImageView) view.findViewById(R.id.expanded_fullscreen);
+        expanded_fullscreen= (ImageView) view.findViewById(R.id.expanded_fullscreen);
 
 
         biography_video_thum_recycle.setLayoutManager(layoutManager);
@@ -216,6 +220,9 @@ public class Biography extends Fragment {
                 fragmentStack.push(new Tablayout_with_viewpager());
                 TabBackStack tabBackStack = TabBackStack.getInstance();
                 tabBackStack.setTabPosition(1);
+               SharedPreferences bio_videoPref=getContext().getSharedPreferences("bio_video",Context.MODE_PRIVATE);
+                SharedPreferences.Editor bio_Editor=bio_videoPref.edit();
+                bio_Editor.putBoolean("biography",true).apply();
                 fragmentTransaction.replace(R.id.viewpager, videoRecord).commit();
             }
         });
@@ -271,8 +278,9 @@ public class Biography extends Fragment {
                         if (res.getInt("status") == 0) {
                             JSONArray reviewAry = res.getJSONArray("review");
                             if (reviewAry.length() > 0) {
-                                ((TextView) view.findViewById(R.id.biography_totalreview)).setText((String.valueOf(reviewAry.length())));
-
+                                if (res.getInt("total_session")>0)
+                                ((TextView) view.findViewById(R.id.biography_totalreview)).setText((String.valueOf(res.getInt("total_session"))));
+else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
                                 for (int i = 0; i < reviewAry.length(); i++) {
 
                                     JSONObject obj = (JSONObject) reviewAry.get(i);
@@ -318,7 +326,7 @@ public class Biography extends Fragment {
                             }
                         }
                         else {
-                            ((TextView) view.findViewById(R.id.biography_totalreview)).setText("00");
+                            ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
                         }
 
 
@@ -343,7 +351,7 @@ public class Biography extends Fragment {
             public void onClick(View v) {
                 if (edit_bit == 0) {
                     edit_bit = 1;
-                    biography_rate_edit.setText("save...");
+                    biography_rate_edit.setText("SAVE...");
                     biography_rate_textview.setVisibility(View.GONE);
                     biography_rate_edittext.setVisibility(View.VISIBLE);
                 } else {
@@ -572,9 +580,10 @@ public class Biography extends Fragment {
         biography_subject_11 = (LinearLayout) view.findViewById(R.id.biography_subject_11);
 
 
-        biography_languages = (TextView) view.findViewById(R.id.biography_languages);
+//        biography_languages = (TextView) view.findViewById(R.id.biography_languages);
 
-
+        biography_languages_webview= (WebView) view.findViewById(R.id.biography_languages_webview);
+        biography_languages_webview.setHorizontalScrollbarOverlay(false);
 
 
         final int height = biography_biographyfrag_layout.getHeight();
@@ -652,7 +661,7 @@ public class Biography extends Fragment {
             String URL = "https://www.thetalklist.com/api/tutoring_subject?tutor_id=" + getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("userId", 0);
             Log.e("subjects url", URL);
 
-
+            final String htmlText = " %s ";
             StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -686,13 +695,25 @@ public class Biography extends Fragment {
                                         sub = sub + "," + ar.getString(i);
                                     }
                                 }
-                                biography_languages.setText(sub);
-                            } else biography_languages.setText("");
+//                                biography_languages.setText(sub);
+
+
+                                biography_languages_webview.loadData(String.format(htmlText, "<html>\n" +
+                                        "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
+                                        "\t "+sub+"\n" +
+                                        "\t </body>\n" +
+                                        "</Html>"), "text/html", "utf-8");
+//                            } else biography_languages.setText("");
+                            } else biography_languages_webview.loadData(String.format(htmlText, ""), "text/html", "utf-8");
 //                            view.findViewById(R.id.biography_languages_progress).setVisibility(View.GONE);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        biography_languages.setText("");
+                        biography_languages_webview.loadData(String.format(htmlText, "<html>\n" +
+                                "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
+                                "\t "+sub+"\n" +
+                                "\t </body>\n" +
+                                "</Html>"), "text/html", "utf-8");
 
                     }
 
@@ -725,7 +746,7 @@ public class Biography extends Fragment {
         String URL = "https://www.thetalklist.com/api/tutoring_subject?tutor_id=" + id;
         Log.e("subjects url", URL);
 
-
+        final String htmlText = " %s ";
         StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -756,16 +777,27 @@ public class Biography extends Fragment {
                                 if (sub.equals("")) {
                                     sub = ar.getString(i);
                                 } else {
-                                    sub = sub + "," + ar.getString(i);
+                                    sub = sub + ", " + ar.getString(i);
                                 }
                             }
-                            biography_languages.setText(sub);
-                        } else biography_languages.setText("");
-//                        view.findViewById(R.id.biography_languages_progress).setVisibility(View.GONE);
+                            biography_languages_webview.loadData(String.format(htmlText, "<html>\n" +
+                                    "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
+                                    "\t "+sub+"\n" +
+                                    "\t </body>\n" +
+                                    "</Html>"), "text/html", "utf-8");
+//                            } else biography_languages.setText("");
+                        } else biography_languages_webview.loadData(String.format(htmlText, ""), "text/html", "utf-8");
+//                            view.findViewById(R.id.biography_languages_progress).setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    biography_languages.setText("");
+                    biography_languages_webview.loadData(String.format(htmlText, "<html>\n" +
+                            "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
+                            "\t "+sub+"\n" +
+                            "\t </body>\n" +
+                            "</Html>"), "text/html", "utf-8");
+
+
 
                 }
 
@@ -997,16 +1029,16 @@ public class Biography extends Fragment {
 
 InitializePLayer(link);
                                 final String finalLink = link;
-                               /* expanded_fullscreen.setOnClickListener(new View.OnClickListener() {
+                                expanded_fullscreen.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         Intent i=new Intent(getContext(),Exoplayer_fullscreen.class);
 //                                        Toast.makeText(getContext(), player.getCurrentTrackGroups().get(0).toString(), Toast.LENGTH_SHORT).show();
                                         i.putExtra("fullscreen_video_url", bio_vid_url.getString("videourl",""));
-                                        i.putExtra("position",player.getCurrentPosition());
+                                        i.putExtra("position",playerView.getPlayer().getCurrentPosition());
                                         startActivity(i);
                                     }
-                                });*/
+                                });
 
                             } else {
 
