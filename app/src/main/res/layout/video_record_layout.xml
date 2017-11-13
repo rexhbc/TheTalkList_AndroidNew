@@ -62,7 +62,7 @@
                 android:entries="@array/sub"
                 android:hint="Select Subject"
                 android:padding="11.2dp"
-                android:textSize="15.5dp"/>
+                android:textSize="15.5dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -75,10 +75,10 @@
                 android:layout_height="52dp"
                 android:layout_marginLeft="10dp"
                 android:backgroundTint="#00000000"
-                android:hint="  Enter Title"
+                android:hint=" Enter Title"
                 android:maxLength="40"
                 android:padding="14dp"
-                android:textSize="15.5dp" />
+                android:textSize="16dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -91,9 +91,9 @@
                 android:layout_height="52dp"
                 android:layout_marginLeft="10dp"
                 android:backgroundTint="#00000000"
-                android:hint="  Enter Description"
+                android:hint=" Enter Description"
                 android:padding="15dp"
-                android:textSize="15.5dp" />
+                android:textSize="16dp" />
 
             <View
                 android:layout_width="match_parent"
