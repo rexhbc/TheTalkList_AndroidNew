@@ -169,7 +169,7 @@ public class Login extends Activity {
 
                             Log.e("in graph request","in graph request yeeeeeeeeeeeeeeeeeeeeee");
                             Profile profile=Profile.getCurrentProfile();
-                            profile.getProfilePictureUri(200,200);
+//                            profile.getProfilePictureUri(200,200);
 
                             final String url="https://www.thetalklist.com/api/fblogin?email="+email+"&facebook_id="+loginResult.getAccessToken().getUserId()+"&firstname="+first_name+"&lastname="+last_name+"&gender="+gender+"&birthdate="+"";
 

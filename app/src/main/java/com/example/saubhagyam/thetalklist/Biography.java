@@ -84,12 +84,12 @@ import static com.example.saubhagyam.thetalklist.R.array.sub;
 public class Biography extends Fragment {
 
     ImageView biography_btn, video_btn, ratings_btn, biography_subject_btn, TutorImgBiography,videoPlay_VideoCallBtn;
-    LinearLayout biography_11, video_11, ratings_11,  biography_subject_11, myBioLinearLayout;
+    LinearLayout biography_11, video_11, ratings_11,  biography_subject_11;
     TextView biographyFirstName;
     Button biography_rate_edit;
-//    TextView biography_languages;
+    //    TextView biography_languages;
     WebView biography_languages_webview;
-//    ProgressBar biography_languages_progress;
+    //    ProgressBar biography_languages_progress;
     SharedPreferences preferences;
 
 
@@ -220,7 +220,7 @@ public class Biography extends Fragment {
                 fragmentStack.push(new Tablayout_with_viewpager());
                 TabBackStack tabBackStack = TabBackStack.getInstance();
                 tabBackStack.setTabPosition(1);
-               SharedPreferences bio_videoPref=getContext().getSharedPreferences("bio_video",Context.MODE_PRIVATE);
+                SharedPreferences bio_videoPref=getContext().getSharedPreferences("bio_video",Context.MODE_PRIVATE);
                 SharedPreferences.Editor bio_Editor=bio_videoPref.edit();
                 bio_Editor.putBoolean("biography",true).apply();
                 fragmentTransaction.replace(R.id.viewpager, videoRecord).commit();
@@ -279,8 +279,8 @@ public class Biography extends Fragment {
                             JSONArray reviewAry = res.getJSONArray("review");
                             if (reviewAry.length() > 0) {
                                 if (res.getInt("total_session")>0)
-                                ((TextView) view.findViewById(R.id.biography_totalreview)).setText((String.valueOf(res.getInt("total_session"))));
-else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
+                                    ((TextView) view.findViewById(R.id.biography_totalreview)).setText((String.valueOf(res.getInt("total_session"))));
+                                else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
                                 for (int i = 0; i < reviewAry.length(); i++) {
 
                                     JSONObject obj = (JSONObject) reviewAry.get(i);
@@ -459,7 +459,7 @@ else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
                     String URL = "https://www.thetalklist.com/api/edit_biogrpy?id="+preferences.getInt("id", 0)+"&academic="+biography_educational_edit.getText().toString().replace(" ","%20").replace("\n","%0A")+
                             "&professional="+biography_professional_edit.getText().toString().replace(" ","%20").replace("\n","%0A")+"&personal="+biography_personal_edit.getText().toString().replace(" ","%20").replace("\n","%0A");
 
-                   Log.e("bio url",URL);
+                    Log.e("bio url",URL);
                     /*StringRequest strRequest = new StringRequest(Request.Method.POST, URL,
                             new Response.Listener<String>() {
                                 @Override
@@ -574,7 +574,6 @@ else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
         final int entry = 10;
 
         biography_11 = (LinearLayout) view.findViewById(R.id.biography_11);
-        myBioLinearLayout = (LinearLayout) view.findViewById(R.id.myBioLinearLayout);
         video_11 = (LinearLayout) view.findViewById(R.id.video_11);
         ratings_11 = (LinearLayout) view.findViewById(R.id.ratings_11);
         biography_subject_11 = (LinearLayout) view.findViewById(R.id.biography_subject_11);
@@ -588,7 +587,7 @@ else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
 
         final int height = biography_biographyfrag_layout.getHeight();
 
-        myBioLinearLayout.setOnClickListener(new View.OnClickListener()
+        biography_11.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
@@ -1027,7 +1026,7 @@ else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
 
                                 bio_edit.putString("videourl",link).apply();
 
-InitializePLayer(link);
+                                InitializePLayer(link);
                                 final String finalLink = link;
                                 expanded_fullscreen.setOnClickListener(new View.OnClickListener() {
                                     @Override

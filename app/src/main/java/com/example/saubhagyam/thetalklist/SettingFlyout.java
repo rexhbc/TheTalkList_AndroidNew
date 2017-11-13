@@ -62,6 +62,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.saubhagyam.thetalklist.Services.LoginService;
+import com.example.saubhagyam.thetalklist.Services.MessageCountService;
 import com.example.saubhagyam.thetalklist.util.NotificationUtils;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -233,8 +234,10 @@ public class SettingFlyout extends AppCompatActivity {
                 }
             }
         });
+        pref = getSharedPreferences("loginStatus", MODE_PRIVATE);
 
-        count();
+        MessageCountService messageCountService=new MessageCountService();
+        messageCountService.MessageCount(this,pref);
 
         fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -261,7 +264,7 @@ public class SettingFlyout extends AppCompatActivity {
 
 
         new firebase_regId_store().execute();
-        pref = getSharedPreferences("loginStatus", MODE_PRIVATE);
+
         LoginService loginService = new LoginService();
         loginService.login(pref.getString("email", ""), pref.getString("pass", ""), getApplicationContext());
 

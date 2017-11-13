@@ -41,65 +41,66 @@ public class ConnectivityReceiver extends BroadcastReceiver {
             }
 
         }else {
-            SharedPreferences totalCostPref=getApplicationContext().getSharedPreferences("totalCostPref",MODE_PRIVATE);
-            final SharedPreferences.Editor totaEditor=totalCostPref.edit();
 
-            Log.e("total cost url",totalCostPref.getString("totalcost",""));
-            if (totalCostPref.contains("totalcost")){
-                StringRequest sr = new StringRequest(Request.Method.POST, totalCostPref.getString("totalcost",""), new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        Log.e("total cost response",response);
+            if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+                SharedPreferences totalCostPref = getApplicationContext().getSharedPreferences("totalCostPref", MODE_PRIVATE);
+                final SharedPreferences.Editor totaEditor = totalCostPref.edit();
 
-                        try {
-                            JSONObject jsonObject=new JSONObject(response);
-                            if (jsonObject.getInt("status")==0){
-                                totaEditor.clear().apply();
+                Log.e("total cost url", totalCostPref.getString("totalcost", ""));
+                if (totalCostPref.contains("totalcost")) {
+                    StringRequest sr = new StringRequest(Request.Method.POST, totalCostPref.getString("totalcost", ""), new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(final String response) {
+                            Log.e("total cost response", response);
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (jsonObject.getInt("status") == 0) {
+                                    totaEditor.clear().apply();
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
 
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    Volley.newRequestQueue(getApplicationContext()).add(sr);
+
+                    RequestQueue queue333 = Volley.newRequestQueue(getApplicationContext());
 
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-                sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                Volley.newRequestQueue(getApplicationContext()).add(sr);
-
-                RequestQueue queue333 = Volley.newRequestQueue(getApplicationContext());
+                    StringRequest sr1 = new StringRequest(Request.Method.POST, totalCostPref.getString("disconnect", ""), new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
 
+                            Log.e("Call_activity_reject_ca", response);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-                StringRequest sr1 = new StringRequest(Request.Method.POST, totalCostPref.getString("disconnect",""), new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                        }
+                    });
+                    queue333.add(sr1);
+                } else {
+                    Intent intent1 = new Intent(getApplicationContext(), SplashScreen.class);
+                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    getApplicationContext().startActivity(intent1);
+                }
 
-
-                        Log.e("Call_activity_reject_ca", response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-                queue333.add(sr1);
-            }
-            else {
-                Intent intent1=new Intent(getApplicationContext(),SplashScreen.class);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                getApplicationContext().startActivity(intent1);
             }
 
         }
-
     }
     public boolean isOnline(Context context) {
 

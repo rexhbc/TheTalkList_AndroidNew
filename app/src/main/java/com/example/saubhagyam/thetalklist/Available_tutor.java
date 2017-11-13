@@ -340,7 +340,7 @@ public class Available_tutor extends Fragment {
                         @Override
                         public void run() {
                             try {
-                                popupWindow7.showAtLocation(inflater.inflate(R.layout.fragment_available_tutor, container, false), Gravity.CENTER, 0, 0);
+                                    popupWindow7.showAtLocation(inflater.inflate(R.layout.fragment_available_tutor, container, false), Gravity.CENTER, 0, 0);
                             }catch (WindowManager.BadTokenException e){
                                 Toast.makeText(getApplicationContext(),"Token null", Toast.LENGTH_SHORT).show();
                             }

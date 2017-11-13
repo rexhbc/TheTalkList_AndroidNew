@@ -56,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tanya1419"
                 android:maxLength="7"
+                android:layout_marginRight="3dp"
                 android:textColor="#5DADE2"
                 android:textSize="20dp" />
 

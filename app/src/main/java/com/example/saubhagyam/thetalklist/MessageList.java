@@ -32,6 +32,7 @@ import com.example.saubhagyam.thetalklist.Bean.ChatroomModel;
 import com.example.saubhagyam.thetalklist.Bean.MessageModel;
 import com.example.saubhagyam.thetalklist.Decorations.RecyclerTouchListener;
 import com.example.saubhagyam.thetalklist.Decorations.DividerItemDecoration;
+import com.example.saubhagyam.thetalklist.Services.MessageCountService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,7 +79,7 @@ public class MessageList extends Fragment {
         bottombar_message_count=(TextView) getActivity().findViewById(R.id.bottombar_message_count);
         bottombar_messageCount_layout= (RelativeLayout) getActivity().findViewById(R.id.bottombar_messageCount_layout);
 
-        {
+        /*{
             String URL = "https://www.thetalklist.com/api/count_messages?sender_id=" + getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0);
             StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
@@ -105,7 +106,9 @@ public class MessageList extends Fragment {
                 }
             });
             Volley.newRequestQueue(getApplicationContext()).add(sr);
-        }
+        }*/
+        MessageCountService messageCountService=new MessageCountService();
+        messageCountService.MessageCount(getActivity(),getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE));
 
         final Dialog dialog=new Dialog(getContext());
         dialog.setContentView(R.layout.threedotprogressbar);

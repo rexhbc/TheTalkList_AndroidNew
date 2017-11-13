@@ -102,84 +102,85 @@ public class EarnCredits extends Fragment {
                 final String earn_credit_paypalEmail_str = earn_credit_paypalEmail.getText().toString();
                 final String earn_credit_paypalaamount_float = earn_credit_paypalammount.getText().toString();
                 final String id = String.valueOf(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0));
-                if (getContext().getSharedPreferences("loginStatus",Context.MODE_PRIVATE).getFloat("money",0.0f)>=Float.parseFloat(earn_credit_paypalaamount_float) ) {
+                if (earn_credit_paypalEmail_str.equals("")) {
 
-                    if ( getContext().getSharedPreferences("loginStatus",Context.MODE_PRIVATE).getFloat("frMoney",0.0f)>10.0f) {
+                    if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) >= Float.parseFloat(earn_credit_paypalaamount_float)) {
+
+                        if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("frMoney", 0.0f) > 10.0f) {
 
 
-                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-                        final TextView main_credit = (TextView) getActivity().findViewById(R.id.num_credits);
+                            final TextView main_credit = (TextView) getActivity().findViewById(R.id.num_credits);
 //                https://www.thetalklist.com/api/payment_cashout?uid=17431&payment_account=saurabhit29@gmail.com&trnAmount=1
 
-                        if (!earn_credit_paypalEmail_str.equals("") || !earn_credit_paypalaamount_float.equals("")) {
-                            if (Float.parseFloat(earn_credit_currentBalance.getText().toString()) >= Float.parseFloat(earn_credit_paypalammount.getText().toString())) {
-                                final Dialog dialog=new Dialog(getContext());
-                                dialog.setContentView(R.layout.threedotprogressbar);
-                                dialog.setCanceledOnTouchOutside(false);
-                                dialog.show();
-                                String URL = "https://www.thetalklist.com/api/paypal_cashout?" +
-                                        "payment_account=" + earn_credit_paypalEmail_str.replace(" ", "") +
-                                        "&trnAmount=" + earn_credit_paypalaamount_float +
-                                        "&uid=" + id;
-                                RequestQueue queue1 = Volley.newRequestQueue(getApplicationContext());
-                                Log.e("url", URL);
-                                StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
+                            if (!earn_credit_paypalEmail_str.equals("") || !earn_credit_paypalaamount_float.equals("")) {
+                                if (Float.parseFloat(earn_credit_currentBalance.getText().toString()) >= Float.parseFloat(earn_credit_paypalammount.getText().toString())) {
+                                    final Dialog dialog = new Dialog(getContext());
+                                    dialog.setContentView(R.layout.threedotprogressbar);
+                                    dialog.setCanceledOnTouchOutside(false);
+                                    dialog.show();
+                                    String URL = "https://www.thetalklist.com/api/paypal_cashout?" +
+                                            "payment_account=" + earn_credit_paypalEmail_str.replace(" ", "") +
+                                            "&trnAmount=" + earn_credit_paypalaamount_float +
+                                            "&uid=" + id;
+                                    RequestQueue queue1 = Volley.newRequestQueue(getApplicationContext());
+                                    Log.e("url", URL);
+                                    StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
 
 
-                                        try {
-                                            JSONObject obj = new JSONObject(response);
+                                            try {
+                                                JSONObject obj = new JSONObject(response);
 
-                                            if (obj.getInt("status") == 0) {
-                                                dialog.dismiss();
-                                                Log.e("cashout response", response);
-                                                main_credit.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("money")))));
-                                                earn_credit_currentBalance.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("money")))));
-                                                Toast.makeText(getContext(), "Cashout Sucessfully", Toast.LENGTH_SHORT).show();
-                                                loginService.login(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getString("email", ""), getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getString("pass", ""), getContext());
+                                                if (obj.getInt("status") == 0) {
+                                                    dialog.dismiss();
+                                                    Log.e("cashout response", response);
+                                                    main_credit.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("money")))));
+                                                    earn_credit_currentBalance.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("money")))));
+                                                    Toast.makeText(getContext(), "Cashout Sucessfully", Toast.LENGTH_SHORT).show();
+                                                    loginService.login(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getString("email", ""), getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getString("pass", ""), getContext());
+                                                }
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+
+
                                             }
-
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
+                                        }
+                                    }, new com.android.volley.Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
 
 
                                         }
                                     }
-                                }, new com.android.volley.Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
+                                    ) {
+                                        @Override
+                                        public Map<String, String> getHeaders() throws AuthFailureError {
+                                            HashMap<String, String> headers = new HashMap<String, String>();
+                                            headers.put("payment_account", earn_credit_paypalEmail_str);
+                                            headers.put("trnAmount", earn_credit_paypalaamount_float);
+                                            headers.put("uid", id);
+                                            return headers;
+                                        }
+                                    };
 
 
-                                    }
-                                }
-                                ) {
-                                    @Override
-                                    public Map<String, String> getHeaders() throws AuthFailureError {
-                                        HashMap<String, String> headers = new HashMap<String, String>();
-                                        headers.put("payment_account", earn_credit_paypalEmail_str);
-                                        headers.put("trnAmount", earn_credit_paypalaamount_float);
-                                        headers.put("uid", id);
-                                        return headers;
-                                    }
-                                };
+                                    sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                                    queue1.add(sr);
 
-
-                                sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                                queue1.add(sr);
-
-                            } else
-                                Toast.makeText(getContext(), "Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                } else
+                                    Toast.makeText(getContext(), "Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "You can not cashout greeting credits.", Toast.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Toast.makeText(getContext(), "You don't have enough credits.", Toast.LENGTH_SHORT).show();
                     }
-                    else {
-                        Toast.makeText(getContext(), "You can not cashout greeting credits.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else {
-                    Toast.makeText(getContext(), "You don't have enough credits.", Toast.LENGTH_SHORT).show();
                 }
 
             }

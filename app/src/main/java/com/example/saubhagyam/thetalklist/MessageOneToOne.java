@@ -48,6 +48,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.saubhagyam.thetalklist.Adapter.MessageRecyclarAdapter;
 import com.example.saubhagyam.thetalklist.Bean.MessageModel;
 import com.example.saubhagyam.thetalklist.Decorations.DividerItemDecoration;
+import com.example.saubhagyam.thetalklist.Services.MessageCountService;
 import com.example.saubhagyam.thetalklist.util.NotificationUtils;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.rockerhieu.emojicon.EmojiconEditText;
@@ -280,7 +281,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
         user_msg = (EmojiconTextView) msgDisplayLayoutview.findViewById(R.id.chat_user_text);
         message_onetoone_backbtn = (ImageView) view.findViewById(R.id.message_onetoone_backbtn);
 
-        {
+        /*{
             String URL = "https://www.thetalklist.com/api/count_messages?sender_id=" + loginPref.getInt("id", 0);
             StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
@@ -307,7 +308,9 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                 }
             });
             Volley.newRequestQueue(getApplicationContext()).add(sr);
-        }
+        }*/
+        MessageCountService messageCountService=new MessageCountService();
+        messageCountService.MessageCount(getActivity(),loginPref);
 
         appendChatScreenMsgReceiver = new BroadcastReceiver() {
             @Override
@@ -451,6 +454,12 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
 
 
 
+        final Dialog    dialog=new Dialog(getContext());
+        dialog.setContentView(R.layout.threedotprogressbar);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+
 //        RefreshFragment();
         String URL = "https://www.thetalklist.com/api/all_messages?sender_id=" + sender_id + "&receiver_id=" + receiver_id;
         Log.e("Message list url", URL);
@@ -529,6 +538,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                     e.printStackTrace();
                 }
 
+                dialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
