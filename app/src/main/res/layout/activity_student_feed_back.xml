@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView                 
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -45,7 +45,7 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <TextView                 
+            <TextView
                 android:id="@+id/feedtext1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -63,7 +63,8 @@
                 android:isIndicator="false"
                 android:maxHeight="20dp"
                 android:minHeight="5dp"
-                android:numStars="5" />
+                android:numStars="5"
+                android:progressTint="@color/yellow"/>
 
 
         </LinearLayout>
@@ -79,7 +80,7 @@
                 android:background="#F8F9F9" />
         </LinearLayout>
 
-        <LinearLayout
+        <!-- <LinearLayout
             android:id="@+id/llfeedStu2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="Report inappropriate behavior"
                 android:textColor="#85929E" />
-        </LinearLayout>
+        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -117,26 +118,45 @@
             android:layout_marginTop="20dp"
             android:orientation="vertical">
 
-            <TextView                 
+            <!--            <TextView
                 android:id="@+id/feedtext2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/commentOn"
-                android:textColor="#85929E" />
+                android:textColor="#85929E" />-->
 
             <MultiAutoCompleteTextView
                 android:id="@+id/student_feedback_msg"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="15dp"
-                android:gravity="start"
                 android:background="@drawable/background_border_black"
                 android:backgroundTint="#00000000"
-                android:hint="Write Message..."
-                android:textSize="15dp"
+                android:gravity="start"
+                android:hint="Leave a review on your tutor…"
+                android:textColorHint="#85929E"
 
-                android:textColorHint="#85929E" />
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:id="@+id/llfeedStu2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/report_inappropriate_behaviour"
+                    android:layout_width="358dp"
+                    android:layout_height="wrap_content"
+                    android:text="Report inappropriate behavior"
+                    android:textColor="#85929E" />
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/studentFeedback_submitButton"
@@ -147,8 +167,8 @@
                 android:background="@drawable/capt"
                 android:gravity="center"
                 android:text="Submit"
-                android:textColor="#ffffff"
                 android:textAllCaps="false"
+                android:textColor="#ffffff"
                 android:textSize="20sp" />
 
 
