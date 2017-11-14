@@ -323,6 +323,12 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
                                     dialog.dismiss();
 
                             }
+                            if (status==10){
+                                editor.clear().apply();
+                                Intent i = new Intent(getApplicationContext(), Login.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(i);
+                            }
                             if (status == 0) {
 
                                 JSONObject resultObj = (JSONObject) jsonObject.get("result");

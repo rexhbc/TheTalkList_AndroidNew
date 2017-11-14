@@ -10,15 +10,22 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.saubhagyam.thetalklist.Config.Config;
 import com.example.saubhagyam.thetalklist.Services.LoginService;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -48,6 +55,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class Login extends Activity {
@@ -335,6 +344,9 @@ public class Login extends Activity {
 
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
+                    final SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+                    SharedPreferences.Editor prefEdit=pref.edit();
+//                    editor.putString("firebase id",refreshedToken).apply();
 
                     final StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
@@ -348,7 +360,7 @@ public class Login extends Activity {
 
                             try {
 
-                                JSONObject jsonObject = new JSONObject(response);
+                                final JSONObject jsonObject = new JSONObject(response);
 
 
                                 Log.e("response", response);
@@ -359,7 +371,91 @@ public class Login extends Activity {
                                     String Err = (String) jsonObject.get("error");
                                     Toast.makeText(Login.this, Err, Toast.LENGTH_SHORT).show();
 
-                                } else {
+                                }/* else if (status == 10 && pref.getString("firebase id","").equals(jsonObject.getString("firebase_id"))){
+
+                                }*/
+                                else if (status == 10 && !pref.getString("firebase id","").equals(jsonObject.getString("firebase_id"))){
+
+                                    View view3 = LayoutInflater.from(getApplicationContext()).inflate(R.layout.talknow_criticalcredit, null);
+
+                                    final PopupWindow popupWindow7 = new PopupWindow(view3, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                popupWindow7.showAtLocation(findViewById(R.id.activity_login), Gravity.CENTER, 0, 0);
+                                            }catch (WindowManager.BadTokenException e){
+                                                Toast.makeText(getApplicationContext(),"Token null", Toast.LENGTH_SHORT).show();
+                                            }
+                                            return;
+
+                                        }
+                                    }, 100);
+
+                                    popupWindow7.setFocusable(true);
+                                    popupWindow7.setOutsideTouchable(false);
+
+
+                                    Button okButton = (Button) view3.findViewById(R.id.talknow_ok);
+                                    Button buyCredits = (Button) view3.findViewById(R.id.talknow_buycredits);
+                                    TextView tv = (TextView) view3.findViewById(R.id.talknow_text);
+
+//                final int min = (int) (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) / credit);
+
+
+                                    tv.setText("You are log in at another device \n Do you want to log out from all device?");
+
+                                    okButton.setText("Yes");
+
+                                    okButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            popupWindow7.dismiss();
+
+
+                                            Volley.newRequestQueue(getApplicationContext()).add(new StringRequest(Request.Method.POST, "https://www.thetalklist.com/api/check_login?username="+email, new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    try {
+                                                        JSONObject jsonObject1=new JSONObject(response);
+
+                                                        if (jsonObject.getInt("status")==0){
+
+                                                        }
+                                                        else {
+                                                            Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                }
+                                            }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+
+                                                }
+                                            }));
+
+                                        }
+                                    });
+
+                                    buyCredits.setText("No");
+
+                                    buyCredits.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            popupWindow7.dismiss();
+                                            finish();
+                                            onBackPressed();
+
+                                        }
+                                    });
+
+                                }else {
 
 
                                     JSONObject resultObj = (JSONObject) jsonObject.get("result");

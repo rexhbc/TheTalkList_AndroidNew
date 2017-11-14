@@ -15,18 +15,26 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.saubhagyam.thetalklist.Config.Config;
 import com.example.saubhagyam.thetalklist.Services.LoginService;
 import com.example.saubhagyam.thetalklist.util.NotificationUtils;
+import com.facebook.login.LoginManager;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -323,6 +331,69 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
                     notificationUtils.playNotificationSound();
                 }
+            }
+            else if (title.equalsIgnoreCase("clear_login")){
+                SharedPreferences loginPref=getSharedPreferences("loginStatus",MODE_PRIVATE);
+                final SharedPreferences.Editor editor=loginPref.edit();
+
+            /*    String URL = "https://www.thetalklist.com/api/signout?uid=" + loginPref.getInt("id", 0);
+                StringRequest sr1 = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.e("logout response",response);
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (obj.getInt("status") != 0) {
+                                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                            } else {
+
+
+
+                                LoginManager.getInstance().logOut();
+                                SharedPreferences Desired_pref = getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor desiredEditor = Desired_pref.edit();
+                                desiredEditor.clear().apply();
+
+                                FragmentStack.getInstance().clear();
+                                new TTL().ExitBit = 1;
+                                SharedPreferences pref11 = getApplicationContext().getSharedPreferences("firstTime", Context.MODE_PRIVATE);
+                                final SharedPreferences.Editor ed = pref11.edit();
+                                ed.clear().apply();
+
+
+
+                                try {
+                                    FirebaseInstanceId.getInstance().deleteInstanceId();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Intent i = new Intent(getApplicationContext(), Login.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "status " + error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Volley.newRequestQueue(getApplicationContext()).add(sr1);
+
+*/
+
+                editor.clear().apply();
+
+
+
+
             }
 
             // app is in background, show the notification in notification tray

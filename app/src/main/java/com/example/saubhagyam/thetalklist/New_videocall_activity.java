@@ -338,6 +338,12 @@ public class New_videocall_activity extends AppCompatActivity
 
 
                         }
+                        else {
+                         String error=   jsonObject.getString("error");
+                            Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+                            finish();
+                            onBackPressed();
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();

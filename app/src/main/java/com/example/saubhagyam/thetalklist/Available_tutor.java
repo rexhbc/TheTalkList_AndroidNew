@@ -324,7 +324,7 @@ public class Available_tutor extends Fragment {
             });
 
 
-        }
+        }else
         {
             if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f)< 3.0f) {
                 if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("roleId", 0)==0) {

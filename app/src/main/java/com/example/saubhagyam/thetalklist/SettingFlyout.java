@@ -195,7 +195,7 @@ public class SettingFlyout extends AppCompatActivity {
         settingFlyout_bottomcontrol_favorites = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol_favorites);
         settingFlyout_bottomcontrol = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol);
 
-
+        displayFirebaseRegId();
         ratingBar = (RatingBar) view1.findViewById(R.id.ratingBar);
 
         if (preferences.getFloat("avgRate", 0.0f) != 0.0f)
@@ -260,7 +260,7 @@ public class SettingFlyout extends AppCompatActivity {
         };
 
         queue111 = Volley.newRequestQueue(getApplicationContext());
-        displayFirebaseRegId();
+
 
 
         new firebase_regId_store().execute();
@@ -747,7 +747,8 @@ public class SettingFlyout extends AppCompatActivity {
 
 
             SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-
+            SharedPreferences.Editor prefEdit=pref.edit();
+            prefEdit.putString("firebase id",refreshedToken).apply();
             firebase_regId = refreshedToken;
             Log.e("firebase reg id 1111111", "Firebase reg id: " + refreshedToken);
 
