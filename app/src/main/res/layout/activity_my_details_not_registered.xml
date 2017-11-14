@@ -255,7 +255,7 @@
                     android:textSize="15dp"
                     android:maxLines="1"
                     android:textColor="#000000"
-                    android:textColorHint="#85929E" />
+                    android:textColorHint="#000000"/>
             </LinearLayout>
 
             <LinearLayout
