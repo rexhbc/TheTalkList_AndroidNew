@@ -278,6 +278,7 @@
                 android:background="#616A6B" />
 
             <LinearLayout
+                android:id = "@+id/rateLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -508,6 +509,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/tutorSubLinearLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:baselineAligned="false"
@@ -985,6 +987,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id = "@+id/videoLinearLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -1271,6 +1274,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id = "@+id/reviewLinearLayout"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
