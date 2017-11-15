@@ -84,7 +84,8 @@ import static com.example.saubhagyam.thetalklist.R.array.sub;
 public class Biography extends Fragment {
 
     ImageView biography_btn, video_btn, ratings_btn, biography_subject_btn, TutorImgBiography,videoPlay_VideoCallBtn;
-    LinearLayout biography_11, video_11, ratings_11,  biography_subject_11;
+    LinearLayout biography_11, video_11, ratings_11,  biography_subject_11, myBioLinearLayout, tutorSubLinearLayout,
+                    videoLinearLayout, rateLinearLayout, reviewLinearLayout;
     TextView biographyFirstName;
     Button biography_rate_edit;
     //    TextView biography_languages;
@@ -208,6 +209,7 @@ public class Biography extends Fragment {
         biography_personal_edit = (EditText) view.findViewById(R.id.biography_personal_edit);
         biography_educational_edit = (EditText) view.findViewById(R.id.biography_educational_edit);
         biography_rate_edittext = (EditText) view.findViewById(R.id.biography_rate_edittext);
+        rateLinearLayout = (LinearLayout)view.findViewById(R.id.rateLinearLayout);
         queue = Volley.newRequestQueue(getActivity());
 
         final FragmentStack fragmentStack = FragmentStack.getInstance();
@@ -246,8 +248,9 @@ public class Biography extends Fragment {
 
 
         ratings_11 = (LinearLayout) view.findViewById(R.id.ratings_11);
+        reviewLinearLayout = (LinearLayout) view.findViewById(R.id.reviewLinearLayout);
         final int height1 = review_root_biography.getHeight();
-        ratings_11.setOnClickListener(new View.OnClickListener() {
+        reviewLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (review_root_biography.getVisibility() == View.VISIBLE) {
@@ -346,7 +349,7 @@ public class Biography extends Fragment {
             Volley.newRequestQueue(getContext()).add(sr);
         }
 
-        biography_rate_edit.setOnClickListener(new View.OnClickListener() {
+        rateLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (edit_bit == 0) {
@@ -574,6 +577,9 @@ public class Biography extends Fragment {
         final int entry = 10;
 
         biography_11 = (LinearLayout) view.findViewById(R.id.biography_11);
+        myBioLinearLayout = (LinearLayout) view.findViewById(R.id.myBioLinearLayout);
+        tutorSubLinearLayout= (LinearLayout) view.findViewById(R.id.tutorSubLinearLayout);
+        videoLinearLayout = (LinearLayout) view.findViewById(R.id.videoLinearLayout);
         video_11 = (LinearLayout) view.findViewById(R.id.video_11);
         ratings_11 = (LinearLayout) view.findViewById(R.id.ratings_11);
         biography_subject_11 = (LinearLayout) view.findViewById(R.id.biography_subject_11);
@@ -587,7 +593,7 @@ public class Biography extends Fragment {
 
         final int height = biography_biographyfrag_layout.getHeight();
 
-        biography_11.setOnClickListener(new View.OnClickListener()
+        myBioLinearLayout.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
@@ -610,7 +616,7 @@ public class Biography extends Fragment {
         });
 
         final LinearLayout biography_video = (LinearLayout) view.findViewById(R.id.biography_video);
-        video_11.setOnClickListener(new View.OnClickListener()
+        videoLinearLayout.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
@@ -633,7 +639,7 @@ public class Biography extends Fragment {
         });
 
 
-        biography_subject_11.setOnClickListener(new View.OnClickListener()
+        tutorSubLinearLayout.setOnClickListener(new View.OnClickListener()
 
         {
 
