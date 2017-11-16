@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +39,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -80,14 +82,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import me.grantland.widget.AutofitHelper;
+
+import static org.jxmpp.util.XmppDateTime.parseDate;
 
 
 public class SettingFlyout extends AppCompatActivity {
@@ -236,8 +243,8 @@ public class SettingFlyout extends AppCompatActivity {
         });
         pref = getSharedPreferences("loginStatus", MODE_PRIVATE);
 
-        MessageCountService messageCountService=new MessageCountService();
-        messageCountService.MessageCount(this,pref);
+        MessageCountService messageCountService = new MessageCountService();
+        messageCountService.MessageCount(this, pref);
 
         fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -260,7 +267,6 @@ public class SettingFlyout extends AppCompatActivity {
         };
 
         queue111 = Volley.newRequestQueue(getApplicationContext());
-
 
 
         new firebase_regId_store().execute();
@@ -297,12 +303,12 @@ public class SettingFlyout extends AppCompatActivity {
             }
         };
 
-        {
-            if (pref.getInt("roleId",0)!=0) {
+        /*{
+            if (pref.getInt("roleId", 0) != 0) {
                 SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
                 Date x1 = new Date();
                 final String dayOfTheWeek = sdf.format(x1);
-                Log.e("today dayofweek",dayOfTheWeek);
+                Log.e("today dayofweek", dayOfTheWeek);
 
                 String url1 = "https://www.thetalklist.com/api/tutor_availability_info?uid=" + pref.getInt("id", 0);
 
@@ -321,18 +327,38 @@ public class SettingFlyout extends AppCompatActivity {
                                 try {
 
                                     String string1 = info.getString("start_time");
-                                    Date time1 = new SimpleDateFormat("HH:mm:ss").parse(string1);
+                                    if (string1.contains("AM")) {
+                                        string1 = string1.replace(" AM", "");
+                                    } else if (string1.contains("PM")) {
+                                        string1 = string1.replace(" PM", "PM");
+                                        String hx = string1.substring(0, string1.indexOf(":") - 1);
+                                        String remainder = string1.substring(string1.indexOf(":") + 1, string1.length());
+                                        string1 = String.valueOf(Integer.parseInt(hx) + 12) + ":" + remainder;
+                                    }
+
+                                    String string2 = info.getString("end_time");
+                                    if (string2.contains("AM")) {
+                                        string2 = string2.replace(" AM", "");
+                                    } else if (string2.contains("PM")) {
+                                        string2 = string2.replace(" PM", "PM");
+                                        String hx = string2.substring(0, string1.indexOf(":") - 1);
+                                        String remainder = string2.substring(string2.indexOf(":") + 1, string2.length());
+                                        string2 = String.valueOf(Integer.parseInt(hx) + 12) + ":" + remainder;
+                                    }
+
+
+                                    Date time1 = new SimpleDateFormat("HH:mm").parse(string1);
                                     Calendar calendar1 = Calendar.getInstance();
                                     calendar1.setTime(time1);
 
-                                    String string2 = info.getString("end_time");
-                                    Date time2 = new SimpleDateFormat("HH:mm:ss").parse(string2);
+
+                                    Date time2 = new SimpleDateFormat("HH:mm").parse(string2);
                                     Calendar calendar2 = Calendar.getInstance();
                                     calendar2.setTime(time2);
                                     calendar2.add(Calendar.DATE, 1);
 
-                                    String someRandomTime = "01:00:00";
-                                    Date d = new SimpleDateFormat("HH:mm:ss").parse(someRandomTime);
+                                    String someRandomTime = "10:00";
+                                    Date d = new SimpleDateFormat("HH:mm").parse(someRandomTime);
                                     Calendar calendar3 = Calendar.getInstance();
                                     calendar3.setTime(d);
                                     calendar3.add(Calendar.DATE, 1);
@@ -340,53 +366,63 @@ public class SettingFlyout extends AppCompatActivity {
                                     Date x = calendar3.getTime();
                                     if (x.after(calendar1.getTime()) && x.before(calendar2.getTime())) {
                                         //checkes whether the current time is between 14:49:00 and 20:11:13.
-                                        System.out.println(true);
-                                    }
+//                                        Log.e("availability","yes");
+                                        Log.e("day of week", dayOfTheWeek);
 
 
+                                        if (info.getInt("sunday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
+                                                talkNow.setChecked(true);
+                                                talkNow.setSelected(true);
+                                                Log.e("availability", "yes");
+                                            }
 
-                                    if (info.getInt("sunday") == 1) {
-                                        if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
-                                            talkNow.setChecked(true);
-                                            talkNow.setSelected(true);
                                         }
 
-                                    }
-
-                                    if (Integer.parseInt(info.getString("monday")) == 1) {
-                                        if (dayOfTheWeek.equalsIgnoreCase("Bonday")) {
-                                            talkNow.setChecked(true);
-                                            talkNow.setSelected(true);
+                                        else if (Integer.parseInt(info.getString("monday")) == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Bonday")) {
+                                                talkNow.setChecked(true);
+                                                talkNow.setSelected(true);
+                                                Log.e("availability", "yes");
+                                            }
                                         }
-                                    }
-                                    if (info.getInt("tuesday") == 1) {
-                                        if (dayOfTheWeek.equalsIgnoreCase("Tuesday")) {
-                                            talkNow.setChecked(true);
-                                            talkNow.setSelected(true);
+                                        else if (info.getInt("tuesday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Tuesday")) {
+                                                talkNow.setChecked(true);
+                                                talkNow.setSelected(true);
+                                                Log.e("availability", "yes");
+                                            }
                                         }
-                                    }
-                                    if (info.getInt("wednesday") == 1) {
-                                        if (dayOfTheWeek.equalsIgnoreCase("Wednesday")) {
-                                            talkNow.setChecked(true);
-                                            talkNow.setSelected(true);
+                                        else if (info.getInt("wednesday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Wednesday")) {
+                                                talkNow.setChecked(true);
+                                                talkNow.setSelected(true);
+                                                Log.e("availability", "yes");
+                                            }
                                         }
-                                    }
-                                    if (info.getInt("thursday") == 1) {
-                                        if (dayOfTheWeek.equalsIgnoreCase("Thursday")) {
-                                            talkNow.setChecked(true);
-                                            talkNow.setSelected(true);
+                                        else if (info.getInt("thursday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Thursday")) {
+                                                talkNow.setChecked(true);
+                                                talkNow.setSelected(true);
+                                                Log.e("availability", "yes");
+                                            }
                                         }
-                                    }
-                                    if (info.getInt("friday") == 1) {
-                                        if (dayOfTheWeek.equalsIgnoreCase("Friday")) {
-                                            talkNow.setChecked(true);
-                                            talkNow.setSelected(true);
+                                        else if (info.getInt("friday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Friday")) {
+                                                talkNow.setChecked(true);
+                                                talkNow.setSelected(true);
+                                                Log.e("availability", "yes");
+                                            }
                                         }
-                                    }
-                                    if (info.getInt("saturday") == 1) {
-                                        if (dayOfTheWeek.equalsIgnoreCase("Saturday")) {
-                                            talkNow.setChecked(true);
-                                            talkNow.setSelected(true);
+                                        else if (info.getInt("saturday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Saturday")) {
+                                                talkNow.setChecked(true);
+                                                talkNow.setSelected(true);
+                                                Log.e("availability", "yes");
+                                            }
+                                        }
+                                        else {
+                                            Log.e("availability", "No");
                                         }
                                     }
 
@@ -411,7 +447,22 @@ public class SettingFlyout extends AppCompatActivity {
                 Volley.newRequestQueue(getApplicationContext()).add(sr);
             }
 
-        }
+        }*/
+
+       /* setTalknow(Boolean.parseBoolean(*/
+
+        Timer timer = new Timer ();
+        TimerTask hourlyTask = new TimerTask () {
+            @Override
+            public void run () {
+                // your code here...
+                TalkNow(pref,getApplicationContext());
+            }
+        };
+
+// schedule the task to run starting now and then every hour...
+        timer.schedule (hourlyTask, 0l, 5000);
+
 
         final FragmentStack fragmentStack = FragmentStack.getInstance();
         final TTL ttl = (TTL) getApplicationContext();
@@ -660,9 +711,148 @@ public class SettingFlyout extends AppCompatActivity {
 
 
     }
+  /*  public void setTalknow(boolean T){
+        if (T) {
+            talkNow.setChecked(true);
+            talkNow.setSelected(true);
+        }
+    }*/
 
 
-    public void count() {
+    public void TalkNow(SharedPreferences pref, final Context context){
+
+
+        if (pref.getInt("roleId", 0) != 0) {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+            Date x1 = new Date();
+            final String dayOfTheWeek = sdf.format(x1);
+            Log.e("today dayofweek", dayOfTheWeek);
+
+            String url1 = "https://www.thetalklist.com/api/tutor_availability_info?uid=" + pref.getInt("id", 0);
+
+            StringRequest sr = new StringRequest(Request.Method.POST, url1, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+//                Toast.makeText(getContext(), "Response "+response, Toast.LENGTH_SHORT).show();
+                    Log.e("response availablity ", response);
+                    try {
+                        JSONObject res = new JSONObject(response);
+                        if (res.getInt("status") == 0) {
+
+                            JSONObject info = res.getJSONObject("info");
+
+
+                                String string1 = info.getString("start_time");
+                                if (string1.contains("AM")) {
+                                    string1 = string1.replace(" AM", "");
+                                } else if (string1.contains("PM")) {
+                                    string1 = string1.replace(" PM", "PM");
+                                    Log.e("start time hours", string1);
+                                    String hx = string1.substring(0, string1.indexOf(":"));
+                                    String remainder = string1.substring(string1.indexOf(":") + 1, string1.length());
+                                    if (Integer.parseInt(hx) < 12)
+                                        string1 = String.valueOf(Integer.parseInt(hx) + 12) + ":" + remainder;
+                                    else if (Integer.parseInt(hx) == 12)
+                                        string1 = String.valueOf(Integer.parseInt(hx)) + ":" + remainder;
+                                    string1 = string1.replace("PM", "");
+                                }
+
+                                String string2 = info.getString("end_time");
+                                if (string2.contains("AM")) {
+                                    string2 = string2.replace(" AM", "");
+                                } else if (string2.contains("PM")) {
+                                    string2 = string2.replace(" PM", "PM");
+                                    String hx = string2.substring(0, string2.indexOf(":"));
+                                    String remainder = string2.substring(string2.indexOf(":") + 1, string2.length());
+                                    if (Integer.parseInt(hx) < 12)
+                                        string2 = String.valueOf(Integer.parseInt(hx) + 12) + ":" + remainder;
+                                    else if (Integer.parseInt(hx) == 12)
+                                        string2 = String.valueOf(Integer.parseInt(hx)) + ":" + remainder;
+
+                                    string2 = string2.replace("PM", "");
+                                }
+
+
+                                Log.e("day of week", dayOfTheWeek);
+                                Log.e("start time", string1);
+                                Log.e("end time", string2);
+                               int to= Integer.parseInt(string1.replace(":",""));
+                               int from= Integer.parseInt(string2.replace(":",""));
+                            Log.e("to", String.valueOf(to));
+                            Log.e("from", String.valueOf(from));
+                                Date date = new Date();
+                                Calendar c = Calendar.getInstance();
+                                c.setTime(date);
+                                int t = c.get(Calendar.HOUR_OF_DAY) * 100 + c.get(Calendar.MINUTE);
+                            Log.e("cur", String.valueOf(t));
+
+                                if (to<=t && t<=from) {
+                                    //checkes whether the current time is between 14:49:00 and 20:11:13.
+                                        Log.e("in if condition","yes");
+
+                                        if (info.getInt("sunday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
+                                                talkNow.setChecked(true);
+                                                Log.e("availability", "yes");
+                                            }
+
+                                        } else if (Integer.parseInt(info.getString("monday")) == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Bonday")) {
+                                                talkNow.setChecked(true);
+                                                Log.e("availability", "yes");
+                                            }
+                                        } else if (info.getInt("tuesday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Tuesday")) {
+                                                talkNow.setChecked(true);
+                                                Log.e("availability", "yes");
+                                            }
+                                        } else if (info.getInt("wednesday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Wednesday")) {
+                                                talkNow.setChecked(true);
+                                                Log.e("availability", "yes");
+                                            }
+                                        } else if (info.getInt("thursday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Thursday")) {
+                                                talkNow.setChecked(true);
+                                                Log.e("availability", "yes");
+                                            }
+                                        } else if (info.getInt("friday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Friday")) {
+                                                talkNow.setChecked(true);
+                                                Log.e("availability", "yes");
+                                            }
+                                        } else if (info.getInt("saturday") == 1) {
+                                            if (dayOfTheWeek.equalsIgnoreCase("Saturday")) {
+                                                talkNow.setChecked(true);
+                                                Log.e("availability", "yes");
+                                            }
+                                        } else {
+                                            Log.e("availability", "No");
+                                        }
+                                    }
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, "error " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            Volley.newRequestQueue(context).add(sr);
+        }
+    }
+
+
+
+   /* public void count() {
         String URL = "https://www.thetalklist.com/api/count_messages?sender_id=" + getSharedPreferences("loginStatus", MODE_PRIVATE).getInt("id", 0);
         StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
@@ -689,7 +879,7 @@ public class SettingFlyout extends AppCompatActivity {
             }
         });
         Volley.newRequestQueue(getApplicationContext()).add(sr);
-    }
+    }*/
 
     public void setFragmentByVideoCall(Fragment fragmentByVideoCall) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -747,8 +937,8 @@ public class SettingFlyout extends AppCompatActivity {
 
 
             SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-            SharedPreferences.Editor prefEdit=pref.edit();
-            prefEdit.putString("firebase id",refreshedToken).apply();
+            SharedPreferences.Editor prefEdit = pref.edit();
+            prefEdit.putString("firebase id", refreshedToken).apply();
             firebase_regId = refreshedToken;
             Log.e("firebase reg id 1111111", "Firebase reg id: " + refreshedToken);
 
@@ -1245,6 +1435,7 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
 
     @Override
     public void onBackPressed() {
+
 
 
         ((ImageView) findViewById(R.id.imageView11)).setImageDrawable(getResources().getDrawable(R.drawable.favoritestar_settingflyout));

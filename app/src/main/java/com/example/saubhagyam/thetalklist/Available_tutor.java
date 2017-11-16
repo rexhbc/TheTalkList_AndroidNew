@@ -53,6 +53,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.saubhagyam.thetalklist.Decorations.DividerItemDecoration;
+import com.example.saubhagyam.thetalklist.Services.LoginService;
 
 
 import org.json.JSONArray;
@@ -326,68 +327,79 @@ public class Available_tutor extends Fragment {
 
         }else
         {
-            if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f)< 3.0f) {
-                if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("roleId", 0)==0) {
+
+            final SharedPreferences loginPref=getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
+            LoginService loginService=new LoginService();
+            loginService.login(loginPref.getString("email",""),loginPref.getString("pass",""),getContext());
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run(){
+                    if (loginPref.getFloat("money", 0.0f)< 3.0f) {
+                        if (loginPref.getInt("roleId", 0)==0) {
 //                Toast.makeText(getContext(), "less than 3 credits", Toast.LENGTH_SHORT).show();
 
 //            LayoutInflater layoutInflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    View view3 = inflater.inflate(R.layout.talknow_criticalcredit, null);
+                            View view3 = inflater.inflate(R.layout.talknow_criticalcredit, null);
 
-                    final PopupWindow popupWindow7 = new PopupWindow(view3, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                    popupWindow7.showAtLocation(inflater.inflate(R.layout.fragment_available_tutor, container, false), Gravity.CENTER, 0, 0);
-                            }catch (WindowManager.BadTokenException e){
-                                Toast.makeText(getApplicationContext(),"Token null", Toast.LENGTH_SHORT).show();
-                            }
-                            return;
-
-                        }
-                    }, 3000);
+                            final PopupWindow popupWindow7 = new PopupWindow(view3, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
 
 
-                    popupWindow7.setFocusable(true);
-                    popupWindow7.setOutsideTouchable(false);
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        popupWindow7.showAtLocation(inflater.inflate(R.layout.fragment_available_tutor, container, false), Gravity.CENTER, 0, 0);
+                                    }catch (WindowManager.BadTokenException e){
+                                        Toast.makeText(getApplicationContext(),"Token null", Toast.LENGTH_SHORT).show();
+                                    }
+                                    return;
+
+                                }
+                            }, 3);
 
 
-                    Button okButton = (Button) view3.findViewById(R.id.talknow_ok);
-                    Button buyCredits = (Button) view3.findViewById(R.id.talknow_buycredits);
-                    TextView tv = (TextView) view3.findViewById(R.id.talknow_text);
+                            popupWindow7.setFocusable(true);
+                            popupWindow7.setOutsideTouchable(false);
+
+
+                            Button okButton = (Button) view3.findViewById(R.id.talknow_ok);
+                            Button buyCredits = (Button) view3.findViewById(R.id.talknow_buycredits);
+                            TextView tv = (TextView) view3.findViewById(R.id.talknow_text);
 
 //                final int min = (int) (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) / credit);
 
 
-                    tv.setText("Your credits are low.\n" +
-                            "Need more?");
+                            tv.setText("Your credits are low.\n" +
+                                    "Need more?");
 
-                    okButton.setText("Yes");
+                            okButton.setText("Yes");
 
-                    okButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow7.dismiss();
-                            FragmentStack.getInstance().push(new Available_tutor());
-                            fragmentManager.beginTransaction().replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
+                            okButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    popupWindow7.dismiss();
+                                    FragmentStack.getInstance().push(new Available_tutor());
+                                    fragmentManager.beginTransaction().replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
 
 
+                                }
+                            });
+
+                            buyCredits.setText("No");
+
+                            buyCredits.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    popupWindow7.dismiss();
+
+                                }
+                            });
                         }
-                    });
-
-                    buyCredits.setText("No");
-
-                    buyCredits.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow7.dismiss();
-
-                        }
-                    });
+                    }
                 }
-            }
+            }, 3000);
+
         }
 
         linearLayout = (LinearLayout) view.findViewById(R.id.AvailableTutor_ProgressBar);

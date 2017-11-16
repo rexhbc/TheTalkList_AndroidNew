@@ -373,7 +373,8 @@ public class Login extends Activity {
 
                                 }/* else if (status == 10 && pref.getString("firebase id","").equals(jsonObject.getString("firebase_id"))){
 
-                                }*/
+                                }/**/
+
                                 else if (status == 10 && !pref.getString("firebase id","").equals(jsonObject.getString("firebase_id"))){
 
                                     View view3 = LayoutInflater.from(getApplicationContext()).inflate(R.layout.talknow_criticalcredit, null);

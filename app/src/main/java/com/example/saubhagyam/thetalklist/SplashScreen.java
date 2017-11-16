@@ -287,7 +287,8 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
 
             SplashRootView = (LinearLayout) findViewById(R.id.SplashRootView);
 
-
+            final SharedPreferences firebase_pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+            final SharedPreferences.Editor prefEdit=firebase_pref.edit();
             if (pref.contains("user") && pref.getString("LoginWay", "").equals("InternalLogin")) {
 
 
@@ -323,68 +324,79 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
                                     dialog.dismiss();
 
                             }
-                            if (status==10){
-                                editor.clear().apply();
-                                Intent i = new Intent(getApplicationContext(), Login.class);
-                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(i);
+                          else if (status==10 && !firebase_pref.getString("firebase id","").equals(jsonObject.getString("firebase_id"))){
+                                    Toast.makeText(splashScreen, "firebase id different", Toast.LENGTH_SHORT).show();
+                                    editor.clear().apply();
+                                prefEdit.clear().apply();
+                                    Intent i = new Intent(getApplicationContext(), Login.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
                             }
-                            if (status == 0) {
+                            /*if (status == 0)*/ else if (status==0 ){
 
-                                JSONObject resultObj = (JSONObject) jsonObject.get("result");
-                                int roleId = resultObj.getInt("roleId");
-                                String UserName = (String) resultObj.get("username");
-                                editor.putString("loginResponse", response);
-                                editor.putString("user", UserName);
-                                editor.putInt("roleId", roleId);
-                                editor.putBoolean("logSta", true);
-                                editor.putInt("userId", resultObj.getInt("id"));
-                                editor.putString("credit_balance", resultObj.getString("credit_balance"));
-                                editor.putString("usernm", resultObj.getString("usernm"));
-                                editor.putString("pic", resultObj.getString("pic"));
-                                editor.putString("firstName", resultObj.getString("firstName"));
-                                editor.putString("lastName", resultObj.getString("lastName"));
-                                editor.putString("city", resultObj.getString("city"));
-                                editor.putString("nativeLanguage", resultObj.getString("nativeLanguage"));
-                                editor.putString("otherLanguage", resultObj.getString("otherLanguage"));
-                                editor.putInt("id", resultObj.getInt("id"));
-                                editor.putInt("gender", resultObj.getInt("gender"));
-                                editor.putInt("country", resultObj.getInt("country"));
-                                editor.putInt("province", resultObj.getInt("province"));
-                                editor.putString("cell", resultObj.getString("cell"));
-                                editor.putFloat("hRate", Float.parseFloat(resultObj.getString("hRate")));
-                                if (resultObj.getString("avgRate").equals(""))
-                                    editor.putFloat("avgRate", 0.0f);
-                                else
-                                    editor.putFloat("avgRate", Float.parseFloat(resultObj.getString("avgRate")));
+//                                if (firebase_pref.getString("firebase id","").equals(jsonObject.getString("firebase_id"))) {
+//                                Toast.makeText(splashScreen, "firebase id same", Toast.LENGTH_SHORT).show();
+                                    JSONObject resultObj = (JSONObject) jsonObject.get("result");
+                                    int roleId = resultObj.getInt("roleId");
+                                    String UserName = (String) resultObj.get("username");
+                                    editor.putString("loginResponse", response);
+                                    editor.putString("user", UserName);
+                                    editor.putInt("roleId", roleId);
+                                    editor.putBoolean("logSta", true);
+                                    editor.putInt("userId", resultObj.getInt("id"));
+                                    editor.putString("credit_balance", resultObj.getString("credit_balance"));
+                                    editor.putString("usernm", resultObj.getString("usernm"));
+                                    editor.putString("pic", resultObj.getString("pic"));
+                                    editor.putString("firstName", resultObj.getString("firstName"));
+                                    editor.putString("lastName", resultObj.getString("lastName"));
+                                    editor.putString("city", resultObj.getString("city"));
+                                    editor.putString("nativeLanguage", resultObj.getString("nativeLanguage"));
+                                    editor.putString("otherLanguage", resultObj.getString("otherLanguage"));
+                                    editor.putInt("id", resultObj.getInt("id"));
+                                    editor.putInt("gender", resultObj.getInt("gender"));
+                                    editor.putInt("country", resultObj.getInt("country"));
+                                    editor.putInt("province", resultObj.getInt("province"));
+                                    editor.putString("cell", resultObj.getString("cell"));
+                                    editor.putFloat("hRate", Float.parseFloat(resultObj.getString("hRate")));
+                                    if (resultObj.getString("avgRate").equals(""))
+                                        editor.putFloat("avgRate", 0.0f);
+                                    else
+                                        editor.putFloat("avgRate", Float.parseFloat(resultObj.getString("avgRate")));
 
-                                if (resultObj.getString("ttl_points").equals(""))
-                                    editor.putFloat("ttl_points", 0.0f);
-                                else
-                                    editor.putFloat("ttl_points", Float.parseFloat(resultObj.getString("ttl_points")));
-                                editor.putInt("status", 0);
-                                editor.putFloat("money", Float.parseFloat(resultObj.getString("money")));
-                                editor.putFloat("frMoney", (float) resultObj.getDouble("frMoney"));
-                                editor.putString("email", resultObj.getString("email"));
-                                editor.apply();
-                                Log.e("result obj", resultObj.toString());
+                                    if (resultObj.getString("ttl_points").equals(""))
+                                        editor.putFloat("ttl_points", 0.0f);
+                                    else
+                                        editor.putFloat("ttl_points", Float.parseFloat(resultObj.getString("ttl_points")));
+                                    editor.putInt("status", 0);
+                                    editor.putFloat("money", Float.parseFloat(resultObj.getString("money")));
+                                    editor.putFloat("frMoney", (float) resultObj.getDouble("frMoney"));
+                                    editor.putString("email", resultObj.getString("email"));
+                                    editor.apply();
+                                    Log.e("result obj", resultObj.toString());
 
-                                SharedPreferences sharedPreferences = getSharedPreferences("roleAndStatus", 0);
-                                SharedPreferences.Editor editor1 = sharedPreferences.edit();
-                                editor1.putInt("roleId", roleId);
-                                editor1.apply();
-
-
+                                    SharedPreferences sharedPreferences = getSharedPreferences("roleAndStatus", 0);
+                                    SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                                    editor1.putInt("roleId", roleId);
+                                    editor1.apply();
 
 
-                                Intent i = new Intent(getApplicationContext(), SettingFlyout/*navigationDrawer*/.class);
-                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                i.putExtra("status", 0);
-                                i.putExtra("roleId", roleId);
-                                i.putExtra("username", UserName);
-                                startActivity(i);
-                                if (dialog!=null)
-                                    dialog.dismiss();
+                                    Intent i = new Intent(getApplicationContext(), SettingFlyout/*navigationDrawer*/.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    i.putExtra("status", 0);
+                                    i.putExtra("roleId", roleId);
+                                    i.putExtra("username", UserName);
+                                    startActivity(i);
+                                    if (dialog != null)
+                                        dialog.dismiss();
+                                /* }
+                               else {
+                                    Toast.makeText(splashScreen, "firebase id different", Toast.LENGTH_SHORT).show();
+                                    editor.clear().apply();
+                                    prefEdit.clear().apply();
+                                    Intent i = new Intent(getApplicationContext(), Login.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
+                                }*/
                             }
 
                         } catch (JSONException e) {

@@ -81,7 +81,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
     EmojiconEditText message_editText_msg;
     EmojiconTextView user_msg, sender_msg;
     LinearLayout senderLayout, userLayout;
-    ImageView message_sendBtn, message_searchBtn, senderImg, userImg, message_onetoone_backbtn;
+    ImageView message_sendBtn, message_searchBtn, senderImg, userImg/*, message_onetoone_backbtn*/;
     public RecyclerView recyclerView;
     public List<MessageModel> messageModelList;
     public MessageRecyclarAdapter messageRecyclarAdapter;
@@ -91,6 +91,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
     int sender_id;
     String sender_name;
     RequestQueue queue, queue1;
+    TextView chat_header;
 
     public MessageOneToOne() {
     }
@@ -132,6 +133,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                         dialog.dismiss();
                         JSONArray msgAry = jsonObject.getJSONArray("messages");
                         String pic = jsonObject.getString("tutor_pic");
+                        chat_header.setText(jsonObject.getString("tutor_name"));
                         if (msgAry.length() == 0) {
 
                         } else {
@@ -142,17 +144,18 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                                 messageModel.setMsg_text(msgObj.getString("message"));
                                 messageModel.setSender_id(msgObj.getInt("user_id"));
                                 messageModel.setSender_name(msgObj.getString("user_name"));
+                                messageModel.setTime(msgObj.getString("time"));
                                 messageModelList.add(0, messageModel);
                             }
                             recyclerView.setLayoutManager(mLayoutManager);
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                            recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
                             recyclerView.removeAllViews();
-//                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, pic);
+                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, pic);
                             Log.e("locale android ", new TTL().getUserCountry(getContext()));
 
 
-                            try {
+                            /*try {
                                 JSONArray timeZoneObj=new JSONArray(new TTL().json);
 
                                 for (int i=0;i<timeZoneObj.length();i++){
@@ -184,7 +187,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            }
+                            }*/
                             recyclerView.setAdapter(messageRecyclarAdapter);
                             messageRecyclarAdapter.notifyDataSetChanged();
                         }
@@ -220,6 +223,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
         message_editText_msg = (EmojiconEditText) view.findViewById(R.id.message_editText_msg);
         message_sendBtn = (ImageView) view.findViewById(R.id.message_sendBtn);
         message_searchBtn = (ImageView) view.findViewById(R.id.message_searchBtn);
+        chat_header = (TextView) view.findViewById(R.id.chat_header);
 
         messageModelList = new ArrayList<>();
         Collections.reverse(messageModelList);
@@ -279,7 +283,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
         userImg = (ImageView) msgDisplayLayoutview.findViewById(R.id.chat_user_img);
         sender_msg = (EmojiconTextView) msgDisplayLayoutview.findViewById(R.id.chat_sender_text);
         user_msg = (EmojiconTextView) msgDisplayLayoutview.findViewById(R.id.chat_user_text);
-        message_onetoone_backbtn = (ImageView) view.findViewById(R.id.message_onetoone_backbtn);
+//        message_onetoone_backbtn = (ImageView) view.findViewById(R.id.message_onetoone_backbtn);
 
         /*{
             String URL = "https://www.thetalklist.com/api/count_messages?sender_id=" + loginPref.getInt("id", 0);
@@ -334,6 +338,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                                 JSONObject jsonObject = new JSONObject(response);
                                 if (jsonObject.getInt("status") == 0) {
                                     JSONArray msgAry = jsonObject.getJSONArray("messages");
+                                    chat_header.setText(jsonObject.getString("tutor_name"));
                                     String pic = jsonObject.getString("tutor_pic");
                                     if (msgAry.length() == 0) {
                                     } else {
@@ -351,11 +356,11 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                                         recyclerView.setLayoutManager(mLayoutManager);
                                         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                                        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
-//                                        messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
+                                        messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
                                         Log.e("locale android ", new TTL().getUserCountry(getContext()));
 
 
-                                        try {
+                                       /* try {
                                             JSONArray timeZoneObj=new JSONArray(new TTL().json);
 
                                             for (int i=0;i<timeZoneObj.length();i++){
@@ -387,7 +392,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
 
                                         } catch (JSONException e) {
                                             e.printStackTrace();
-                                        }
+                                        }*/
                                         recyclerView.setAdapter(messageRecyclarAdapter);
                                         messageRecyclarAdapter.notifyDataSetChanged();
                                     }
@@ -476,6 +481,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                     if (jsonObject.getInt("status") == 0) {
                         JSONArray msgAry = jsonObject.getJSONArray("messages");
                         String pic = jsonObject.getString("tutor_pic");
+                        chat_header.setText(jsonObject.getString("tutor_name"));
                         if (msgAry.length() == 0) {
 //                            dialog.dismiss();
                         } else {
@@ -492,11 +498,11 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                             recyclerView.setLayoutManager(mLayoutManager);
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                            recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
-//                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
+                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
                             Log.e("locale android ", new TTL().getUserCountry(getContext()));
 
 
-                            try {
+                           /* try {
                                 JSONArray timeZoneObj=new JSONArray(new TTL().json);
 
                                 for (int i=0;i<timeZoneObj.length();i++){
@@ -528,7 +534,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            }
+                            }*/
                             recyclerView.setAdapter(messageRecyclarAdapter);
                             messageRecyclarAdapter.notifyDataSetChanged();
 //                            dialog.dismiss();
@@ -599,7 +605,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
             }
         });
 
-        message_onetoone_backbtn.setOnClickListener(new View.OnClickListener() {
+       /* message_onetoone_backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -608,7 +614,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 getActivity().onBackPressed();
             }
-        });
+        });*/
 
     }
     String op;
@@ -660,6 +666,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                                     if (jsonObject.getInt("status") == 0) {
                                         JSONArray msgAry = jsonObject.getJSONArray("messages");
                                         String pic = jsonObject.getString("tutor_pic");
+                                        chat_header.setText(jsonObject.getString("tutor_name"));
                                         if (msgAry.length() == 0) {
 
                                         } else {
@@ -681,7 +688,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                                             Log.e("locale android ", new TTL().getUserCountry(getContext()));
 
 
-                                            try {
+                                            /*try {
                                                 JSONArray timeZoneObj=new JSONArray(new TTL().json);
 
                                                 for (int i=0;i<timeZoneObj.length();i++){
@@ -713,7 +720,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
 
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
-                                            }
+                                            }*/
 
                                             recyclerView.setAdapter(messageRecyclarAdapter);
                                             messageRecyclarAdapter.notifyDataSetChanged();
