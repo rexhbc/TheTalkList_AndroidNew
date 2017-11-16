@@ -75,7 +75,7 @@
                 android:hint=" Enter Title"
                 android:maxLength="40"
                 android:padding="14dp"
-                android:textSize="14.8dp" />
+                android:textSize="14dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                 android:backgroundTint="#00000000"
                 android:hint=" Enter Description"
                 android:padding="15dp"
-                android:textSize="14.8dp" />
+                android:textSize="14dp" />
 
             <View
                 android:layout_width="match_parent"
