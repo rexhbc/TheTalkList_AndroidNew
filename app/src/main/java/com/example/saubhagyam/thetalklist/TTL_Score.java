@@ -208,7 +208,7 @@ public class TTL_Score extends Fragment {
                                         ttl_score_count.setText("200.0");
                                         ttl_score_needed.setVisibility(View.VISIBLE);
                                     } else {
-                                        main_credit.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("total_points")))));
+                                        main_credit.setText(String.valueOf(Integer.parseInt(String.valueOf(obj.getInt("total_points")))));
                                         ttl_score_count.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("total_points")))));
                                         if (obj.getDouble("total_points") < 200) {
 
@@ -269,8 +269,8 @@ public class TTL_Score extends Fragment {
                                         ttl_score_count.setText("200.0");
                                         ttl_score_needed.setVisibility(View.VISIBLE);
                                     } else {
-                                        ttl_score_count.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("total_points")))));
-                                        main_credit.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("total_points")))));
+                                        ttl_score_count.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getInt("total_points")))));
+                                        main_credit.setText(String.valueOf(Integer.parseInt(String.valueOf(obj.getInt("total_points")))));
                                         if (obj.getDouble("total_points") < 200) {
                                             redeem_travel.setClickable(false);
                                             redeem_free_session.setClickable(false);

@@ -73,6 +73,8 @@ public class New_videocall_activity extends AppCompatActivity
     // Suppressing this warning. mWebServiceCoordinator will get GarbageCollected if it is local.
     @SuppressWarnings("FieldCanBeLocal")
 
+    int call_end_bit;
+
     private Session mSession;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
@@ -448,19 +450,23 @@ finish();
 
                             t.cancel();
 
+                    call_end_bit=1;
 
+                    if (!i.getStringExtra("from").
+
+                            equalsIgnoreCase("callActivity")) {
 
                         String URL2 = "https://www.thetalklist.com/api/total_cost?cid=" + preferences.getInt("classId", 0) + "&amount=" + getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f) + "&time=" + TimeCount;
 
-                        Log.e("total cost url",URL2);
+                        Log.e("total cost url", URL2);
 
                         StringRequest sr = new StringRequest(Request.Method.POST, URL2, new Response.Listener<String>() {
                             @Override
                             public void onResponse(final String response) {
-                                Log.e("total cost response",response);
+                                Log.e("total cost response", response);
+
 
 //                                mNotificationManager.cancel(200);
-
 
 
                             }
@@ -472,8 +478,7 @@ finish();
                         });
                         sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         Volley.newRequestQueue(getApplicationContext()).add(sr);
-//                    }
-
+                    }
 
 
 
@@ -634,11 +639,19 @@ finish();
 
 //                mNotificationManager.cancel(200);
 
-                ttl.isCall=false;
+                if (!i.getStringExtra("from").equalsIgnoreCase("callActivity") &&  call_end_bit==0){
+                    callEnd.performClick();
+                }
+
+
+
+
+                    ttl.isCall=false;
                 LoginService loginService=new LoginService();
                 loginService.login(pref.getString("email",""),pref.getString("pass",""),getApplicationContext());
 
                 if (i.getStringExtra("from").equalsIgnoreCase("callActivity")) {
+
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

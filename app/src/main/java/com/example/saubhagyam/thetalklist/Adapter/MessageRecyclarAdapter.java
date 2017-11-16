@@ -151,8 +151,8 @@ public class MessageRecyclarAdapter extends RecyclerView.Adapter<MessageRecyclar
                 String h= new SimpleDateFormat("HH", Locale.US).format(date_txt); // 9:00
                 String m= new SimpleDateFormat("mm", Locale.US).format(date_txt); // 9:00
 
-                hour=Integer.parseInt(h)+Integer.parseInt(hr)+8;
-                int minf=Integer.parseInt(m)+Integer.parseInt(min);
+                hour=Integer.parseInt(h)/*+Integer.parseInt(hr)+8*/;
+                int minf=Integer.parseInt(m)/*+Integer.parseInt(min)*/;
 
 
                 if (hour>24){
