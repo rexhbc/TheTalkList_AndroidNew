@@ -113,7 +113,6 @@
                                         android:minHeight="5dp"
                                         android:numStars="5"
                                         android:progressTint="@color/yellow" />
-                                    <!--style="@style/customRatingBar"-->
 
                                 </LinearLayout>
 
