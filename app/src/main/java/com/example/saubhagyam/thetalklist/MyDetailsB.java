@@ -1008,7 +1008,7 @@ public class MyDetailsB extends Fragment {
                 }
             });
             sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            Volley.newRequestQueue(getContext()).add(sr);
+            Volley.newRequestQueue(getActivity()).add(sr);
         }
 
     }

@@ -164,6 +164,7 @@ public class Video_Play extends Fragment {
     JSONObject jsonObject;
 
     String imageUrl;
+    int uid;
 
     //exo player over
 
@@ -188,12 +189,13 @@ public class Video_Play extends Fragment {
             name = jsonObject.getString("name");
             desc = jsonObject.getString("desc");
             source = "https://www.thetalklist.com/uploads/video/" + jsonObject.getString("source");
-            imageUrl = "https://www.thetalklist.com/uploads/image/" + jsonObject.getString("source")+".jpg";
+            imageUrl = "https://www.thetalklist.com/uploads/image/" + jsonObject.getString("source") + ".jpg";
 //            source = "https://www.thetalklist.com/uploads/video/" + source;
             Log.e("source", source);
             Log.e("play objrct", jsonObject.toString());
             views = jsonObject.getInt("likes");
             id = jsonObject.getInt("id");
+            uid=jsonObject.getInt("uid");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -342,8 +344,6 @@ public class Video_Play extends Fragment {
         });
 
 
-
-
         return view;
     }
 
@@ -411,12 +411,12 @@ public class Video_Play extends Fragment {
                 getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0) + "&vid=" + id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("view count respo",response);
-                Log.e("view count url","https://www.thetalklist.com/api/video_views?uid=" +
+                Log.e("view count respo", response);
+                Log.e("view count url", "https://www.thetalklist.com/api/video_views?uid=" +
                         getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0) + "&vid=" + id);
                 try {
-                    JSONObject obj=new JSONObject(response);
-                    if (obj.getInt("status")!=0){
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.getInt("status") != 0) {
                         Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -564,7 +564,7 @@ public class Video_Play extends Fragment {
 
 
     VideoListAdapter videoListAdapter;
-    Bitmap image ;
+    Bitmap image;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -651,8 +651,8 @@ public class Video_Play extends Fragment {
 
 
                 ShareLinkContent content = new ShareLinkContent.Builder()
-                        .setContentUrl(Uri.parse("https://www.thetalklist.com/en/search/videosearch/?v="+id))
-                        .setImageUrl(Uri.parse(source+".jpg"))
+                        .setContentUrl(Uri.parse("https://www.thetalklist.com/en/search/videosearch/?v=" + id))
+                        .setImageUrl(Uri.parse(source + ".jpg"))
                         .build();
                 ShareDialog.show(getActivity(), content);
 
@@ -661,83 +661,61 @@ public class Video_Play extends Fragment {
 
         SharedPreferences chatPref = getContext().getSharedPreferences("chatPref", Context.MODE_PRIVATE);
         final SharedPreferences.Editor chatPrefEditor = chatPref.edit();
-        videoPlay_msgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (getContext().getSharedPreferences("loginStatus",Context.MODE_PRIVATE).getInt("id",0)!=jsonObject.getInt("uid")) {
-                        String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" + jsonObject.getInt("uid");
-                        Log.e("url", url);
-                        StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.e("tutor details", response);
-
-                                try {
-                                    JSONObject obj = new JSONObject(response);
-                                    if (obj.getInt("status") == 0) {
-
-                                        JSONArray ary = obj.getJSONArray("tutor");
-                                        final JSONObject o = ary.getJSONObject(0);
-
-                                        tutorName = o.getString("firstName");
-                                        int id = o.getInt("id");
-
-                                        MessageOneToOne messageList = new MessageOneToOne();
-                                        chatPrefEditor.putString("firstName", tutorName);
-                                        chatPrefEditor.putInt("receiverId", id).apply();
-                                        TTL ttl = (TTL) getContext().getApplicationContext();
-                                        ttl.ExitBit = 1;
-                                        fragmentStack.push(new Video_Play());
-                                        fragmentTransaction.replace(R.id.viewpager, messageList).commit();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        });
-                        Volley.newRequestQueue(getContext()).add(sr);
-                    }
-                    else Toast.makeText(getContext(), "You can not chat with yourself.", Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
         final SharedPreferences preferences = getContext().getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
-        videoPlay_VideoCallBtn.setOnClickListener(new View.OnClickListener()
 
-        {
-            @Override
-            public void onClick(View v) {
+//        try {
+
+            String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" + uid;
+            Log.e("url", url);
+            StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e("tutor details", response);
+
+                    try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.getInt("status") == 0) {
+
+                        JSONArray ary = obj.getJSONArray("tutor");
+                        final JSONObject o = ary.getJSONObject(0);
+
+                        tutorName = o.getString("firstName");
+                        credit = Float.parseFloat(String.valueOf(o.getDouble("hRate")));
+                        final int id = o.getInt("id");
 
 
-                try {
-                    if (getContext().getSharedPreferences("loginStatus",Context.MODE_PRIVATE).getInt("id",0)!=jsonObject.getInt("uid")) {
-                        String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" + jsonObject.getInt("uid");
-                        Log.e("url", url);
-                        StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        videoPlay_msgBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onResponse(String response) {
-                                Log.e("tutor details", response);
-                                try {
-                                    JSONObject obj = new JSONObject(response);
-                                    if (obj.getInt("status") == 0) {
+                            public void onClick(View v) {
+//                                    try {
+                                if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0) != uid) {
+                                    MessageOneToOne messageList = new MessageOneToOne();
+                                    chatPrefEditor.putString("firstName", tutorName);
+                                    chatPrefEditor.putInt("receiverId", id).apply();
+                                    TTL ttl = (TTL) getContext().getApplicationContext();
+                                    ttl.ExitBit = 1;
+                                    fragmentStack.push(new Video_Play());
+                                    fragmentTransaction.replace(R.id.viewpager, messageList).commit();
+                                } else
+                                    Toast.makeText(getContext(), "You can not chat with yourself.", Toast.LENGTH_SHORT).show();
+                                   /* } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }*/
+                            }
+                        });
 
 
-                                        JSONArray ary = obj.getJSONArray("tutor");
-                                        final JSONObject o = ary.getJSONObject(0);
-
-                                        tutorName = o.getString("firstName") + " ";
-                                        credit = Float.parseFloat(String.valueOf(o.getDouble("hRate")));
-
+                        if (o.getInt("readytotalk") == 0) {
+                            videoPlay_VideoCallBtn.setImageDrawable(getResources().getDrawable(R.drawable.disabled_video));
+                            videoPlay_VideoCallBtn.setClickable(false);
+                        } else {
+                            videoPlay_VideoCallBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+//                                    try {
+                                    if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0) != uid) {
                                         View view1 = LayoutInflater.from(getContext()).inflate(R.layout.talknow_confirmation_layout, null);
                                         final PopupWindow popupWindow = new PopupWindow(view1, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
                                         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -751,8 +729,8 @@ public class Video_Play extends Fragment {
                                         TextView confirmation_tutorCredits = (TextView) view1.findViewById(R.id.confirmation_tutorCredits);
                                         TextView confirmation_tutorName = (TextView) view1.findViewById(R.id.confirmation_tutorName);
 
-                                        confirmation_tutorName.setText(tutorName);
-                                        confirmation_tutorCredits.setText(new DecimalFormat("##.##").format(credit));
+                                        confirmation_tutorName.setText(tutorName + " ");
+                                        confirmation_tutorCredits.setText(new DecimalFormat("##.##").format(credit / 25));
 
 
                                         Button yesbtn = (Button) view1.findViewById(R.id.yesbtn);
@@ -815,6 +793,67 @@ public class Video_Play extends Fragment {
 
                                             }
                                         });
+                                    } else
+                                        Toast.makeText(getContext(), "You can not chat with yourself.", Toast.LENGTH_SHORT).show();
+                                  /*  } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }*/
+                                }
+                            });
+
+
+                        }
+                    }
+                    else {
+                        videoPlay_VideoCallBtn.setImageDrawable(getResources().getDrawable(R.drawable.disabled_video));
+                        videoPlay_VideoCallBtn.setClickable(false);
+                    }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            Volley.newRequestQueue(getContext()).add(sr);
+
+     /*   } catch (JSONException e) {
+            e.printStackTrace();
+        }
+*/
+
+
+      /*  videoPlay_VideoCallBtn.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View v) {
+
+
+                try {
+                    if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0) != jsonObject.getInt("uid")) {
+                        String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" + jsonObject.getInt("uid");
+                        Log.e("url", url);
+                        StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.e("tutor details", response);
+                                try {
+                                    JSONObject obj = new JSONObject(response);
+                                    if (obj.getInt("status") == 0) {
+
+
+                                        JSONArray ary = obj.getJSONArray("tutor");
+                                        final JSONObject o = ary.getJSONObject(0);
+
+                                        tutorName = o.getString("firstName") + " ";
+                                        credit = Float.parseFloat(String.valueOf(o.getDouble("hRate")));
+
+
                                     } else {
                                         Toast.makeText(getContext(), "This user is not tutor. You can not call a student user.", Toast.LENGTH_SHORT).show();
                                     }
@@ -830,13 +869,14 @@ public class Video_Play extends Fragment {
                             }
                         });
                         Volley.newRequestQueue(getContext()).add(sr);
-                    }else Toast.makeText(getContext(), "You can not call yourself.", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(getContext(), "You can not call yourself.", Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
     }
 
@@ -845,7 +885,6 @@ public class Video_Play extends Fragment {
     public void onPause() {
         super.onPause();
     }
-
 
 
 }

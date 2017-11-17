@@ -102,7 +102,7 @@ public class EarnCredits extends Fragment {
                 final String earn_credit_paypalEmail_str = earn_credit_paypalEmail.getText().toString();
                 final String earn_credit_paypalaamount_float = earn_credit_paypalammount.getText().toString();
                 final String id = String.valueOf(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0));
-                if (earn_credit_paypalEmail_str.equals("")) {
+//                if (earn_credit_paypalEmail_str.equals("")) {
 
                     if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) >= Float.parseFloat(earn_credit_paypalaamount_float)) {
 
@@ -181,7 +181,7 @@ public class EarnCredits extends Fragment {
                     } else {
                         Toast.makeText(getContext(), "You don't have enough credits.", Toast.LENGTH_SHORT).show();
                     }
-                }
+//                }
 
             }
         });

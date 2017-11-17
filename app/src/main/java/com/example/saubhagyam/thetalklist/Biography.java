@@ -349,7 +349,7 @@ public class Biography extends Fragment {
             Volley.newRequestQueue(getContext()).add(sr);
         }
 
-        rateLinearLayout.setOnClickListener(new View.OnClickListener() {
+        biography_rate_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (edit_bit == 0) {
@@ -593,6 +593,12 @@ public class Biography extends Fragment {
 
         final int height = biography_biographyfrag_layout.getHeight();
 
+
+        if (biography_biographyfrag_layout.getVisibility() == View.VISIBLE) {
+            biography_btn.setImageResource(R.drawable.down_aerrow);
+
+        }
+
         myBioLinearLayout.setOnClickListener(new View.OnClickListener()
 
         {
@@ -703,9 +709,9 @@ public class Biography extends Fragment {
 //                                biography_languages.setText(sub);
 
 
-                                biography_languages_webview.loadData(String.format(htmlText, "<html>\n" +
-                                        "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
-                                        "\t "+sub+"\n" +
+                                biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; color: #616A6B;  font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
+                                        "\t<body >"/*style=\"text-align:justify; font-size: 13px;\"*/ +
+                                        "\t <font color='#616A6B'>"+sub+"</font>\n" +
                                         "\t </body>\n" +
                                         "</Html>"), "text/html", "utf-8");
 //                            } else biography_languages.setText("");
@@ -714,9 +720,9 @@ public class Biography extends Fragment {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        biography_languages_webview.loadData(String.format(htmlText, "<html>\n" +
-                                "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
-                                "\t "+sub+"\n" +
+                        biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; color: #616A6B; font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
+                                "\t<body >"/*style=\"text-align:justify; font-size: 13px;\"*//*>\n"*/ +
+                                "\t <font color='#616A6B'>"+sub+"</font>\n" +
                                 "\t </body>\n" +
                                 "</Html>"), "text/html", "utf-8");
 
@@ -785,9 +791,9 @@ public class Biography extends Fragment {
                                     sub = sub + ", " + ar.getString(i);
                                 }
                             }
-                            biography_languages_webview.loadData(String.format(htmlText, "<html>\n" +
-                                    "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
-                                    "\t "+sub+"\n" +
+                            biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; color: #616A6B; font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
+                                    "\t<body >"/*style=\"text-align:justify; font-size: 13px;\">\n" */+
+                                    "\t <font color='#616A6B'>"+sub+"</font>\n" +
                                     "\t </body>\n" +
                                     "</Html>"), "text/html", "utf-8");
 //                            } else biography_languages.setText("");
@@ -796,9 +802,9 @@ public class Biography extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    biography_languages_webview.loadData(String.format(htmlText, "<html>\n" +
-                            "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
-                            "\t "+sub+"\n" +
+                    biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; color: #616A6B;  font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
+                            "\t<body >"/*style=\"text-align:justify; font-size: 13px;\">\n"*/ +
+                            "\t <font color='#616A6B'>"+sub+"</font>\n" +
                             "\t </body>\n" +
                             "</Html>"), "text/html", "utf-8");
 

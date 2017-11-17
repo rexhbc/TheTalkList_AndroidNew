@@ -1,79 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp">
 
-    
 
     <!-- To display picture taken -->
-
-
-    <TextView                 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Are you sure you want to upload this video?"
-        />
-    <ImageView
-        android:id="@+id/imgPreview"
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:visibility="gone" 
-        android:layout_marginTop="15dp"/>
-
-    <!-- Videoview to preview recorded video -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <VideoView
-            android:layout_weight="5"
-            android:id="@+id/videoPreview"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"/>
+            android:layout_weight="6"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Are you sure you want to upload this video?"
+                android:textSize="25dp" />
+
+            <VideoView
+                android:id="@+id/videoPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_weight="5" />
+        </LinearLayout>
+
         <ProgressBar
-            android:layout_marginTop="10dp"
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
             android:layout_height="20dp"
-            android:layout_marginBottom="35dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp"
+            android:visibility="visible" />
+        <TextView
+                android:layout_weight="1"
+            android:id="@+id/txtPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#000000"
+            android:text=""
+            android:textSize="20dp" />
+
+
         <Button
-            android:layout_weight="19"
             android:id="@+id/btnUpload"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:background="@color/colorPrimary"
+            android:gravity="center"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Upload"
-            android:textColor="@color/white"
-            android:layout_marginBottom="20dp"/>
+            android:textColor="@color/white" />
     </LinearLayout>
 
 
-    <TextView                 
-        android:id="@+id/txtPercentage"
-        android:layout_width="wrap_content"
+    <!-- Videoview to preview recorded video -->
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
-        android:textColor="#000000"
-        android:textSize="30dp" />
+        android:layout_alignParentBottom="true">
+
+
+    </LinearLayout>
 
 
 
 
-
-</LinearLayout>
+</RelativeLayout>

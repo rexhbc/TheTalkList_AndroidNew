@@ -68,6 +68,7 @@ import java.util.zip.Inflater;
 
 import at.blogc.android.views.ExpandableTextView;
 
+import static com.example.saubhagyam.thetalklist.R.array.sub;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -819,9 +820,9 @@ ImageView expanded_fullscreen;
                                 }
 //                                TutorExpanded_tutorin_languages.setText(sub);
                                 TutorExpanded_tutorin_languages_webview.setVisibility(View.VISIBLE);
-                                TutorExpanded_tutorin_languages_webview.loadData(String.format(htmlText, "<html>\n" +
-                                        "\t<body style=\"text-align:justify; font-size: 15px;\">\n" +
-                                        "\t "+sub+"\n" +
+                                TutorExpanded_tutorin_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; font-color:#616A6B;  font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
+                                        "\t<body >"/*style=\"text-align:justify; font-size: 13px;\"*/ +
+                                        "\t <font color='#616A6B'>"+sub+"</font>\n" +
                                         "\t </body>\n" +
                                         "</Html>"), "text/html", "utf-8");
                                 convertView.findViewById(R.id.TutorExpanded_tutorin_languages_progress).setVisibility(View.GONE);

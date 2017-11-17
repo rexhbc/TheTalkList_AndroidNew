@@ -246,7 +246,7 @@
                                         android:id="@+id/TutorExpanded_tutorin_languages_webview"
                                         android:layout_width="match_parent"
                                         android:layout_below="@+id/textView9"
-                                        android:layout_marginLeft="-3dp"
+                                        android:layout_marginLeft="-13dp"
                                         android:layout_gravity="fill_vertical"
                                         android:layout_centerHorizontal="true"
                                         android:gravity="start"
@@ -590,7 +590,7 @@
                                                 <RatingBar
                                                     android:id="@+id/TutorExpanded_review_ratingBar1"
                                                     style="?android:attr/ratingBarStyleSmall"
-                                                    android:layout_width="wrap_content"
+                                                    android:layout_width="80dp"
                                                     android:layout_height="wrap_content"
                                                     android:layout_margin="5dp"
                                                     android:clickable="false"
