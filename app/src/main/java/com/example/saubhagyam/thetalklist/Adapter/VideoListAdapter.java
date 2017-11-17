@@ -1,6 +1,7 @@
 package com.example.saubhagyam.thetalklist.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
@@ -10,16 +11,30 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.saubhagyam.thetalklist.Available_Tutor_Expanded;
+import com.example.saubhagyam.thetalklist.Available_tutor;
 import com.example.saubhagyam.thetalklist.FragmentStack;
+import com.example.saubhagyam.thetalklist.MessageOneToOne;
+import com.example.saubhagyam.thetalklist.New_videocall_activity;
 import com.example.saubhagyam.thetalklist.R;
+import com.example.saubhagyam.thetalklist.StripePaymentActivity;
 import com.example.saubhagyam.thetalklist.TTL;
 import com.example.saubhagyam.thetalklist.TabBackStack;
 import com.example.saubhagyam.thetalklist.VideoList;
@@ -29,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -58,8 +74,6 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
     }
 
 
-
-
     @Override
     public VideoListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_list_layout, parent, false);
@@ -78,21 +92,21 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
             String lastNAme = jsonObject.getString("lastName");
             final String source = jsonObject.getString("source");
             final int views = jsonObject.getInt("views");
-
+            final int uid=jsonObject.getInt("uid");
 
 
             holder.title.setText(name);
             holder.seen.setText(String.valueOf(views));
             holder.tutorName.setText(firstName + " " + lastNAme);
-                final String videoPath = "https://www.thetalklist.com/uploads/video/" + source+".jpg";
+            final String videoPath = "https://www.thetalklist.com/uploads/video/" + source + ".jpg";
 
-                Glide.with(context).load(videoPath).into(holder.videoThumb);
+            Glide.with(context).load(videoPath).into(holder.videoThumb);
             final JSONObject finalJsonObject = jsonObject;
-            holder.videoListLayout.setOnClickListener(new View.OnClickListener() {
+            holder.videoThumb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TTL ttl=(TTL) context.getApplicationContext();
-                    ttl.ExitBit=1;
+                    TTL ttl = (TTL) context.getApplicationContext();
+                    ttl.ExitBit = 1;
 
                     Video_Play video_play = new Video_Play();
                     /*bundle.putString("name", name);
@@ -103,18 +117,74 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
 //                    tabBackStack.setTabPosition(1);
 
                     preferences = getApplicationContext().getSharedPreferences("videoListResponse", Context.MODE_PRIVATE);
-                    editor=preferences.edit();
-                    editor.putInt("position",position).apply();
+                    editor = preferences.edit();
+                    editor.putInt("position", position).apply();
 
-                    SharedPreferences preferences=context.getSharedPreferences("videoPlaySelected",Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor=preferences.edit();
-                    editor.putString("responseArray",array.toString());
-                    editor.putString("response",finalJsonObject.toString()).apply();
+                    SharedPreferences preferences = context.getSharedPreferences("videoPlaySelected", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("responseArray", array.toString());
+                    editor.putString("response", finalJsonObject.toString()).apply();
 
                     FragmentStack fragmentStack = FragmentStack.getInstance();
                     fragmentStack.push(new VideoList());
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.viewpager, video_play).commit();
+                }
+            });
+
+            holder.tutorName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    String url = "https://www.thetalklist.com/api/tutor_info?tutor_id=" +uid;
+                    Log.e("url", url);
+                    StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.e("tutor details", response);
+
+                            try {
+                                JSONObject obj = new JSONObject(response);
+                                if (obj.getInt("status") == 0) {
+
+                                    JSONArray ary = obj.getJSONArray("tutor");
+                                    final JSONObject o = ary.getJSONObject(0);
+
+
+
+
+
+                                    final SharedPreferences preferences = context.getSharedPreferences("availableTutoeExpPref", Context.MODE_PRIVATE);
+                                    final SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("tutorName", o.getString("firstName")+" "+o.getString("lastName"));
+                                    editor.putInt("tutorRoleId", o.getInt("roleId"));
+                                    editor.putString("tutorPic", o.getString("pic"));
+                                    editor.putString("hRate", o.getString("hRate"));
+                                    editor.putString("avgRate", o.getString("avgRate"));
+                                    editor.putInt("tutorid", uid).apply();
+
+                                    FragmentStack.getInstance().push(new VideoList());
+                                    fragmentManager.beginTransaction().replace(R.id.viewpager,new Available_Tutor_Expanded()).commit();
+
+                                }
+
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+
+                        }
+
+                    }
+
+                            , new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    Volley.newRequestQueue(context).add(sr);
+
                 }
             });
 
@@ -124,7 +194,6 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
 
 
     }
-
 
 
     @Override

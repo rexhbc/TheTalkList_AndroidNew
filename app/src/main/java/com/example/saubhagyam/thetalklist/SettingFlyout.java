@@ -831,6 +831,9 @@ public class SettingFlyout extends AppCompatActivity {
                                             Log.e("availability", "No");
                                         }
                                     }
+                                    else {
+                                    talkNow.setChecked(false);
+                                }
 
                         }
 
@@ -842,11 +845,11 @@ public class SettingFlyout extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, "error " + error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "error " + error, Toast.LENGTH_SHORT).show();
                 }
             });
 
-            Volley.newRequestQueue(context).add(sr);
+            Volley.newRequestQueue(this).add(sr);
         }
     }
 
@@ -1447,7 +1450,9 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
         FragmentManager fragmentManager1 = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
         SharedPreferences chatPref = getSharedPreferences("chatPref", Context.MODE_PRIVATE);
+        SharedPreferences SearchTutorPref = getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE);
         final SharedPreferences.Editor chatPrefEditor = chatPref.edit();
+        final SharedPreferences.Editor SearEditor= SearchTutorPref.edit();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -1486,6 +1491,7 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
                         }
                         finish();
                         chatPrefEditor.clear().apply();
+                        SearEditor.clear().apply();
                         ed.clear().apply();
                         edvideo.putInt("position", 0).apply();
                         moveTaskToBack(false);
@@ -1511,6 +1517,7 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
                     }
                     tabBackStack.setTabPosition(0);
                     chatPrefEditor.clear().apply();
+                    SearEditor.clear().apply();
                     ed.putInt("position", 0).apply();
                     edvideo.putInt("position", 0).apply();
                     moveTaskToBack(false);

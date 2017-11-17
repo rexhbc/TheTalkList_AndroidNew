@@ -804,6 +804,10 @@ public class Video_Play extends Fragment {
 
                         }
                     }
+                    else {
+                        videoPlay_VideoCallBtn.setImageDrawable(getResources().getDrawable(R.drawable.disabled_video));
+                        videoPlay_VideoCallBtn.setClickable(false);
+                    }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
