@@ -115,75 +115,79 @@
                         android:textStyle="bold" />
                     <!--android:layout_marginLeft="3dp"-->
 
-
                     <!--<<<<<<< HEAD-->
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center">
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/as"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:maxLength="3"
-                            android:text="$"
-                            android:textSize="13dp" />
-
-                        <TextView
-                            android:id="@+id/biography_rate_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:maxLength="3"
-                            android:text="00"
-                            android:textSize="13dp" />
-
-                        <EditText
-                            android:id="@+id/biography_rate_edittext"
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:layout_gravity="bottom"
-                            android:gravity="bottom"
-                            android:inputType="numberDecimal"
-                            android:maxLength="6"
-                            android:text=""
-                            android:textSize="12dp"
-                            android:visibility="gone" />
-
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="35dp"
-                            android:inputType="numberDecimal"
-                            android:text=""
+                        <Button
+                            android:id="@+id/biography_rate_edit"
+                            android:layout_width="50dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:background="#00000000"
+                            android:text="EDIT..."
+                            android:textAllCaps="false"
+                            android:textColor="#03A9F4"
                             android:textSize="12dp" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <Button
-                                android:id="@+id/biography_rate_edit"
-                                android:layout_width="50dp"
-                                android:layout_height="20dp"
-                                android:layout_alignParentRight="true"
-                                android:background="#00000000"
-                                android:text="EDIT..."
-                                android:textAllCaps="false"
-                                android:textColor="#03A9F4"
-                                android:textSize="12dp" />
-                        </RelativeLayout>
-
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <!--android:paddingTop="10dp">-->
+
+                <TextView
+                    android:id="@+id/as"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:text="$"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/biography_rate_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:text="00"
+                    android:textSize="13dp" />
+
+                <EditText
+                    android:id="@+id/biography_rate_edittext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:inputType="numberDecimal"
+                    android:maxLength="6"
+                    android:text=""
+                    android:textSize="12dp"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:inputType="numberDecimal"
+                    android:text=""
+                    android:textSize="12dp" />
+
+
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
@@ -480,6 +484,167 @@
             <!--android:layout_marginTop="5dp"-->
             <!--android:background="#BDBDBD" />-->
             <!--</LinearLayout>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/videoLinearLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp">
+                    <!--android:paddingBottom="1dp"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:paddingTop="10dp">-->
+                    <!--android:padding="10dp"-->
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Video"
+                        android:textColor="#616A6B"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                    <!--android:layout_marginLeft="15dp"-->
+
+                    <LinearLayout
+                        android:id="@+id/video_11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/video_btn"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/side_aerrow" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Create your 1 minute personal greeting!"
+                        android:textColor="#616A6B"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <!--android:layout_marginLeft="15dp"-->
+
+
+                    <ImageView
+                        android:id="@+id/videoPlay_VideoCallBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/video" />
+
+                    <ImageView
+                        android:id="@+id/expanded_fullscreen"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@mipmap/ic_full_screen" />
+                    <!--android:textAlignment="viewEnd" />-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/biography_video"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="203dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:visibility="visible">
+
+                        <!-- <FrameLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content">
+
+                             <VideoView
+                                 android:id="@+id/biography_videoView"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content" />
+
+                             <LinearLayout
+                                 android:id="@+id/controlLayout"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:gravity="center"
+                                 android:orientation="vertical" />
+
+                         </FrameLayout>
+
+                         <LinearLayout
+
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:gravity="center">
+
+                             <ProgressBar
+                                 android:id="@+id/biography_videoView_progress"
+                                 android:layout_width="50dp"
+                                 android:layout_height="50dp"
+                                 android:layout_gravity="center" />
+                         </LinearLayout>-->
+                        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                            android:id="@+id/exo_player_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp" />
+
+
+                    </RelativeLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/biography_video_thum_recycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+                </LinearLayout>
+                <!--<com.github.aakira.expandablelayout.ExpandableLinearLayout
+                    android:id="@+id/video_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:ael_duration="400"
+                    app:ael_expanded="false"
+                    app:ael_interpolator="accelerate">
+
+                    <include layout="@layout/biography_videoview_layout" />
+
+                </com.github.aakira.expandablelayout.ExpandableLinearLayout>-->
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="#BDBDBD" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -530,8 +695,8 @@
                     android:layout_height="match_parent"
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
-                    android:paddingTop="10dp"
-                    android:visibility="gone">
+                    android:paddingTop="10dp">
+                    <!--android:visibility="gone">-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -845,167 +1010,6 @@
                  android:layout_marginTop="5dp"
                  android:background="#BDBDBD" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/videoLinearLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="10dp">
-                    <!--android:paddingBottom="1dp"-->
-                    <!--android:paddingLeft="10dp"-->
-                    <!--android:paddingRight="10dp"-->
-                    <!--android:paddingTop="10dp">-->
-                    <!--android:padding="10dp"-->
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="Video"
-                        android:textColor="#616A6B"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                    <!--android:layout_marginLeft="15dp"-->
-
-                    <LinearLayout
-                        android:id="@+id/video_11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/video_btn"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_margin="10dp"
-                            android:src="@drawable/side_aerrow" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="Create your 1 minute personal greeting!"
-                        android:textColor="#616A6B"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                    <!--android:layout_marginLeft="15dp"-->
-
-
-                    <ImageView
-                        android:id="@+id/videoPlay_VideoCallBtn"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/video" />
-
-                    <ImageView
-                        android:id="@+id/expanded_fullscreen"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:src="@mipmap/ic_full_screen" />
-                    <!--android:textAlignment="viewEnd" />-->
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/biography_video"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="203dp"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:visibility="visible">
-
-                        <!-- <FrameLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content">
-
-                             <VideoView
-                                 android:id="@+id/biography_videoView"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content" />
-
-                             <LinearLayout
-                                 android:id="@+id/controlLayout"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="match_parent"
-                                 android:gravity="center"
-                                 android:orientation="vertical" />
-
-                         </FrameLayout>
-
-                         <LinearLayout
-
-                             android:layout_width="match_parent"
-                             android:layout_height="match_parent"
-                             android:gravity="center">
-
-                             <ProgressBar
-                                 android:id="@+id/biography_videoView_progress"
-                                 android:layout_width="50dp"
-                                 android:layout_height="50dp"
-                                 android:layout_gravity="center" />
-                         </LinearLayout>-->
-                        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-                            android:id="@+id/exo_player_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp" />
-
-
-                    </RelativeLayout>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/biography_video_thum_recycle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal" />
-                </LinearLayout>
-                <!--<com.github.aakira.expandablelayout.ExpandableLinearLayout
-                    android:id="@+id/video_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:ael_duration="400"
-                    app:ael_expanded="false"
-                    app:ael_interpolator="accelerate">
-
-                    <include layout="@layout/biography_videoview_layout" />
-
-                </com.github.aakira.expandablelayout.ExpandableLinearLayout>-->
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#BDBDBD" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
