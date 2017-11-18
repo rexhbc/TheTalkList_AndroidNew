@@ -709,7 +709,14 @@ public class Biography extends Fragment {
 //                                biography_languages.setText(sub);
 
 
-                                biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; color: #616A6B;  font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
+                                biography_languages_webview.loadData(String.format(htmlText, "" +
+                                        "<html><head><style type=\\\"text/css\\\">  " +
+                                        "@font-face {  " +
+                                        "font-family: MyFont;      " +
+                                        "src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    " +
+                                        "body { font-family: MyFont; color: #616A6B;  font-size: 12px;  text-align: justify;   }   " +
+                                        "</style> " +
+                                        "</head>\n" +
                                         "\t<body >"/*style=\"text-align:justify; font-size: 13px;\"*/ +
                                         "\t <font color='#616A6B'>"+sub+"</font>\n" +
                                         "\t </body>\n" +
@@ -720,7 +727,13 @@ public class Biography extends Fragment {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; color: #616A6B; font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
+                        biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  " +
+                                "@font-face {  " +
+                                "font-family: MyFont;      " +
+                                "src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    " +
+                                "body { font-family: MyFont; color: #616A6B; font-size: 12px;  text-align: justify;   }   " +
+                                "</style> " +
+                                "</head>\n" +
                                 "\t<body >"/*style=\"text-align:justify; font-size: 13px;\"*//*>\n"*/ +
                                 "\t <font color='#616A6B'>"+sub+"</font>\n" +
                                 "\t </body>\n" +
