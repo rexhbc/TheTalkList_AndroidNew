@@ -54,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_marginEnd="15dp"
                 >
 
@@ -61,7 +62,6 @@
                     android:id="@+id/videoPlay_like"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginTop="3dp"
                     android:layout_marginEnd="3dp"
                     android:src="@drawable/like" />
 
@@ -87,7 +87,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/fb"
-                    android:layout_margin="3dp"/>
+                    android:layout_margin="2dp"/>
 
                 <com.facebook.share.widget.ShareButton
                     android:visibility="gone"
@@ -100,14 +100,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/message"
-                    android:layout_margin="3dp"/>
+                    android:layout_margin="2dp"/>
 
                 <ImageView
                     android:id="@+id/videoPlay_VideoCallBtn"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/video"
-                    android:layout_margin="3dp"/>
+                    android:layout_margin="2dp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -118,6 +118,7 @@
             android:background="#000000" />
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

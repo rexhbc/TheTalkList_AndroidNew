@@ -7,3 +7,5 @@
 /build
 /captures
 .externalNativeBuild
+app/src/main/res/layout/fragment_biography.xml
+app/src/main/res/layout/fragment_biography.xml

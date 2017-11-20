@@ -83,8 +83,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="20dp">
+                android:paddingTop="10dp">
                 <!--android:paddingBottom="0dp"-->
                 <!--android:padding="10dp"-->
 
@@ -128,6 +127,7 @@
                             android:background="#00000000"
                             android:text="EDIT..."
                             android:textAllCaps="false"
+                            android:layout_marginLeft="5dp"
                             android:textColor="#03A9F4"
                             android:textSize="12dp" />
                     </RelativeLayout>
@@ -263,14 +263,10 @@
                          android:layout_alignParentRight="true"
                          />-->
                         <!--<LinearLayout
-
                             android:layout_marginLeft="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
-
-
-
                             <ProgressBar
                                 android:visibility="gone"
                                 android:id="@+id/biography_languages_progress"
@@ -303,21 +299,15 @@
                     android:orientation="vertical"
                     app:ael_duration="400"
                     app:ael_expanded="false"
-
                     app:ael_interpolator="accelerate">
-
                     <include
-
                         layout="@layout/biography_subject_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-
-
                     &lt;!&ndash;                    <android.support.v7.widget.RecyclerView
                                             android:layout_width="match_parent"
                                             android:id="@+id/biography_subject_recyclerview"
                                             android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>&ndash;&gt;
-
                 </com.github.aakira.expandablelayout.ExpandableLinearLayout>-->
 
                 <View
@@ -507,6 +497,7 @@
 
 
                     <TextView
+                        android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -588,27 +579,21 @@
                         <!-- <FrameLayout
                              android:layout_width="match_parent"
                              android:layout_height="wrap_content">
-
                              <VideoView
                                  android:id="@+id/biography_videoView"
                                  android:layout_width="match_parent"
                                  android:layout_height="wrap_content" />
-
                              <LinearLayout
                                  android:id="@+id/controlLayout"
                                  android:layout_width="match_parent"
                                  android:layout_height="match_parent"
                                  android:gravity="center"
                                  android:orientation="vertical" />
-
                          </FrameLayout>
-
                          <LinearLayout
-
                              android:layout_width="match_parent"
                              android:layout_height="match_parent"
                              android:gravity="center">
-
                              <ProgressBar
                                  android:id="@+id/biography_videoView_progress"
                                  android:layout_width="50dp"
@@ -637,9 +622,7 @@
                     app:ael_duration="400"
                     app:ael_expanded="false"
                     app:ael_interpolator="accelerate">
-
                     <include layout="@layout/biography_videoview_layout" />
-
                 </com.github.aakira.expandablelayout.ExpandableLinearLayout>-->
 
 
@@ -662,7 +645,9 @@
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="20dp">
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    >
                     <!--android:padding="10dp">-->
 
                     <TextView
@@ -699,8 +684,8 @@
                     android:layout_height="match_parent"
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
-                    android:visibility="gone"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:visibility="gone">
                     <!-->-->
 
                     <LinearLayout
@@ -809,25 +794,55 @@
                                 android:visibility="gone" />
                         </LinearLayout>
 
-
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="-10dp"
+                            android:layout_weight="0.10"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingLeft="10dp">
 
-                            <Button
-                                android:id="@+id/biography_edit"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="#00000000"
-                                android:layout_alignParentRight="true"
-                                android:text="EDIT..."
-                                android:textAlignment="center"
-                                android:textAllCaps="true"
-                                android:textColor="#03A9F4"
-                                android:textSize="12dp" />
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:text="Tutoring Rate ($/min): "
+                                    android:textColor="#616A6B"
+                                    android:visibility="gone"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                                <Button
+                                    android:id="@+id/biography_edit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_alignParentRight="true"
+                                    android:background="#00000000"
+                                    android:text="EDIT..."
+                                    android:textAllCaps="false"
+                                    android:textColor="#03A9F4"
+                                    android:textSize="12dp" />
+                                <!--<Button-->
+                                <!--android:id="@+id/biography_edit"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:background="#00000000"-->
+                                <!--android:layout_alignParentRight="true"-->
+                                <!--android:text="EDIT..."-->
+                                <!--android:textAlignment="center"-->
+                                <!--android:textAllCaps="true"-->
+                                <!--android:textColor="#03A9F4"-->
+                                <!--android:textSize="12dp" />-->
 
-                        </RelativeLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
                         <!--<Button
                             android:id="@+id/biography_save"
                             android:layout_width="match_parent"
@@ -851,7 +866,6 @@
                     app:ael_duration="400"
                     app:ael_expanded="false"
                     app:ael_interpolator="accelerate">
-
                     &lt;!&ndash;<include
                         android:id="@+id/biography_biographyfrag_layout"
                         layout="@layout/biography_biography_layout"
@@ -867,7 +881,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -875,7 +888,6 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp"
                                 android:orientation="vertical">
-
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -883,7 +895,6 @@
                                     android:textColor="#85929E"
                                     android:textSize="15sp"
                                     android:textStyle="bold" />
-
                                 <TextView
                                     android:id="@+id/biography_personal"
                                     android:layout_width="match_parent"
@@ -891,7 +902,6 @@
                                     android:textColor="#85929E"
                                     android:text="@string/personal"
                                     android:textSize="12sp" />
-
                                 <EditText
                                     android:id="@+id/biography_personal_edit"
                                     android:layout_width="match_parent"
@@ -900,7 +910,6 @@
                                     android:textSize="12sp"
                                     android:visibility="gone" />
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -908,7 +917,6 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp"
                                 android:orientation="vertical">
-
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -916,14 +924,12 @@
                                     android:textColor="#85929E"
                                     android:textSize="15sp"
                                     android:textStyle="bold" />
-
                                 <TextView
                                     android:id="@+id/biography_educational"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:textColor="#85929E"
                                     android:textSize="12sp" />
-
                                 <EditText
                                     android:id="@+id/biography_educational_edit"
                                     android:layout_width="match_parent"
@@ -932,7 +938,6 @@
                                     android:textSize="12sp"
                                     android:visibility="gone" />
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -940,7 +945,6 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp"
                                 android:orientation="vertical">
-
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -948,15 +952,12 @@
                                     android:textColor="#85929E"
                                     android:textSize="15sp"
                                     android:textStyle="bold" />
-
                                 <TextView
                                     android:id="@+id/biography_professional"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:textColor="#85929E"
                                     android:textSize="12sp" />
-
-
                                 <EditText
                                     android:id="@+id/biography_professional_edit"
                                     android:layout_width="match_parent"
@@ -965,12 +966,10 @@
                                     android:textSize="12sp"
                                     android:visibility="gone" />
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_marginBottom="50dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp">
-
                                 <Button
                                     android:id="@+id/biography_edit"
                                     android:layout_width="match_parent"
@@ -983,7 +982,6 @@
                                     android:textAllCaps="false"
                                     android:textColor="@color/orange"
                                     android:textSize="15dp" />
-
                                 &lt;!&ndash;<Button
                                     android:id="@+id/biography_save"
                                     android:layout_width="match_parent"
@@ -1000,7 +998,6 @@
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-
                 </com.github.aakira.expandablelayout.ExpandableLinearLayout>-->
 
                 <View
@@ -1026,7 +1023,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp">
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1036,12 +1032,10 @@
                         android:text="Video"
                         android:textSize="15dp"
                         android:textStyle="bold" />
-
                     <LinearLayout
                         android:id="@+id/video_11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-
                         <ImageView
                             android:id="@+id/video_btn"
                             android:layout_width="15dp"
@@ -1050,15 +1044,12 @@
                             android:src="@drawable/side_aerrow" />
                     </LinearLayout>
                 </LinearLayout>
-
-
                 <LinearLayout
                     android:id="@+id/biography_video"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="visible">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="245dp"
@@ -1067,31 +1058,24 @@
                         android:layout_marginRight="20dp"
                         android:orientation="vertical"
                         android:visibility="visible">
-
                         &lt;!&ndash; <FrameLayout
                              android:layout_width="match_parent"
                              android:layout_height="wrap_content">
-
                              <VideoView
                                  android:id="@+id/biography_videoView"
                                  android:layout_width="match_parent"
                                  android:layout_height="wrap_content" />
-
                              <LinearLayout
                                  android:id="@+id/controlLayout"
                                  android:layout_width="match_parent"
                                  android:layout_height="match_parent"
                                  android:gravity="center"
                                  android:orientation="vertical" />
-
                          </FrameLayout>
-
                          <LinearLayout
-
                              android:layout_width="match_parent"
                              android:layout_height="match_parent"
                              android:gravity="center">
-
                              <ProgressBar
                                  android:id="@+id/biography_videoView_progress"
                                  android:layout_width="50dp"
@@ -1101,7 +1085,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-
                             <ImageView
                                 android:id="@+id/expanded_fullscreen"
                                 android:layout_width="50dp"
@@ -1110,15 +1093,11 @@
                                 android:src="@mipmap/ic_full_screen"
                                 android:textAlignment="viewEnd" />
                         </RelativeLayout>
-
                         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
                             android:id="@+id/exo_player_view"
                             android:layout_width="match_parent"
                             android:layout_height="200dp" />
-
-
                     </LinearLayout>
-
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/biography_video_thum_recycle"
                         android:layout_width="match_parent"
@@ -1133,9 +1112,7 @@
                     app:ael_duration="400"
                     app:ael_expanded="false"
                     app:ael_interpolator="accelerate">
-
                     <include layout="@layout/biography_videoview_layout" />
-
                 </com.github.aakira.expandablelayout.ExpandableLinearLayout>-->
 
 

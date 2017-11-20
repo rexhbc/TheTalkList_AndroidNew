@@ -25,5 +25,17 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/video_delete"
+                android:layout_alignParentRight="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/ic_launcher"
+                />
+        </RelativeLayout>
+
     </FrameLayout>
 </LinearLayout>

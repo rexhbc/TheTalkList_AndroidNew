@@ -138,6 +138,8 @@ public class SettingFlyout extends AppCompatActivity {
 
     Boolean MessageFrag;
 
+    LinearLayout switch_layout;
+
     BroadcastReceiver countrefresh;
 
     FacebookSdk facebookSdk;
@@ -157,6 +159,7 @@ public class SettingFlyout extends AppCompatActivity {
 
     RequestQueue queue;
 
+    public int manuallyTurnOn=-1;
 
     @Override
     public void onDestroy() {
@@ -195,6 +198,8 @@ public class SettingFlyout extends AppCompatActivity {
         bottombar_message_count = (TextView) findViewById(R.id.bottombar_message_count);
         talkNow = (Switch) toolbar.findViewById(R.id.switch1);
 
+        switch_layout= (LinearLayout) findViewById(R.id.switch_layout);
+
         settingFlyout_bottomcontrol_videosearch = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol_videosearch);
         settingFlyout_bottomcontrol_Message = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol_Message);
         settingFlyout_bottomcontrol_tutorSearch = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol_tutorSearch);
@@ -220,6 +225,18 @@ public class SettingFlyout extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), New_videocall_activity.class);
                 startActivity(i);
+            }
+        });
+
+        manuallyTurnOn=0;
+        switch_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "switch layout clicke", Toast.LENGTH_SHORT).show();
+                manuallyTurnOn=1;
+                if (talkNow.isChecked()){
+                    talkNow.setChecked(true);
+                }else talkNow.setChecked(false);
             }
         });
 
@@ -786,10 +803,11 @@ public class SettingFlyout extends AppCompatActivity {
                                 c.setTime(date);
                                 int t = c.get(Calendar.HOUR_OF_DAY) * 100 + c.get(Calendar.MINUTE);
                             Log.e("cur", String.valueOf(t));
+                            Log.e("Manually", String.valueOf(manuallyTurnOn));
 
                                 if (to<=t && t<=from) {
                                     //checkes whether the current time is between 14:49:00 and 20:11:13.
-                                        Log.e("in if condition","yes");
+//                                        Log.e("in if condition","yes");
 
                                         if (info.getInt("sunday") == 1) {
                                             if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
@@ -828,10 +846,11 @@ public class SettingFlyout extends AppCompatActivity {
                                                 Log.e("availability", "yes");
                                             }
                                         } else {
-                                            Log.e("availability", "No");
+//                                            Log.e("availability", "No");
                                         }
                                     }
                                     else {
+                                    if (manuallyTurnOn!=1)
                                     talkNow.setChecked(false);
                                 }
 
