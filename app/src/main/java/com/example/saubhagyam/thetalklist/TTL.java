@@ -23,6 +23,8 @@ public class TTL extends Application {
     public String Callfrom="";
     public int Callmin;
 
+    public boolean manuallyTurnOn=false;
+
     public String locale;
 
     public int getCallmin() {
