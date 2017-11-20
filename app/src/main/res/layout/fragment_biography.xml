@@ -127,6 +127,7 @@
                             android:background="#00000000"
                             android:text="EDIT..."
                             android:textAllCaps="false"
+                            android:layout_marginLeft="5dp"
                             android:textColor="#03A9F4"
                             android:textSize="12dp" />
                     </RelativeLayout>
@@ -496,6 +497,7 @@
 
 
                     <TextView
+                        android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -643,7 +645,9 @@
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    >
                     <!--android:padding="10dp">-->
 
                     <TextView

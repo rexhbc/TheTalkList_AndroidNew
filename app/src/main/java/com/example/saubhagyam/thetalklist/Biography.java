@@ -133,6 +133,8 @@ public class Biography extends Fragment {
     //exo player over
 
     ImageView expanded_fullscreen;
+    int uid;
+
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -141,6 +143,7 @@ public class Biography extends Fragment {
         view = inflater.inflate(R.layout.fragment_biography, container, false);
 
         preferences = getActivity().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
+        uid=preferences.getInt("id",0);
         biography_btn = (ImageView) view.findViewById(R.id.biography_btn);
         video_btn = (ImageView) view.findViewById(R.id.video_btn);
         ratings_btn = (ImageView) view.findViewById(R.id.ratings_btn);
@@ -166,7 +169,7 @@ public class Biography extends Fragment {
         biography_video_thum_recycle.setLayoutManager(layoutManager);
 
         new VideoUrlHandler().execute();
-        {
+        /*{
             String url = "http://www.thetalklist.com/api/biography_video?uid=" + preferences.getInt("id", 0);
 
 
@@ -196,7 +199,8 @@ public class Biography extends Fragment {
                 }
             });
             Volley.newRequestQueue(getContext()).add(sr);
-        }
+        }*/
+        setVideoIn();
 
 
         biography_professional = (TextView) view.findViewById(R.id.biography_professional);
@@ -663,6 +667,38 @@ public class Biography extends Fragment {
         return view;
     }
 
+    public void setVideoIn()
+    {
+        String url = "http://www.thetalklist.com/api/biography_video?uid=" + uid;
+
+
+        StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("video response thumb", response);
+
+                try {
+                    JSONObject resultObj = new JSONObject(response);
+
+                    if (resultObj.getInt("status") == 0) {
+                        JSONArray biography_video_ary = resultObj.getJSONArray("biography_video");
+                        biography_video_thum_recycle.setAdapter(new Biography_videoThumb_adapter(getContext(), biography_video_ary, playerView,biography_video_thum_recycle));
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.newRequestQueue(getActivity().getApplicationContext()).add(sr);
+    }
 
     private class subjectHandler extends AsyncTask<Void, Void, Void> {
 
