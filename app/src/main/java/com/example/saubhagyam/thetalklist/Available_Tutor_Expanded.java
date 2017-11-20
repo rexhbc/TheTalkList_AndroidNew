@@ -85,7 +85,8 @@ public class Available_Tutor_Expanded extends Fragment {
     ImageView tutorImage;
     String firstName;
 
-    LinearLayout review_root_biography;
+    LinearLayout review_root_biography, personalLinearLayout, eduLinearLayout, proLinearLayout,
+                    ratingLinearLayout;
 
     ExpandableTextView expandableTextView;
     ExpandableTextView expandableTextViewedu;
@@ -180,6 +181,10 @@ ImageView expanded_fullscreen;
         buttonToggleedu = (Button) convertView.findViewById(R.id.moreedu);
         buttonTogglepro = (Button) convertView.findViewById(R.id.moreprof);
         expanded_fullscreen= (ImageView) convertView.findViewById(R.id.expanded_fullscreen);
+        personalLinearLayout = (LinearLayout) convertView.findViewById(R.id.personalLinearLayout);
+        eduLinearLayout = (LinearLayout) convertView.findViewById(R.id.eduLinearLayout);
+        proLinearLayout = (LinearLayout) convertView.findViewById(R.id.proLinearLayout);
+        ratingLinearLayout = (LinearLayout) convertView.findViewById(R.id.rateLinearLayout);
 
 //        listView = (ListView) convertView.findViewById(R.id.ratingfeedbacklist);
 //        videoView = (VideoView) convertView.findViewById(R.id.TutorExpanded_biography_videoView);
@@ -207,7 +212,7 @@ ImageView expanded_fullscreen;
         TutorExpanded_tutorin_languages_webview = (WebView) convertView.findViewById(R.id.TutorExpanded_tutorin_languages_webview);
         TutorExpanded_tutorin_languages_webview.setHorizontalScrollbarOverlay(false);
 
-        buttonTogglepro.setOnClickListener(new View.OnClickListener() {
+        proLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 expandableTextViewpro.toggle();
@@ -415,6 +420,23 @@ ImageView expanded_fullscreen;
 
             }
         });
+        ratingLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (morelist.getText().equals("MORE...")) {
+
+                    review_root_biography.setVisibility(View.VISIBLE);
+                    morelist.setText("LESS...");
+                } else {
+                    review_root_biography.setVisibility(View.GONE);
+                    morelist.setText("MORE...");
+                }
+
+
+            }
+        });
+
 
 
 
@@ -517,7 +539,7 @@ ImageView expanded_fullscreen;
         expandableTextViewedu.setCollapseInterpolator(new OvershootInterpolator());
 
 
-        buttonToggle.setOnClickListener(new View.OnClickListener() {
+        personalLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 expandableTextView.toggle();
@@ -538,7 +560,7 @@ ImageView expanded_fullscreen;
         });
 
 
-        buttonToggleedu.setOnClickListener(new View.OnClickListener() {
+        eduLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 expandableTextViewedu.toggle();
