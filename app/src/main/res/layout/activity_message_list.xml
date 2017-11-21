@@ -34,5 +34,15 @@
         android:scrollingCache="true"
         android:animationCache="false"
         android:padding="10dp" />
+    <TextView
+        android:id="@+id/errormsg_Message"
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Press message icon to start chat."
+        android:textSize="25dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        />
 
 </LinearLayout>

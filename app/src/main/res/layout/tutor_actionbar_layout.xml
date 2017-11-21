@@ -86,40 +86,56 @@
                 android:textSize="12dp" />
         </LinearLayout>
 
+
         <LinearLayout
-            android:id="@+id/switch_layout"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <me.grantland.widget.AutofitTextView
+            android:id="@+id/tutorNow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="Tutor Now"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            autofit:minTextSize="10sp" />
 
-            <me.grantland.widget.AutofitTextView
-                android:id="@+id/tutorNow"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="-10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:maxLines="2"
-                android:text="Tutor Now"
-                android:textColor="#ffffff"
-                android:textSize="12sp"
-                autofit:minTextSize="10sp" />
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="-4dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:gravity="center"
+            android:shadowColor="@color/perfectGreen"
+            android:theme="@style/SCBSwitch" />
+    </LinearLayout>
 
-            <Switch
-                android:id="@+id/switch1"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="-4dp"
-                android:layout_weight="1"
-                android:checked="true"
-                android:gravity="center"
-                android:shadowColor="@color/perfectGreen"
-                android:theme="@style/SCBSwitch" />
+    <LinearLayout
+        android:id="@+id/switch_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+</FrameLayout>
+
         </LinearLayout>
 
 

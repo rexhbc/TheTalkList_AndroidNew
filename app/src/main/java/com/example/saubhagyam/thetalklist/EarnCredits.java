@@ -140,7 +140,7 @@ public class EarnCredits extends Fragment {
                                                     Log.e("cashout response", response);
                                                     main_credit.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("money")))));
                                                     earn_credit_currentBalance.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("money")))));
-                                                    Toast.makeText(getContext(), "Cashout Sucessfully", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getContext(), "Funds will be deposited within 24 hours.", Toast.LENGTH_SHORT).show();
                                                     loginService.login(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getString("email", ""), getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getString("pass", ""), getContext());
                                                 }
 

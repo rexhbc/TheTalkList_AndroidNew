@@ -201,7 +201,7 @@ public class Available_tutor extends Fragment {
 
                 }
             });
-            Volley.newRequestQueue(getApplicationContext()).add(sr);
+            Volley.newRequestQueue(this.getActivity()).add(sr);
         }
         if (flag == 1) {
 

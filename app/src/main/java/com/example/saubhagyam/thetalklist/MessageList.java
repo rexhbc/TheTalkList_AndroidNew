@@ -76,6 +76,7 @@ public class MessageList extends Fragment {
 //                }
 
 //        }
+        recyclerView = (RecyclerView) view.findViewById(R.id.messageRecyclerView);
         bottombar_message_count=(TextView) getActivity().findViewById(R.id.bottombar_message_count);
         bottombar_messageCount_layout= (RelativeLayout) getActivity().findViewById(R.id.bottombar_messageCount_layout);
 
@@ -132,7 +133,9 @@ public class MessageList extends Fragment {
                     JSONArray charoomArray=chatroomObj.getJSONArray("data");
 //                    JSONArray timeArray=chatroomObj.getJSONArray("time");
                         if (charoomArray.length()==0){
-
+                            recyclerView.setVisibility(View.GONE);
+                            dialog.dismiss();
+                            view.findViewById(R.id.errormsg_Message).setVisibility(View.VISIBLE);
                         }else {
 
 
@@ -164,7 +167,7 @@ public class MessageList extends Fragment {
                             Collections.reverse(chatroomModelList);
 
                             Log.e("chatroom list before ",chatroomModelList.toString());
-                            recyclerView = (RecyclerView) view.findViewById(R.id.messageRecyclerView);
+
                             FragmentManager fragmentManager=getFragmentManager();
                             final MessageListRecyclerAdapter messageListRecyclerAdapter = new MessageListRecyclerAdapter(getApplicationContext(),chatroomModelList,fragmentManager);
                             final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -203,6 +206,10 @@ public class MessageList extends Fragment {
                            dialog.dismiss();
                         }
 
+                    }
+                    else {
+                        recyclerView.setVisibility(View.GONE);
+                        dialog.dismiss();
                     }
 
                 } catch (JSONException e) {

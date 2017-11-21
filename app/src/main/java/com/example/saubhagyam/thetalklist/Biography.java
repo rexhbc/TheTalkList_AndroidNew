@@ -83,9 +83,9 @@ import static com.example.saubhagyam.thetalklist.R.array.sub;
 
 public class Biography extends Fragment {
 
-    ImageView biography_btn, video_btn, ratings_btn, biography_subject_btn, TutorImgBiography,videoPlay_VideoCallBtn;
-    LinearLayout biography_11, video_11, ratings_11,  biography_subject_11, myBioLinearLayout, tutorSubLinearLayout,
-                    videoLinearLayout, rateLinearLayout, reviewLinearLayout;
+    ImageView biography_btn, video_btn, ratings_btn, biography_subject_btn, TutorImgBiography, videoPlay_VideoCallBtn;
+    LinearLayout biography_11, video_11, ratings_11, biography_subject_11, myBioLinearLayout, tutorSubLinearLayout,
+            videoLinearLayout, rateLinearLayout, reviewLinearLayout;
     TextView biographyFirstName;
     Button biography_rate_edit;
     //    TextView biography_languages;
@@ -143,7 +143,7 @@ public class Biography extends Fragment {
         view = inflater.inflate(R.layout.fragment_biography, container, false);
 
         preferences = getActivity().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
-        uid=preferences.getInt("id",0);
+        uid = preferences.getInt("id", 0);
         biography_btn = (ImageView) view.findViewById(R.id.biography_btn);
         video_btn = (ImageView) view.findViewById(R.id.video_btn);
         ratings_btn = (ImageView) view.findViewById(R.id.ratings_btn);
@@ -163,7 +163,7 @@ public class Biography extends Fragment {
         componentListener = new ComponentListener();
         playerView = (SimpleExoPlayerView) view.findViewById(R.id.exo_player_view);
 
-        expanded_fullscreen= (ImageView) view.findViewById(R.id.expanded_fullscreen);
+        expanded_fullscreen = (ImageView) view.findViewById(R.id.expanded_fullscreen);
 
 
         biography_video_thum_recycle.setLayoutManager(layoutManager);
@@ -213,7 +213,7 @@ public class Biography extends Fragment {
         biography_personal_edit = (EditText) view.findViewById(R.id.biography_personal_edit);
         biography_educational_edit = (EditText) view.findViewById(R.id.biography_educational_edit);
         biography_rate_edittext = (EditText) view.findViewById(R.id.biography_rate_edittext);
-        rateLinearLayout = (LinearLayout)view.findViewById(R.id.rateLinearLayout);
+        rateLinearLayout = (LinearLayout) view.findViewById(R.id.rateLinearLayout);
         queue = Volley.newRequestQueue(getActivity());
 
         final FragmentStack fragmentStack = FragmentStack.getInstance();
@@ -226,9 +226,9 @@ public class Biography extends Fragment {
                 fragmentStack.push(new Tablayout_with_viewpager());
                 TabBackStack tabBackStack = TabBackStack.getInstance();
                 tabBackStack.setTabPosition(1);
-                SharedPreferences bio_videoPref=getContext().getSharedPreferences("bio_video",Context.MODE_PRIVATE);
-                SharedPreferences.Editor bio_Editor=bio_videoPref.edit();
-                bio_Editor.putBoolean("biography",true).apply();
+                SharedPreferences bio_videoPref = getContext().getSharedPreferences("bio_video", Context.MODE_PRIVATE);
+                SharedPreferences.Editor bio_Editor = bio_videoPref.edit();
+                bio_Editor.putBoolean("biography", true).apply();
                 fragmentTransaction.replace(R.id.viewpager, videoRecord).commit();
             }
         });
@@ -236,7 +236,7 @@ public class Biography extends Fragment {
         biographyFirstName.setText(preferences.getString("usernm", ""));
         if (preferences.getFloat("hRate", 0.0f) != 0.0) {
 
-            biography_rate_textview.setText(String.format("%.02f",preferences.getFloat("hRate", 0.0f) / 25.0f));
+            biography_rate_textview.setText(String.format("%.02f", preferences.getFloat("hRate", 0.0f) / 25.0f));
             biography_rate_edittext.setText(String.valueOf(preferences.getFloat("hRate", 0.0f) / 25.0f));
         } else {
             biography_rate_textview.setText("0");
@@ -285,9 +285,10 @@ public class Biography extends Fragment {
                         if (res.getInt("status") == 0) {
                             JSONArray reviewAry = res.getJSONArray("review");
                             if (reviewAry.length() > 0) {
-                                if (res.getInt("total_session")>0)
+                                if (res.getInt("total_session") > 0)
                                     ((TextView) view.findViewById(R.id.biography_totalreview)).setText((String.valueOf(res.getInt("total_session"))));
-                                else ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
+                                else
+                                    ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
                                 for (int i = 0; i < reviewAry.length(); i++) {
 
                                     JSONObject obj = (JSONObject) reviewAry.get(i);
@@ -328,11 +329,10 @@ public class Biography extends Fragment {
                                     review_root_biography.addView(convertView);
 
                                 }
-                            }else {
+                            } else {
                                 ((TextView) view.findViewById(R.id.biography_totalreview)).setText("00");
                             }
-                        }
-                        else {
+                        } else {
                             ((TextView) view.findViewById(R.id.biography_totalreview)).setText("0");
                         }
 
@@ -363,7 +363,7 @@ public class Biography extends Fragment {
                     biography_rate_edittext.setVisibility(View.VISIBLE);
                 } else {
                     edit_bit = 0;
-                    InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     biography_rate_edit.setText("EDIT...");
                     biography_rate_textview.setText(biography_rate_edittext.getText().toString());
@@ -431,16 +431,15 @@ public class Biography extends Fragment {
                     biography_educational_edit.setVisibility(View.VISIBLE);
                     biography_professional_edit.setVisibility(View.VISIBLE);
 
-                } else  {
+                } else {
                     edit_bit = 0;
                     biography_edit.setText("Edit...");
                     biography_personal.setVisibility(View.VISIBLE);
                     biography_educational.setVisibility(View.VISIBLE);
                     biography_professional.setVisibility(View.VISIBLE);
 
-                    InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
 
 
                     biography_personal_edit.setVisibility(View.GONE);
@@ -462,11 +461,10 @@ public class Biography extends Fragment {
                     RequestQueue queue = Volley.newRequestQueue(getContext());
 
 
+                    String URL = "https://www.thetalklist.com/api/edit_biogrpy?id=" + preferences.getInt("id", 0) + "&academic=" + biography_educational_edit.getText().toString().replace(" ", "%20").replace("\n", "%0A") +
+                            "&professional=" + biography_professional_edit.getText().toString().replace(" ", "%20").replace("\n", "%0A") + "&personal=" + biography_personal_edit.getText().toString().replace(" ", "%20").replace("\n", "%0A");
 
-                    String URL = "https://www.thetalklist.com/api/edit_biogrpy?id="+preferences.getInt("id", 0)+"&academic="+biography_educational_edit.getText().toString().replace(" ","%20").replace("\n","%0A")+
-                            "&professional="+biography_professional_edit.getText().toString().replace(" ","%20").replace("\n","%0A")+"&personal="+biography_personal_edit.getText().toString().replace(" ","%20").replace("\n","%0A");
-
-                    Log.e("bio url",URL);
+                    Log.e("bio url", URL);
                     /*StringRequest strRequest = new StringRequest(Request.Method.POST, URL,
                             new Response.Listener<String>() {
                                 @Override
@@ -495,7 +493,7 @@ public class Biography extends Fragment {
                     };*/
 
 
-                    JSONObject param=new JSONObject();
+                    JSONObject param = new JSONObject();
                     try {
 
                         param.put("id", String.valueOf(preferences.getInt("id", 0)));
@@ -504,28 +502,46 @@ public class Biography extends Fragment {
                         param.put("personal", personal_txt);
 
 
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
 
-                    JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, URL, param, new Response.Listener<JSONObject>() {
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, param, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
 //                            Toast.makeText(getContext(), "Biography "+response, Toast.LENGTH_SHORT).show();
 
-                            Log.e("subject response ",response.toString());
+                            Log.e("subject response ", response.toString());
                             try {
-                                if (response.getInt("status")==0){
-                                    biography_personal.setText(response.getString("personal"));
-                                    biography_educational.setText(response.getString("academic"));
-                                    biography_professional.setText(response.getString("professional"));
+                                if (response.getInt("status") == 0) {
+                                    if (!response.getString("personal").equals("")) {
+                                        biography_personal.setText(response.getString("personal"));
+                                        biography_personal_edit.setText(response.getString("personal"));
+                                    } else {
+                                        biography_personal.setText(" I like to…");
+                                        biography_personal_edit.setHint(" I like to…");
+                                    }
+                                    if (!response.getString("academic").equals("")) {
+                                        biography_educational.setText(response.getString("academic"));
+                                        biography_educational_edit.setText(response.getString("academic"));
+                                    } else {
+                                        biography_educational.setText("I attend school at…");
+                                        biography_educational_edit.setHint("I attend school at…");
+                                    }
 
 
-                                    biography_personal_edit.setText(response.getString("personal"));
-                                    biography_educational_edit.setText(response.getString("academic"));
-                                    biography_professional_edit.setText(response.getString("professional"));
+                                    if (!response.getString("professional").equals("")) {
+                                        biography_professional.setText(response.getString("professional"));
+                                        biography_professional_edit.setText(response.getString("professional"));
+                                    } else {
+                                        biography_professional.setText("I have worked at…");
+                                        biography_professional_edit.setHint("I have worked at…");
+                                    }
+
+
+
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -545,8 +561,6 @@ public class Biography extends Fragment {
                 }
             }
         });
-
-
 
 
         queue1 = Volley.newRequestQueue(
@@ -582,7 +596,7 @@ public class Biography extends Fragment {
 
         biography_11 = (LinearLayout) view.findViewById(R.id.biography_11);
         myBioLinearLayout = (LinearLayout) view.findViewById(R.id.myBioLinearLayout);
-        tutorSubLinearLayout= (LinearLayout) view.findViewById(R.id.tutorSubLinearLayout);
+        tutorSubLinearLayout = (LinearLayout) view.findViewById(R.id.tutorSubLinearLayout);
         videoLinearLayout = (LinearLayout) view.findViewById(R.id.videoLinearLayout);
         video_11 = (LinearLayout) view.findViewById(R.id.video_11);
         ratings_11 = (LinearLayout) view.findViewById(R.id.ratings_11);
@@ -591,7 +605,7 @@ public class Biography extends Fragment {
 
 //        biography_languages = (TextView) view.findViewById(R.id.biography_languages);
 
-        biography_languages_webview= (WebView) view.findViewById(R.id.biography_languages_webview);
+        biography_languages_webview = (WebView) view.findViewById(R.id.biography_languages_webview);
         biography_languages_webview.setHorizontalScrollbarOverlay(false);
 
 
@@ -667,8 +681,7 @@ public class Biography extends Fragment {
         return view;
     }
 
-    public void setVideoIn()
-    {
+    public void setVideoIn() {
         String url = "http://www.thetalklist.com/api/biography_video?uid=" + uid;
 
 
@@ -682,7 +695,7 @@ public class Biography extends Fragment {
 
                     if (resultObj.getInt("status") == 0) {
                         JSONArray biography_video_ary = resultObj.getJSONArray("biography_video");
-                        biography_video_thum_recycle.setAdapter(new Biography_videoThumb_adapter(getContext(), biography_video_ary, playerView,biography_video_thum_recycle));
+                        biography_video_thum_recycle.setAdapter(new Biography_videoThumb_adapter(getContext(), biography_video_ary, playerView, biography_video_thum_recycle));
 
                     }
 
@@ -722,15 +735,29 @@ public class Biography extends Fragment {
                             String nativeLang = obj.getString("tutoring_subjects");
 
 
-                            biography_personal.setText(obj.getString("personal"));
-                            biography_educational.setText(obj.getString("academic"));
-                            biography_professional.setText(obj.getString("professional"));
+                            if (!obj.getString("personal").equals("")) {
+                                biography_personal.setText(obj.getString("personal"));
+                                biography_personal_edit.setText(obj.getString("personal"));
+                            } else {
+                                biography_personal.setText(" I like to…");
+                                biography_personal_edit.setHint(" I like to…");
+                            }
+                            if (!obj.getString("academic").equals("")) {
+                                biography_educational.setText(obj.getString("academic"));
+                                biography_educational_edit.setText(obj.getString("academic"));
+                            } else {
+                                biography_educational.setText("I attend school at…");
+                                biography_educational_edit.setHint("I attend school at…");
+                            }
 
 
-                            biography_professional_edit.setText(obj.getString("professional"));
-                            biography_personal_edit.setText(obj.getString("personal"));
-                            biography_educational_edit.setText(obj.getString("academic"));
-
+                            if (!obj.getString("professional").equals("")) {
+                                biography_professional.setText(obj.getString("professional"));
+                                biography_professional_edit.setText(obj.getString("professional"));
+                            } else {
+                                biography_professional.setText("I have worked at…");
+                                biography_professional_edit.setHint("I have worked at…");
+                            }
 
                             if (!nativeLang.equals("")) {
                                 String sub = "";
@@ -754,11 +781,12 @@ public class Biography extends Fragment {
                                         "</style> " +
                                         "</head>\n" +
                                         "\t<body >"/*style=\"text-align:justify; font-size: 13px;\"*/ +
-                                        "\t <font color='#616A6B'>"+sub+"</font>\n" +
+                                        "\t <font color='#616A6B'>" + sub + "</font>\n" +
                                         "\t </body>\n" +
                                         "</Html>"), "text/html", "utf-8");
 //                            } else biography_languages.setText("");
-                            } else biography_languages_webview.loadData(String.format(htmlText, ""), "text/html", "utf-8");
+                            } else
+                                biography_languages_webview.loadData(String.format(htmlText, ""), "text/html", "utf-8");
 //                            view.findViewById(R.id.biography_languages_progress).setVisibility(View.GONE);
                         }
                     } catch (JSONException e) {
@@ -771,7 +799,7 @@ public class Biography extends Fragment {
                                 "</style> " +
                                 "</head>\n" +
                                 "\t<body >"/*style=\"text-align:justify; font-size: 13px;\"*//*>\n"*/ +
-                                "\t <font color='#616A6B'>"+sub+"</font>\n" +
+                                "\t <font color='#616A6B'>" + sub + "</font>\n" +
                                 "\t </body>\n" +
                                 "</Html>"), "text/html", "utf-8");
 
@@ -797,7 +825,6 @@ public class Biography extends Fragment {
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -820,14 +847,30 @@ public class Biography extends Fragment {
                         String nativeLang = obj.getString("tutoring_subjects");
 
 
-                        biography_personal.setText(obj.getString("personal"));
-                        biography_educational.setText(obj.getString("academic"));
-                        biography_professional.setText(obj.getString("professional"));
+
+                        if (!obj.getString("personal").equals("")) {
+                            biography_personal.setText(obj.getString("personal"));
+                            biography_personal_edit.setText(obj.getString("personal"));
+                        } else {
+                            biography_personal.setText(" I like to…");
+                            biography_personal_edit.setHint(" I like to…");
+                        }
+                        if (!obj.getString("academic").equals("")) {
+                            biography_educational.setText(obj.getString("academic"));
+                            biography_educational_edit.setText(obj.getString("academic"));
+                        } else {
+                            biography_educational.setText("I attend school at…");
+                            biography_educational_edit.setHint("I attend school at…");
+                        }
 
 
-                        biography_professional_edit.setText(obj.getString("professional"));
-                        biography_personal_edit.setText(obj.getString("personal"));
-                        biography_educational_edit.setText(obj.getString("academic"));
+                        if (!obj.getString("professional").equals("")) {
+                            biography_professional.setText(obj.getString("professional"));
+                            biography_professional_edit.setText(obj.getString("professional"));
+                        } else {
+                            biography_professional.setText("I have worked at…");
+                            biography_professional_edit.setHint("I have worked at…");
+                        }
 
 
                         if (!nativeLang.equals("")) {
@@ -841,22 +884,22 @@ public class Biography extends Fragment {
                                 }
                             }
                             biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; color: #616A6B; font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
-                                    "\t<body >"/*style=\"text-align:justify; font-size: 13px;\">\n" */+
-                                    "\t <font color='#616A6B'>"+sub+"</font>\n" +
+                                    "\t<body >"/*style=\"text-align:justify; font-size: 13px;\">\n" */ +
+                                    "\t <font color='#616A6B'>" + sub + "</font>\n" +
                                     "\t </body>\n" +
                                     "</Html>"), "text/html", "utf-8");
 //                            } else biography_languages.setText("");
-                        } else biography_languages_webview.loadData(String.format(htmlText, ""), "text/html", "utf-8");
+                        } else
+                            biography_languages_webview.loadData(String.format(htmlText, ""), "text/html", "utf-8");
 //                            view.findViewById(R.id.biography_languages_progress).setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     biography_languages_webview.loadData(String.format(htmlText, "<html><head><style type=\\\"text/css\\\">  @font-face {  font-family: MyFont;      src: url(\\\"file:///android_asset/fonts/GothamBookRegular.ttf\\\")  }    body { font-family: MyFont; color: #616A6B;  font-size: 12px;  text-align: justify;   }   </style> </head>\n" +
                             "\t<body >"/*style=\"text-align:justify; font-size: 13px;\">\n"*/ +
-                            "\t <font color='#616A6B'>"+sub+"</font>\n" +
+                            "\t <font color='#616A6B'>" + sub + "</font>\n" +
                             "\t </body>\n" +
                             "</Html>"), "text/html", "utf-8");
-
 
 
                 }
@@ -886,18 +929,17 @@ public class Biography extends Fragment {
     }
 
 
-
     private void InitializePLayer(String link) throws android.net.ParseException {
-        if (player==null){
-            TrackSelection.Factory factory=new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
+        if (player == null) {
+            TrackSelection.Factory factory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
 
-            player= ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), new DefaultTrackSelector(factory),new DefaultLoadControl());
+            player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), new DefaultTrackSelector(factory), new DefaultLoadControl());
             player.addListener(componentListener);
             player.setAudioDebugListener(componentListener);
             player.setVideoDebugListener(componentListener);
             playerView.setPlayer(player);
             player.setPlayWhenReady(false);
-            player.seekTo(CurrentWindow,PlayBackPosition);
+            player.seekTo(CurrentWindow, PlayBackPosition);
 
         }
 
@@ -908,27 +950,25 @@ public class Biography extends Fragment {
         MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(link),
                 dataSourceFactory, extractorsFactory, null, null);
 
-        player.prepare(mediaSource,true,false);
+        player.prepare(mediaSource, true, false);
     }
 
 
-    private void ReleasePlayer(){
-        if (player != null){
-            PlayBackPosition=player.getCurrentPosition();
-            CurrentWindow=player.getCurrentWindowIndex();
-            playWhenReady=false;
+    private void ReleasePlayer() {
+        if (player != null) {
+            PlayBackPosition = player.getCurrentPosition();
+            CurrentWindow = player.getCurrentWindowIndex();
+            playWhenReady = false;
             player.removeListener(componentListener);
             player.setVideoListener(null);
             player.setVideoDebugListener(null);
             player.setAudioDebugListener(null);
             player.release();
-            player=null;
+            player = null;
 
 
         }
     }
-
-
 
 
     private class ComponentListener implements ExoPlayer.EventListener, VideoRendererEventListener, AudioRendererEventListener {
@@ -951,30 +991,30 @@ public class Biography extends Fragment {
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 
             String stateString;
-            switch (playbackState){
+            switch (playbackState) {
                 case ExoPlayer.STATE_IDLE:
-                    stateString="ExoPlayer.STATE_IDLE   -";
+                    stateString = "ExoPlayer.STATE_IDLE   -";
                     break;
 
 
                 case ExoPlayer.STATE_BUFFERING:
-                    stateString="ExoPlayer.STATE_BUFFERING   -";
+                    stateString = "ExoPlayer.STATE_BUFFERING   -";
                     break;
 
 
                 case ExoPlayer.STATE_READY:
-                    stateString="ExoPlayer.STATE_READY  -";
+                    stateString = "ExoPlayer.STATE_READY  -";
                     break;
                 case ExoPlayer.STATE_ENDED:
-                    stateString="ExoPlayer.STATE_ENDED  -";
+                    stateString = "ExoPlayer.STATE_ENDED  -";
                     break;
 
                 default:
-                    stateString="Unknown State  -";
+                    stateString = "Unknown State  -";
                     break;
             }
 
-            Log.e(TAG,"changed state to "+stateString+"PLay when ready "+playWhenReady);
+            Log.e(TAG, "changed state to " + stateString + "PLay when ready " + playWhenReady);
 
         }
 
@@ -1082,20 +1122,20 @@ public class Biography extends Fragment {
                             if (!link.equals("")) {
                                 link = "https://www.thetalklist.com/uploads/video/" + link;
 
-                                final SharedPreferences bio_vid_url=getContext().getSharedPreferences("biography_video",Context.MODE_PRIVATE);
-                                SharedPreferences.Editor bio_edit=bio_vid_url.edit();
+                                final SharedPreferences bio_vid_url = getContext().getSharedPreferences("biography_video", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor bio_edit = bio_vid_url.edit();
 
-                                bio_edit.putString("videourl",link).apply();
+                                bio_edit.putString("videourl", link).apply();
 
                                 InitializePLayer(link);
                                 final String finalLink = link;
                                 expanded_fullscreen.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Intent i=new Intent(getContext(),Exoplayer_fullscreen.class);
+                                        Intent i = new Intent(getContext(), Exoplayer_fullscreen.class);
 //                                        Toast.makeText(getContext(), player.getCurrentTrackGroups().get(0).toString(), Toast.LENGTH_SHORT).show();
-                                        i.putExtra("fullscreen_video_url", bio_vid_url.getString("videourl",""));
-                                        i.putExtra("position",playerView.getPlayer().getCurrentPosition());
+                                        i.putExtra("fullscreen_video_url", bio_vid_url.getString("videourl", ""));
+                                        i.putExtra("position", playerView.getPlayer().getCurrentPosition());
                                         startActivity(i);
                                     }
                                 });
