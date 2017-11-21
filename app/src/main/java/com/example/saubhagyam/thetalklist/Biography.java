@@ -420,7 +420,7 @@ public class Biography extends Fragment {
             public void onClick(View v) {
 
                 if (edit_bit == 0) {
-                    biography_edit.setText("Save...");
+                    biography_edit.setText("SAVE...");
                     edit_bit = 1;
                     biography_personal.setVisibility(View.GONE);
                     biography_educational.setVisibility(View.GONE);
@@ -433,7 +433,7 @@ public class Biography extends Fragment {
 
                 } else {
                     edit_bit = 0;
-                    biography_edit.setText("Edit...");
+                    biography_edit.setText("EDIT...");
                     biography_personal.setVisibility(View.VISIBLE);
                     biography_educational.setVisibility(View.VISIBLE);
                     biography_professional.setVisibility(View.VISIBLE);
