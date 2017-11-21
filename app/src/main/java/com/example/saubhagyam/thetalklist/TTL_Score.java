@@ -376,7 +376,7 @@ public class TTL_Score extends Fragment {
 
 
    public void setFragment(int points){
-       if (points < 200) {
+       if (points < 200 && points>0 ) {
            ttl_score_count.setText(String.valueOf(200 - points));
            mHoloCircularProgressBar.setProgress((float) 1-(200 - (int)getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f))/200);
            redeem_travel.setClickable(false);
@@ -386,6 +386,9 @@ public class TTL_Score extends Fragment {
            redeem_free_session.setFocusable(false);
            ttl_score_needed.setVisibility(View.VISIBLE);
 
+       }else if(points<0){
+           ttl_score_count.setText(String.valueOf(200));
+           ttl_score_needed.setVisibility(View.VISIBLE);
        } else {
 //           ttl_score_count.setText(String.valueOf(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f)));
            ttl_score_count.setText(String.valueOf(points));

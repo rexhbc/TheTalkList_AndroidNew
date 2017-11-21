@@ -65,6 +65,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.saubhagyam.thetalklist.Services.LoginService;
 import com.example.saubhagyam.thetalklist.Services.MessageCountService;
+import com.example.saubhagyam.thetalklist.receivers.MyReceiver;
 import com.example.saubhagyam.thetalklist.util.NotificationUtils;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -129,6 +130,7 @@ public class SettingFlyout extends AppCompatActivity {
     private ListView mDrawerList;
     LinearLayout return_to_call;
     private CharSequence mDrawerTitle;
+    int notification;
     private CharSequence mTitle;
     private String[] mNavigationDrawerItemTitles;
     ActionBarDrawerToggle mDrawerToggle;
@@ -159,7 +161,7 @@ public class SettingFlyout extends AppCompatActivity {
 
     RequestQueue queue;
 
-    public int manuallyTurnOn=-1;
+    public int manuallyTurnOn = -1;
 
     @Override
     public void onDestroy() {
@@ -198,7 +200,7 @@ public class SettingFlyout extends AppCompatActivity {
         bottombar_message_count = (TextView) findViewById(R.id.bottombar_message_count);
         talkNow = (Switch) toolbar.findViewById(R.id.switch1);
 
-        switch_layout= (LinearLayout) findViewById(R.id.switch_layout);
+        switch_layout = (LinearLayout) findViewById(R.id.switch_layout);
 
         settingFlyout_bottomcontrol_videosearch = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol_videosearch);
         settingFlyout_bottomcontrol_Message = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol_Message);
@@ -228,15 +230,15 @@ public class SettingFlyout extends AppCompatActivity {
             }
         });
 
-        manuallyTurnOn=0;
+        manuallyTurnOn = 0;
         switch_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "switch layout clicke", Toast.LENGTH_SHORT).show();
-                manuallyTurnOn=1;
-                if (talkNow.isChecked()){
-                    talkNow.setChecked(true);
-                }else talkNow.setChecked(false);
+                manuallyTurnOn = 1;
+                if (talkNow.isChecked()) {
+                    talkNow.setChecked(false);
+                } else talkNow.setChecked(true);
             }
         });
 
@@ -468,17 +470,17 @@ public class SettingFlyout extends AppCompatActivity {
 
        /* setTalknow(Boolean.parseBoolean(*/
 
-        Timer timer = new Timer ();
-        TimerTask hourlyTask = new TimerTask () {
+        Timer timer = new Timer();
+        TimerTask hourlyTask = new TimerTask() {
             @Override
-            public void run () {
+            public void run() {
                 // your code here...
-                TalkNow(pref,getApplicationContext());
+                TalkNow(pref, getApplicationContext());
             }
         };
 
 // schedule the task to run starting now and then every hour...
-        timer.schedule (hourlyTask, 0l, 5000);
+        timer.schedule(hourlyTask, 0l, 5000);
 
 
         final FragmentStack fragmentStack = FragmentStack.getInstance();
@@ -577,7 +579,7 @@ public class SettingFlyout extends AppCompatActivity {
         drawerItem[1] = new DrawerModel(R.drawable.calendar, "Availability");
         drawerItem[2] = new DrawerModel(R.drawable.desiretour, "Desired Tutor");
         drawerItem[3] = new DrawerModel(R.drawable.paypal, "Payment Options");
-        drawerItem[4] = new DrawerModel(R.drawable.tilt, "Reward Points");
+        drawerItem[4] = new DrawerModel(R.mipmap.ic_ttl_score, "Reward Points");
         drawerItem[5] = new DrawerModel(R.drawable.history, "History");
         //drawerItem[5] = new DrawerModel(R.drawable.notification, "Notifications");
         drawerItem[6] = new DrawerModel(R.drawable.support, "Support");
@@ -736,7 +738,7 @@ public class SettingFlyout extends AppCompatActivity {
     }*/
 
 
-    public void TalkNow(SharedPreferences pref, final Context context){
+    public void TalkNow(SharedPreferences pref, final Context context) {
 
 
         if (pref.getInt("roleId", 0) != 0) {
@@ -760,99 +762,138 @@ public class SettingFlyout extends AppCompatActivity {
                             JSONObject info = res.getJSONObject("info");
 
 
-                                String string1 = info.getString("start_time");
-                                if (string1.contains("AM")) {
-                                    string1 = string1.replace(" AM", "");
-                                } else if (string1.contains("PM")) {
-                                    string1 = string1.replace(" PM", "PM");
-                                    Log.e("start time hours", string1);
-                                    String hx = string1.substring(0, string1.indexOf(":"));
-                                    String remainder = string1.substring(string1.indexOf(":") + 1, string1.length());
-                                    if (Integer.parseInt(hx) < 12)
-                                        string1 = String.valueOf(Integer.parseInt(hx) + 12) + ":" + remainder;
-                                    else if (Integer.parseInt(hx) == 12)
-                                        string1 = String.valueOf(Integer.parseInt(hx)) + ":" + remainder;
-                                    string1 = string1.replace("PM", "");
-                                }
-
-                                String string2 = info.getString("end_time");
-                                if (string2.contains("AM")) {
-                                    string2 = string2.replace(" AM", "");
-                                } else if (string2.contains("PM")) {
-                                    string2 = string2.replace(" PM", "PM");
-                                    String hx = string2.substring(0, string2.indexOf(":"));
-                                    String remainder = string2.substring(string2.indexOf(":") + 1, string2.length());
-                                    if (Integer.parseInt(hx) < 12)
-                                        string2 = String.valueOf(Integer.parseInt(hx) + 12) + ":" + remainder;
-                                    else if (Integer.parseInt(hx) == 12)
-                                        string2 = String.valueOf(Integer.parseInt(hx)) + ":" + remainder;
-
-                                    string2 = string2.replace("PM", "");
-                                }
 
 
-                                Log.e("day of week", dayOfTheWeek);
-                                Log.e("start time", string1);
-                                Log.e("end time", string2);
-                               int to= Integer.parseInt(string1.replace(":",""));
-                               int from= Integer.parseInt(string2.replace(":",""));
+
+
+                            String string1 = info.getString("start_time");
+                            if (string1.contains("AM")) {
+                                string1 = string1.replace(" AM", "");
+                                String hx = string1.substring(0, string1.indexOf(":"));
+                                String remainder = string1.substring(string1.indexOf(":") + 1, string1.length());
+                                if (Integer.parseInt(hx) < 12)
+                                    string1 = String.valueOf(Integer.parseInt(hx)) + ":" + remainder;
+                                else if (Integer.parseInt(hx) == 12)
+                                    string1 = String.valueOf(Integer.parseInt(hx) - 12) + ":" + remainder;
+                                string1 = string1.replace("AM", "");
+                            } else if (string1.contains("PM")) {
+                                string1 = string1.replace(" PM", "PM");
+                                Log.e("start time hours", string1);
+                                String hx = string1.substring(0, string1.indexOf(":"));
+                                String remainder = string1.substring(string1.indexOf(":") + 1, string1.length());
+                                if (Integer.parseInt(hx) < 12)
+                                    string1 = String.valueOf(Integer.parseInt(hx) + 12) + ":" + remainder;
+                                else if (Integer.parseInt(hx) == 12)
+                                    string1 = String.valueOf(Integer.parseInt(hx)) + ":" + remainder;
+                                string1 = string1.replace("PM", "");
+                            }
+
+
+
+
+
+
+
+
+                            String string2 = info.getString("end_time");
+                            if (string2.contains("AM")) {
+                                string2 = string2.replace(" AM", "");
+                                String hx = string2.substring(0, string2.indexOf(":"));
+                                String remainder = string2.substring(string2.indexOf(":") + 1, string2.length());
+                                if (Integer.parseInt(hx) < 12)
+                                    string2 = String.valueOf(Integer.parseInt(hx)) + ":" + remainder;
+                                else if (Integer.parseInt(hx) == 12)
+                                    string2 = String.valueOf(Integer.parseInt(hx) - 12) + ":" + remainder;
+
+                                string2 = string2.replace("AM", "");
+                            } else if (string2.contains("PM")) {
+                                string2 = string2.replace(" PM", "PM");
+                                String hx = string2.substring(0, string2.indexOf(":"));
+                                String remainder = string2.substring(string2.indexOf(":") + 1, string2.length());
+                                if (Integer.parseInt(hx) < 12)
+                                    string2 = String.valueOf(Integer.parseInt(hx) + 12) + ":" + remainder;
+                                else if (Integer.parseInt(hx) == 12)
+                                    string2 = String.valueOf(Integer.parseInt(hx)) + ":" + remainder;
+
+                                string2 = string2.replace("PM", "");
+                            }
+
+
+                            Log.e("day of week", dayOfTheWeek);
+                            Log.e("start time", string1);
+                            Log.e("end time", string2);
+                            int to = Integer.parseInt(string1.replace(":", ""));
+                            int from = Integer.parseInt(string2.replace(":", ""));
                             Log.e("to", String.valueOf(to));
                             Log.e("from", String.valueOf(from));
-                                Date date = new Date();
-                                Calendar c = Calendar.getInstance();
-                                c.setTime(date);
-                                int t = c.get(Calendar.HOUR_OF_DAY) * 100 + c.get(Calendar.MINUTE);
+                            Date date = new Date();
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(date);
+                            int t = c.get(Calendar.HOUR_OF_DAY) * 100 + c.get(Calendar.MINUTE);
                             Log.e("cur", String.valueOf(t));
                             Log.e("Manually", String.valueOf(manuallyTurnOn));
 
-                                if (to<=t && t<=from) {
-                                    //checkes whether the current time is between 14:49:00 and 20:11:13.
+                            if (to <= t && t <= from) {
+                                //checkes whether the current time is between 14:49:00 and 20:11:13.
 //                                        Log.e("in if condition","yes");
 
-                                        if (info.getInt("sunday") == 1) {
-                                            if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
-                                                talkNow.setChecked(true);
-                                                Log.e("availability", "yes");
-                                            }
-
-                                        } else if (Integer.parseInt(info.getString("monday")) == 1) {
-                                            if (dayOfTheWeek.equalsIgnoreCase("Bonday")) {
-                                                talkNow.setChecked(true);
-                                                Log.e("availability", "yes");
-                                            }
-                                        } else if (info.getInt("tuesday") == 1) {
-                                            if (dayOfTheWeek.equalsIgnoreCase("Tuesday")) {
-                                                talkNow.setChecked(true);
-                                                Log.e("availability", "yes");
-                                            }
-                                        } else if (info.getInt("wednesday") == 1) {
-                                            if (dayOfTheWeek.equalsIgnoreCase("Wednesday")) {
-                                                talkNow.setChecked(true);
-                                                Log.e("availability", "yes");
-                                            }
-                                        } else if (info.getInt("thursday") == 1) {
-                                            if (dayOfTheWeek.equalsIgnoreCase("Thursday")) {
-                                                talkNow.setChecked(true);
-                                                Log.e("availability", "yes");
-                                            }
-                                        } else if (info.getInt("friday") == 1) {
-                                            if (dayOfTheWeek.equalsIgnoreCase("Friday")) {
-                                                talkNow.setChecked(true);
-                                                Log.e("availability", "yes");
-                                            }
-                                        } else if (info.getInt("saturday") == 1) {
-                                            if (dayOfTheWeek.equalsIgnoreCase("Saturday")) {
-                                                talkNow.setChecked(true);
-                                                Log.e("availability", "yes");
-                                            }
-                                        } else {
-//                                            Log.e("availability", "No");
-                                        }
+                                if (info.getInt("sunday") == 1) {
+                                    if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
+                                        talkNow.setChecked(true);
+                                        Log.e("availability", "yes");
+                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+//                                        notification = 1;
                                     }
-                                    else {
-                                    if (manuallyTurnOn!=1)
-                                    talkNow.setChecked(false);
+
+                                } else if (info.getInt("monday") == 1) {
+                                    if (dayOfTheWeek.equalsIgnoreCase("Monday")) {
+                                        talkNow.setChecked(true);
+                                        Log.e("availability", "yes");
+                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+//                                        notification = 1;
+                                    }
+                                } else if (info.getInt("tuesday") == 1) {
+                                    if (dayOfTheWeek.equalsIgnoreCase("Tuesday")) {
+                                        talkNow.setChecked(true);
+                                        Log.e("availability", "yes");
+                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+//                                        notification = 1;
+                                    }
+                                } else if (info.getInt("wednesday") == 1) {
+                                    if (dayOfTheWeek.equalsIgnoreCase("Wednesday")) {
+                                        talkNow.setChecked(true);
+                                        Log.e("availability", "yes");
+                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+//                                        notification = 1;
+                                    }
+                                } else if (info.getInt("thursday") == 1) {
+                                    if (dayOfTheWeek.equalsIgnoreCase("Thursday")) {
+                                        talkNow.setChecked(true);
+                                        Log.e("availability", "yes");
+                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+//                                        notification = 1;
+                                    }
+                                } else if (info.getInt("friday") == 1) {
+                                    if (dayOfTheWeek.equalsIgnoreCase("Friday")) {
+                                        talkNow.setChecked(true);
+                                        Log.e("availability", "yes");
+                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+//                                        notification = 1;
+                                    }
+                                } else if (info.getInt("saturday") == 1) {
+                                    if (dayOfTheWeek.equalsIgnoreCase("Saturday")) {
+                                        talkNow.setChecked(true);
+                                        Log.e("availability", "yes");
+                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+//                                        notification = 1;
+                                    }
+                                } else {
+//                                            Log.e("availability", "No");
                                 }
+                            } else {
+                                if (manuallyTurnOn != 1)
+                                    talkNow.setChecked(false);
+                            }
 
                         }
 
@@ -873,7 +914,53 @@ public class SettingFlyout extends AppCompatActivity {
     }
 
 
+    public void Notify(int h,int min) {
 
+        Intent notifyIntent = new Intent(getApplicationContext(),MyReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast
+                (context, 100, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, h);
+        calendar.set(Calendar.MINUTE, min);
+        calendar.set(Calendar.SECOND, 1);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
+       /* if (notification==1) {
+            Intent notificationIntent = new Intent(getApplication(), SettingFlyout.class);
+            NotificationCompat.BigTextStyle inboxStyle = new NotificationCompat.BigTextStyle();
+            final int icon = R.mipmap.ttlg2;
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this).setSmallIcon(icon).setTicker("Tutoring is On").setWhen(0)
+                            .setAutoCancel(true)
+                            .setContentTitle("Time to Available")
+                            .setSound(Uri.parse(String.valueOf(android.app.Notification.DEFAULT_SOUND)))
+                            .setStyle(inboxStyle)
+                            .setContentIntent(contentIntent)
+                            .setWhen(System.currentTimeMillis())
+                            .setSmallIcon(R.mipmap.ttlg2)
+                            .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ttlg2))
+                            .setContentText("Your scheduled tutoring window is now open and your TalkLight is on!");
+            NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+            notificationUtils.playNotificationSound();
+
+            String myText = "Your scheduled tutoring window is now open and your TalkLight is on!";
+            android.app.Notification notification = new NotificationCompat.BigTextStyle(mBuilder)
+                    .bigText(myText).build();
+
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(100, notification);
+        }*/
+    }
    /* public void count() {
         String URL = "https://www.thetalklist.com/api/count_messages?sender_id=" + getSharedPreferences("loginStatus", MODE_PRIVATE).getInt("id", 0);
         StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
@@ -1459,7 +1546,6 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
     public void onBackPressed() {
 
 
-
         ((ImageView) findViewById(R.id.imageView11)).setImageDrawable(getResources().getDrawable(R.drawable.favoritestar_settingflyout));
         ((ImageView) findViewById(R.id.settingFlyout_bottomcontrol_videosearchImg)).setImageDrawable(getResources().getDrawable(R.drawable.videosearch));
         ((ImageView) findViewById(R.id.imageView13)).setImageDrawable(getResources().getDrawable(R.drawable.new_tabuser_bottomlayout));
@@ -1471,7 +1557,7 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
         SharedPreferences chatPref = getSharedPreferences("chatPref", Context.MODE_PRIVATE);
         SharedPreferences SearchTutorPref = getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE);
         final SharedPreferences.Editor chatPrefEditor = chatPref.edit();
-        final SharedPreferences.Editor SearEditor= SearchTutorPref.edit();
+        final SharedPreferences.Editor SearEditor = SearchTutorPref.edit();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (drawer.isDrawerOpen(GravityCompat.START)) {

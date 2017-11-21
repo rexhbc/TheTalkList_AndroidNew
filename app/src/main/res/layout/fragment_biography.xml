@@ -1184,19 +1184,19 @@
                                 android:src="@drawable/side_aerrow" />
                         </LinearLayout>
                     </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="5dp"
-                        android:background="#BDBDBD" />
-
                     <LinearLayout
                         android:id="@+id/review_root_biography"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#BDBDBD" />
+
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
