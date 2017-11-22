@@ -234,7 +234,6 @@ public class SettingFlyout extends AppCompatActivity {
         switch_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "switch layout clicke", Toast.LENGTH_SHORT).show();
                 manuallyTurnOn = 1;
                 if (talkNow.isChecked()) {
                     talkNow.setChecked(false);
@@ -480,7 +479,7 @@ public class SettingFlyout extends AppCompatActivity {
         };
 
 // schedule the task to run starting now and then every hour...
-        timer.schedule(hourlyTask, 0l, 5000);
+        timer.schedule(hourlyTask, 0l, 10000);
 
 
         final FragmentStack fragmentStack = FragmentStack.getInstance();
@@ -888,13 +887,18 @@ public class SettingFlyout extends AppCompatActivity {
 //                                        notification = 1;
                                     }
                                 } else {
-//                                            Log.e("availability", "No");
+                                            Log.e("availability", "No");
+                                    if (manuallyTurnOn != 1)
+                                        talkNow.setChecked(false);
                                 }
                             } else {
                                 if (manuallyTurnOn != 1)
                                     talkNow.setChecked(false);
                             }
 
+                        }
+                        else {
+//                            talkNow.setChecked(false);
                         }
 
 

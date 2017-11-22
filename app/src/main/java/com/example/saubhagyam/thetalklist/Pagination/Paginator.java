@@ -113,12 +113,16 @@ public class Paginator {
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject o = (JSONObject) array.get(i);
                                     History_model History_model = new History_model();
-                                    if (pref.getInt("id", 0) == o.getInt("tID")) {
+                                    if (pref.getInt("id", 0) == o.getInt("sID")) {
                                         History_model.setName(o.getString("sFN") + " " + o.getString("sLN"));
+                                        History_model.setTutorname(o.getString("tFN") + " " + o.getString("tLN"));
                                     } else {
                                         History_model.setName(o.getString("tFN") + " " + o.getString("tLN"));
+                                        History_model.setTutorname(o.getString("sFN") + " " + o.getString("sLN"));
                                     }
 
+                                    History_model.setSid(o.getInt("sID"));
+                                    History_model.setTid(o.getInt("tID"));
 
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                                     Date convertedDate = new Date();

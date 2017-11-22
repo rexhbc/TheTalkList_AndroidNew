@@ -7,8 +7,35 @@ package com.example.saubhagyam.thetalklist.Pagination;
 public class History_model {
 
     String name;
+    String Tutorname;
     String date;
     String rate;
+    int sid;
+    int tid;
+
+    public int getSid() {
+        return sid;
+    }
+
+    public void setSid(int sid) {
+        this.sid = sid;
+    }
+
+    public int getTid() {
+        return tid;
+    }
+
+    public void setTid(int tid) {
+        this.tid = tid;
+    }
+
+    public String getTutorname() {
+        return Tutorname;
+    }
+
+    public void setTutorname(String tutorname) {
+        Tutorname = tutorname;
+    }
 
     public String getName() {
         return name;

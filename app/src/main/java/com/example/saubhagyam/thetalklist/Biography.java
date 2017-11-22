@@ -236,7 +236,7 @@ public class Biography extends Fragment {
         biographyFirstName.setText(preferences.getString("usernm", ""));
         if (preferences.getFloat("hRate", 0.0f) != 0.0) {
 
-            biography_rate_textview.setText(String.format("%.02f", preferences.getFloat("hRate", 0.0f) / 25.0f));
+            biography_rate_textview.setText(String.format("%.02f", preferences.getFloat("hRate", 0.00f) / 25.00f));
             biography_rate_edittext.setText(String.valueOf(preferences.getFloat("hRate", 0.0f) / 25.0f));
         } else {
             biography_rate_textview.setText("0");
@@ -387,7 +387,7 @@ public class Biography extends Fragment {
                                             if (biography_rate_edittext.getText().toString().equals(""))
                                                 biography_rate_textview.setText("0.00");
                                             else {
-                                                biography_rate_textview.setText(String.format("%.02f", Float.parseFloat(biography_rate_edittext.getText().toString())));
+                                                biography_rate_textview.setText(String.format("%.2f", Double.parseDouble(obj.getString("rate"))/25f));
                                                 Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
@@ -521,6 +521,7 @@ public class Biography extends Fragment {
                                     } else {
                                         biography_personal.setText(" I like to…");
                                         biography_personal_edit.setHint(" I like to…");
+                                        biography_personal_edit.setText(" I like to…");
                                     }
                                     if (!response.getString("academic").equals("")) {
                                         biography_educational.setText(response.getString("academic"));
@@ -528,6 +529,7 @@ public class Biography extends Fragment {
                                     } else {
                                         biography_educational.setText("I attend school at…");
                                         biography_educational_edit.setHint("I attend school at…");
+                                        biography_educational_edit.setText("I attend school at…");
                                     }
 
 
@@ -537,6 +539,7 @@ public class Biography extends Fragment {
                                     } else {
                                         biography_professional.setText("I have worked at…");
                                         biography_professional_edit.setHint("I have worked at…");
+                                        biography_professional_edit.setText("I have worked at…");
                                     }
 
 
@@ -741,6 +744,7 @@ public class Biography extends Fragment {
                             } else {
                                 biography_personal.setText(" I like to…");
                                 biography_personal_edit.setHint(" I like to…");
+                                biography_personal_edit.setText(" I like to…");
                             }
                             if (!obj.getString("academic").equals("")) {
                                 biography_educational.setText(obj.getString("academic"));
@@ -748,6 +752,7 @@ public class Biography extends Fragment {
                             } else {
                                 biography_educational.setText("I attend school at…");
                                 biography_educational_edit.setHint("I attend school at…");
+                                biography_educational_edit.setText("I attend school at…");
                             }
 
 
@@ -757,6 +762,7 @@ public class Biography extends Fragment {
                             } else {
                                 biography_professional.setText("I have worked at…");
                                 biography_professional_edit.setHint("I have worked at…");
+                                biography_professional_edit.setText("I have worked at…");
                             }
 
                             if (!nativeLang.equals("")) {
@@ -854,6 +860,7 @@ public class Biography extends Fragment {
                         } else {
                             biography_personal.setText(" I like to…");
                             biography_personal_edit.setHint(" I like to…");
+                            biography_personal_edit.setText(" I like to…");
                         }
                         if (!obj.getString("academic").equals("")) {
                             biography_educational.setText(obj.getString("academic"));
@@ -861,6 +868,7 @@ public class Biography extends Fragment {
                         } else {
                             biography_educational.setText("I attend school at…");
                             biography_educational_edit.setHint("I attend school at…");
+                            biography_educational_edit.setText("I attend school at…");
                         }
 
 
@@ -870,6 +878,7 @@ public class Biography extends Fragment {
                         } else {
                             biography_professional.setText("I have worked at…");
                             biography_professional_edit.setHint("I have worked at…");
+                            biography_professional_edit.setText("I have worked at…");
                         }
 
 
