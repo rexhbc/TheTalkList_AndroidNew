@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context="com.example.saubhagyam.thetalklist.VideoCall">
+    tools:context="com.ttl.project.thetalklist.VideoCall">
 
     <FrameLayout
         android:id="@+id/videoCallRootLayout"
@@ -171,7 +171,7 @@
         android:layout_height="match_parent"
         android:background="#455A64"
         android:orientation="vertical"
-        tools:context="com.example.saubhagyam.thetalklist.com.Application.saubhagyam.thetalklist.OutgoingCallActivity">
+        tools:context="com.ttl.project.thetalklist.com.Application.saubhagyam.thetalklist.OutgoingCallActivity">
 
         <FrameLayout
             android:id="@+id/outgoingCallSurfaceView"

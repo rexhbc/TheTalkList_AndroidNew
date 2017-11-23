@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
 
     android:layout_height="match_parent"
-    tools:context="com.example.saubhagyam.thetalklist.CallActivity">
+    tools:context="com.ttl.project.thetalklist.CallActivity">
 
     <FrameLayout
         android:id="@+id/frameCameraPreview"
