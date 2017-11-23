@@ -590,18 +590,17 @@ public class Available_tutor extends Fragment {
                     if (resultObj.getInt("status") == 1) {
 //                        new AvailableTutor("").execute();
 
-                       /* SharedPreferences pref=getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE);
+                        SharedPreferences pref=getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor=pref.edit();
 
-                        editor.clear().apply();*/
-                       /* tutorSearch( getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE).getString("subject",""),
+                        editor.clear().apply();
+                        tutorSearch( getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE).getString("subject",""),
                                 getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE).getString("lang1",""),
                                 getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE).getString("lang2",""),
                                 getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE).getString("country",""),
                                 getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE).getString("state",""), "",
                                 getContext().getSharedPreferences("SearchTutorDesiredTutorPreferences", Context.MODE_PRIVATE).getString("gender",""));
-*/
-                        Toast.makeText(getContext(), "No Match Found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "No search results found.", Toast.LENGTH_SHORT).show();
                         linearLayout.setVisibility(View.GONE);
                     } else {
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -44,6 +45,7 @@ public class SignUp extends Activity {
     EditText firstname;
     EditText lastname;
     TextView signin;
+    TextView term_and_condition;
     CheckBox checkBox;
     Typeface typeface;
 
@@ -71,9 +73,11 @@ public class SignUp extends Activity {
         typeface = Typeface.createFromAsset(getAssets(), "fonts/GothamBookRegular.ttf");
 
         firstname= (EditText) findViewById(R.id.signupET1);
+        firstname.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         firstname.setTypeface(typeface);
         firstname.setVisibility(View.VISIBLE);
         lastname= (EditText) findViewById(R.id.signupET2);
+        lastname.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         lastname.setVisibility(View.VISIBLE);
         lastname.setTypeface(typeface);
         phone= (EditText) findViewById(R.id.signupET3);
@@ -84,6 +88,7 @@ public class SignUp extends Activity {
         password.setVisibility(View.VISIBLE);
         password.setTypeface(typeface);
         signin= (TextView) findViewById(R.id.signupTT2);
+        term_and_condition= (TextView) findViewById(R.id.term_and_condition);
         signin.setTypeface(typeface);
         signUp = (Button) findViewById(R.id.signupButton);
     }
@@ -106,6 +111,18 @@ public class SignUp extends Activity {
         signin.setWidth(width);
 
         signUp.setTypeface(typeface);
+
+
+
+        term_and_condition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://www.thetalklist.com/en/article/terms";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
 
         email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         signUp.setOnClickListener(new View.OnClickListener() {

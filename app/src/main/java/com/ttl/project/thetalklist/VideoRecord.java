@@ -19,6 +19,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,8 +131,15 @@ public class VideoRecord extends Fragment {
         upload_video_gallery = (ImageView) view.findViewById(R.id.upload_video_gallery);
         subject = (Spinner) view.findViewById(R.id.videorecoedspnsubject);
         videoRecord_title = (EditText) view.findViewById(R.id.videoRecord_title);
+        videoRecord_title.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         videoRecord_desc = (EditText) view.findViewById(R.id.videoRecord_desc);
+        videoRecord_desc.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
+
+        SharedPreferences bio_videoPref = getContext().getSharedPreferences("bio_video", Context.MODE_PRIVATE);
+
+        if (bio_videoPref.getBoolean("biography",true))
+            view.findViewById(R.id.video_upload_control).setVisibility(View.GONE);
 
 
         progressBar = new ProgressBar(getContext());

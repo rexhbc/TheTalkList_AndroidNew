@@ -381,7 +381,11 @@ public class TTL_Score extends Fragment {
        }else if(points<0){
            ttl_score_count.setText(String.valueOf(200));
            ttl_score_needed.setVisibility(View.VISIBLE);
-       } else {
+       } else if (points==0){
+           ttl_score_count.setText(String.valueOf(200));
+           ttl_score_needed.setVisibility(View.VISIBLE);
+           mHoloCircularProgressBar.setProgress(0f);
+       }else {
 //           ttl_score_count.setText(String.valueOf(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("ttl_points", 0.0f)));
            ttl_score_count.setText(String.valueOf(points));
 

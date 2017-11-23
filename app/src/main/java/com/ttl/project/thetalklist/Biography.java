@@ -1144,6 +1144,9 @@ public class Biography extends Fragment {
                                 });
 
                             } else {
+                                    ImageView exo_player_view_placeholder= (ImageView) view.findViewById(R.id.exo_player_view_placeholder);
+                                playerView.setVisibility(View.GONE);
+                                exo_player_view_placeholder.setVisibility(View.VISIBLE);
 
                             }
 

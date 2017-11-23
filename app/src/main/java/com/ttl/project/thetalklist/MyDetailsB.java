@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -122,10 +123,13 @@ public class MyDetailsB extends Fragment {
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fname = (EditText) convertview.findViewById(R.id.fname);
+        fname.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         lname = (EditText) convertview.findViewById(R.id.lname);
+        lname.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         age = (EditText) convertview.findViewById(R.id.age);
         state = (Spinner) convertview.findViewById(R.id.state);
         city = (EditText) convertview.findViewById(R.id.city);
+        city.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         email = (EditText) convertview.findViewById(R.id.email);
         email.setFocusable(false);
         phone = (EditText) convertview.findViewById(R.id.phone);
@@ -177,7 +181,7 @@ public class MyDetailsB extends Fragment {
         if (!pref.contains("firstTime")){
             myDetailsB_info_txt.setVisibility(View.VISIBLE);
             if (loginpref.getInt("roleId",0)==1)
-            myDetailsB_info_txt.setText("Nice! The world sees your updated profile. Your tutoring light is ON by default but toggle anytime");
+            myDetailsB_info_txt.setText("Nice! The world sees your updated profile. Your tutoring light is ON by default but toggle anytime.");
             else myDetailsB_info_txt.setVisibility(View.GONE);
             /*ed.putBoolean("firstTime",false);
             ed.apply();*/
@@ -569,6 +573,11 @@ public class MyDetailsB extends Fragment {
                                     TextView personTextsettingflyout= (TextView) getActivity().findViewById(R.id.personTextsettingflyout);
 
                                     personTextsettingflyout.setText(fn+" "+ln);
+
+
+                                    if(loginpref.getInt("roleId",0)==0){
+                                        fragmentTransaction.replace(R.id.viewpager,new Available_tutor()).commit();
+                                    }
 
                                 }else if (resObj.getInt("status") == 1 &&resObj.getString("error") .equalsIgnoreCase("please fill up")){
                                     Toast.makeText(getContext(), "Make sure all fields are filled..!", Toast.LENGTH_SHORT).show();

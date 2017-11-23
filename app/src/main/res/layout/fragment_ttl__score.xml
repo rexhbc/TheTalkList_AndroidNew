@@ -215,8 +215,9 @@
                         android:layout_height="29dp"
                         android:weightSum="1">
 
-                        <TextView      
+                        <TextView
 
+                            android:id="@+id/textView13"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"

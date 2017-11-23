@@ -39,7 +39,7 @@
         android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Press message icon to start chat."
+        android:text="You have no messages."
         android:textSize="25dp"
         android:layout_gravity="center"
         android:gravity="center"
