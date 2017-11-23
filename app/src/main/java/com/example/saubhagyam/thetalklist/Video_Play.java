@@ -699,7 +699,7 @@ public class Video_Play extends Fragment {
                                     fragmentStack.push(new Video_Play());
                                     fragmentTransaction.replace(R.id.viewpager, messageList).commit();
                                 } else
-                                    Toast.makeText(getContext(), "You can not chat with yourself.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "You can't chat with yourself.", Toast.LENGTH_SHORT).show();
                                    /* } catch (JSONException e) {
                                         e.printStackTrace();
                                     }*/
@@ -794,7 +794,7 @@ public class Video_Play extends Fragment {
                                             }
                                         });
                                     } else
-                                        Toast.makeText(getContext(), "You can not chat with yourself.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "You can't chat with yourself.", Toast.LENGTH_SHORT).show();
                                   /*  } catch (JSONException e) {
                                         e.printStackTrace();
                                     }*/

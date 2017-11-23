@@ -176,7 +176,7 @@ public class EarnCredits extends Fragment {
                                     Toast.makeText(getContext(), "Enter Valid Amount", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(getContext(), "You can not cashout greeting credits.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "You can’t cashout promotional credits.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getContext(), "You don't have enough credits.", Toast.LENGTH_SHORT).show();
