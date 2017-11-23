@@ -151,7 +151,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                            recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
                             recyclerView.removeAllViews();
-                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, pic);
+                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
                             Log.e("locale android ", new TTL().getUserCountry(getContext()));
 
 
@@ -680,6 +680,7 @@ public class MessageOneToOne extends Fragment implements EmojiconGridFragment.On
                                                 messageModel.setTime(msgObj.getString("time"));
                                                 messageModelList.add(0, messageModel);
                                             }
+                                            messageRecyclarAdapter = new MessageRecyclarAdapter(getContext(), messageModelList, jsonObject.getString("tutor_pic"));
                                             recyclerView.setLayoutManager(mLayoutManager);
                                             recyclerView.setItemAnimator(new DefaultItemAnimator());
 //                                    recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));

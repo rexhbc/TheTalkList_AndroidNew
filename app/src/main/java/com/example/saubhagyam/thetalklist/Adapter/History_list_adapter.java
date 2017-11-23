@@ -87,13 +87,21 @@ public class History_list_adapter extends RecyclerView.Adapter<History_list_adap
             History_model history_model = jsonArray.get(position);
 
             SharedPreferences pref = context.getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
-            holder.userName_TV.setText(history_model.getName());
+            holder.userName_TV.setText(history_model.getTutorname());
 
 
             holder.date_TV.setText(history_model.getDate());
 
 
             holder.credit_TV.setText(String.valueOf(history_model.getRate()));
+
+        if (pref.getInt("id",0)==history_model.getTid()){
+//         holder.history_image.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_credit_up));
+            holder.credit_TV.setText(String.valueOf("+"+history_model.getRate()));
+        }else {
+//            holder.history_image.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_credit_down));
+            holder.credit_TV.setText(String.valueOf("-"+history_model.getRate()));
+        }
 
 
 
@@ -112,7 +120,7 @@ public class History_list_adapter extends RecyclerView.Adapter<History_list_adap
             TextView userName_TV;
             TextView date_TV;
             TextView credit_TV;
-
+//ImageView history_image;
             LinearLayout history_layout;
 
             public MyViewHolder(View itemView) {
@@ -122,6 +130,7 @@ public class History_list_adapter extends RecyclerView.Adapter<History_list_adap
                 date_TV = (TextView) itemView.findViewById(R.id.date_TV);
                 credit_TV = (TextView) itemView.findViewById(R.id.credit_TV);
                 history_layout = (LinearLayout) itemView.findViewById(R.id.history_layout);
+//                history_image= (ImageView) itemView.findViewById(R.id.history_image);
             }
         }
 
