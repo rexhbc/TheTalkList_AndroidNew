@@ -35,8 +35,12 @@ public class Tablayout_with_viewpager extends android.support.v4.app.Fragment {
     int status;
 
 
+    int tab;
 
-
+    public Tablayout_with_viewpager(int tab) {
+        this.tab = tab;
+        changeTab(tab);
+    }
 
     public Tablayout_with_viewpager() {
     }
@@ -45,6 +49,7 @@ public class Tablayout_with_viewpager extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
 
@@ -73,6 +78,7 @@ public class Tablayout_with_viewpager extends android.support.v4.app.Fragment {
         return convertView;
 
     }
+
 
     public void initScreen() {
 
@@ -116,6 +122,9 @@ public class Tablayout_with_viewpager extends android.support.v4.app.Fragment {
                     viewPager.setAdapter(adapter);
 
 
+    }
+    public void changeTab(int tab){
+        tabLayout.getTabAt(tab);
     }
 
 

@@ -84,6 +84,7 @@ if(pref.getString("LoginWay","").equals("FacebookLogin")){
                     editor.putString("otherLanguage", resObj.getString("otherLanguage"));
                     editor.putFloat("frMoney", (float) resObj.getDouble("frMoney"));
                     editor.putInt("roleId",roleId);
+                    editor.putInt("coupon_credits",resObj.getInt("coupon_credits"));
                     editor.putInt("status",0);
                     editor.apply();
 
@@ -171,6 +172,7 @@ if(pref.getString("LoginWay","").equals("FacebookLogin")){
                     else
                         editor.putFloat("ttl_points", Float.parseFloat(resultObj.getString("ttl_points")));
                     editor.putInt("country", resultObj.getInt("country"));
+                    editor.putInt("coupon_credits", resultObj.getInt("coupon_credits"));
                     editor.putInt("province", resultObj.getInt("province"));
                     editor.putInt("status", 0);
                     editor.putFloat("money", Float.parseFloat(resultObj.getString("money")));

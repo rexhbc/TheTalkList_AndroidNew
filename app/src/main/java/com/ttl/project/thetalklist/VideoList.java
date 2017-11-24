@@ -78,6 +78,9 @@ public class VideoList extends Fragment {
                 fragmentStack.push(new VideoList());
                 TabBackStack tabBackStack = TabBackStack.getInstance();
                 tabBackStack.setTabPosition(1);
+                SharedPreferences bio_videoPref = getContext().getSharedPreferences("bio_video", Context.MODE_PRIVATE);
+                SharedPreferences.Editor bio_Editor = bio_videoPref.edit();
+                bio_Editor.putBoolean("biography", false).apply();
                 fragmentTransaction.replace(R.id.viewpager, videoRecord).commit();
             }
         });

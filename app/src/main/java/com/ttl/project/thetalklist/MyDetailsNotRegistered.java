@@ -89,6 +89,7 @@ public class MyDetailsNotRegistered extends AppCompatActivity {
         Country = (Spinner) findViewById(R.id.countryNotDetails);
         State = (Spinner) findViewById(R.id.stateNotDetails);
         City = (EditText) findViewById(R.id.cityNotDetails);
+        City.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         City.setTypeface(typeface);
         Email = (EditText) findViewById(R.id.emailNotDetails);
         Email.setTypeface(typeface);

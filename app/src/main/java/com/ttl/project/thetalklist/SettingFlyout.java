@@ -221,13 +221,18 @@ public class SettingFlyout extends AppCompatActivity {
         });
 
         manuallyTurnOn = 0;
+
         switch_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                manuallyTurnOn = 1;
-                if (talkNow.isChecked()) {
-                    talkNow.setChecked(false);
-                } else talkNow.setChecked(true);
+                if (roleId==1) {
+                    manuallyTurnOn = 1;
+                    if (talkNow.isChecked()) {
+                        talkNow.setChecked(false);
+                    } else talkNow.setChecked(true);
+                }else {
+                    talkNow.setEnabled(false);
+                }
             }
         });
 
@@ -821,62 +826,99 @@ public class SettingFlyout extends AppCompatActivity {
                             int t = c.get(Calendar.HOUR_OF_DAY) * 100 + c.get(Calendar.MINUTE);
                             Log.e("cur", String.valueOf(t));
                             Log.e("Manually", String.valueOf(manuallyTurnOn));
+                            Log.e("dayofweek",dayOfTheWeek.toLowerCase());
+
 
                             if (to <= t && t <= from) {
                                 //checkes whether the current time is between 14:49:00 and 20:11:13.
-//                                        Log.e("in if condition","yes");
+                                        Log.e("in if condition","yes");
 
-                                if (info.getInt("sunday") == 1) {
-                                    if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
+
+
+                                if (info.getInt("sunday") == 1 ||
+                                        info.getInt("monday") == 1 ||
+                                        info.getInt("tuesday") == 1 ||
+                                        info.getInt("wednesday") == 1 ||
+                                        info.getInt("thursday") == 1 ||
+                                        info.getInt("friday") == 1 ||
+                                        info.getInt("saturday") == 1
+                                        ) {
+
+
+                                    if (info.getInt(dayOfTheWeek.toLowerCase())==1){
                                         talkNow.setChecked(true);
                                         Log.e("availability", "yes");
                                         Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
-//                                        notification = 1;
+                                    }else {
+                                        Log.e("availability", "No");
+                                        if (manuallyTurnOn != 1)
+                                            talkNow.setChecked(false);
                                     }
 
-                                } else if (info.getInt("monday") == 1) {
-                                    if (dayOfTheWeek.equalsIgnoreCase("Monday")) {
-                                        talkNow.setChecked(true);
-                                        Log.e("availability", "yes");
-                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+                                    /*if (info.getInt("sunday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Sunday")) {
+                                            talkNow.setChecked(true);
+                                            Log.e("availability", "yes");
+                                            Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
 //                                        notification = 1;
+                                        }
+
                                     }
-                                } else if (info.getInt("tuesday") == 1) {
-                                    if (dayOfTheWeek.equalsIgnoreCase("Tuesday")) {
-                                        talkNow.setChecked(true);
-                                        Log.e("availability", "yes");
-                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+                                    if (info.getInt("monday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Monday")) {
+                                            talkNow.setChecked(true);
+                                            Log.e("availability", "yes");
+                                            Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
 //                                        notification = 1;
+                                        }
                                     }
-                                } else if (info.getInt("wednesday") == 1) {
-                                    if (dayOfTheWeek.equalsIgnoreCase("Wednesday")) {
-                                        talkNow.setChecked(true);
-                                        Log.e("availability", "yes");
-                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+                                      if (info.getInt("tuesday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Tuesday")) {
+                                            talkNow.setChecked(true);
+                                            Log.e("availability", "yes");
+                                            Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
 //                                        notification = 1;
+                                        }
                                     }
-                                } else if (info.getInt("thursday") == 1) {
-                                    if (dayOfTheWeek.equalsIgnoreCase("Thursday")) {
-                                        talkNow.setChecked(true);
-                                        Log.e("availability", "yes");
-                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+                                     if (info.getInt("wednesday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Wednesday")) {
+                                            talkNow.setChecked(true);
+                                            Log.e("availability", "yes");
+                                            Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
 //                                        notification = 1;
+                                        }
                                     }
-                                } else if (info.getInt("friday") == 1) {
-                                    if (dayOfTheWeek.equalsIgnoreCase("Friday")) {
-                                        talkNow.setChecked(true);
-                                        Log.e("availability", "yes");
-                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+                                        if (info.getInt("thursday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Thursday")) {
+                                            talkNow.setChecked(true);
+                                            Log.e("availability", "yes");
+                                            Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
 //                                        notification = 1;
+                                        }
                                     }
-                                } else if (info.getInt("saturday") == 1) {
-                                    if (dayOfTheWeek.equalsIgnoreCase("Saturday")) {
-                                        talkNow.setChecked(true);
-                                        Log.e("availability", "yes");
-                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+                                      if (info.getInt("friday") == 1) {
+
+                                        if (dayOfTheWeek.equalsIgnoreCase("Friday")) {
+                                            talkNow.setChecked(true);
+                                            Log.e("availability", "yes");
+                                            Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
 //                                        notification = 1;
+                                        }
                                     }
-                                } else {
+                                      if (info.getInt("saturday") == 1) {
+                                        if (dayOfTheWeek.equalsIgnoreCase("Saturday")) {
+                                            talkNow.setChecked(true);
+                                            Log.e("availability", "yes");
+                                            Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+//                                        notification = 1;
+                                        }
+                                    }*/
+                                    /*else {
+                                        Log.e("availability", "No");
+                                        if (manuallyTurnOn != 1)
+                                            talkNow.setChecked(false);
+                                    }*/
+                                }else {
                                             Log.e("availability", "No");
                                     if (manuallyTurnOn != 1)
                                         talkNow.setChecked(false);

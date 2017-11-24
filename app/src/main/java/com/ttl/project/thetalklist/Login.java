@@ -204,6 +204,7 @@ public class Login extends Activity {
                                             editor.putInt("gender", resObj.getInt("gender"));
                                             editor.putInt("country", resObj.getInt("country"));
                                             editor.putInt("province", resObj.getInt("province"));
+                                            editor.putInt("coupon_credits", resObj.getInt("coupon_credits"));
                                             editor.putString("cell", resObj.getString("cell"));
                                             if (obj.getInt("login")==1)
                                                 editor.putInt("status",0);
@@ -475,6 +476,7 @@ public class Login extends Activity {
                                     editor.putString("nativeLanguage", resultObj.getString("nativeLanguage"));
                                     editor.putString("otherLanguage", resultObj.getString("otherLanguage"));
                                     editor.putInt("status", 0);
+                                    editor.putInt("coupon_credits", 0);
                                     editor.putInt("gender", resultObj.getInt("gender"));
                                     editor.putString("cell", resultObj.getString("cell"));
                                     editor.putFloat("hRate", Float.parseFloat(resultObj.getString("hRate")));

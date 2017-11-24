@@ -577,6 +577,10 @@ public class MyDetailsB extends Fragment {
 
                                     if(loginpref.getInt("roleId",0)==0){
                                         fragmentTransaction.replace(R.id.viewpager,new Available_tutor()).commit();
+                                    }else {
+                                        TabBackStack tabBackStack=TabBackStack.getInstance();
+                                        tabBackStack.setTabPosition(1);
+                                        fragmentTransaction.replace(R.id.viewpager,new Tablayout_with_viewpager()).commit();
                                     }
 
                                 }else if (resObj.getInt("status") == 1 &&resObj.getString("error") .equalsIgnoreCase("please fill up")){

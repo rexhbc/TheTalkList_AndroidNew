@@ -100,7 +100,7 @@ public class EarnCredits extends Fragment {
 
                     if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("money", 0.0f) >= Float.parseFloat(earn_credit_paypalaamount_float)) {
 
-                        if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getFloat("frMoney", 0.0f) > 10.0f) {
+                        if (getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("coupon_credits", 0) > 10) {
 
 
                             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -134,8 +134,12 @@ public class EarnCredits extends Fragment {
                                                     Log.e("cashout response", response);
                                                     main_credit.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("money")))));
                                                     earn_credit_currentBalance.setText(String.valueOf(Float.parseFloat(String.valueOf(obj.getDouble("money")))));
-                                                    Toast.makeText(getContext(), "Funds will be deposited within 24 hours.", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getContext(), "Funds will be deposited within 24 hours.", Toast.LENGTH_LONG).show();
+                                                    earn_credit_paypalEmail.setText("");
+                                                    earn_credit_paypalammount.setText("");
                                                     loginService.login(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getString("email", ""), getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getString("pass", ""), getContext());
+
+
                                                 }
 
                                             } catch (JSONException e) {

@@ -345,6 +345,7 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
                                     editor.putString("nativeLanguage", resultObj.getString("nativeLanguage"));
                                     editor.putString("otherLanguage", resultObj.getString("otherLanguage"));
                                     editor.putInt("id", resultObj.getInt("id"));
+                                    editor.putInt("coupon_credits", resultObj.getInt("coupon_credits"));
                                     editor.putInt("gender", resultObj.getInt("gender"));
                                     editor.putInt("country", resultObj.getInt("country"));
                                     editor.putInt("province", resultObj.getInt("province"));
@@ -464,6 +465,7 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
                                 editor.putInt("gender", resObj.getInt("gender"));
                                 editor.putInt("country", resObj.getInt("country"));
                                 editor.putInt("province", resObj.getInt("province"));
+                                editor.putInt("coupon_credits", resObj.getInt("coupon_credits"));
                                 editor.putString("cell", resObj.getString("cell"));
                                 editor.putString("city", resObj.getString("city"));
                                 editor.putFloat("hRate", Float.parseFloat(resObj.getString("hRate")));

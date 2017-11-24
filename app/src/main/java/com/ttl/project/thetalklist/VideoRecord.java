@@ -82,8 +82,6 @@ public class VideoRecord extends Fragment {
     ProgressBar progressBar;
 
 
-
-
     private static File getOutputMediaFile(int type) {
 
         // External sdcard location
@@ -136,9 +134,9 @@ public class VideoRecord extends Fragment {
         videoRecord_desc.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
 
-        SharedPreferences bio_videoPref = getContext().getSharedPreferences("bio_video", Context.MODE_PRIVATE);
+        final SharedPreferences bio_videoPref = getContext().getSharedPreferences("bio_video", Context.MODE_PRIVATE);
 
-        if (bio_videoPref.getBoolean("biography",true))
+        if (bio_videoPref.getBoolean("biography", false))
             view.findViewById(R.id.video_upload_control).setVisibility(View.GONE);
 
 
@@ -198,18 +196,41 @@ public class VideoRecord extends Fragment {
         upload_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (subject.getSelectedItem().toString().equalsIgnoreCase("select subject"))
-                {
-                    Toast.makeText(getContext(), "Please select subject ", Toast.LENGTH_SHORT).show();
-                }
-                else if (videoRecord_title.getText().toString().matches("")) {
-                    Toast.makeText(getContext(), "Please fill Title ", Toast.LENGTH_SHORT).show();
-                } else if (videoRecord_title.length()>40){
-                    Toast.makeText(getContext(), "Title's size must be minimum 40 characters ", Toast.LENGTH_SHORT).show();
-                }
-                else if (videoRecord_desc.getText().toString().matches("")) {
 
-                    Toast.makeText(getContext(), "Please fill Description ", Toast.LENGTH_SHORT).show();
+                if (!bio_videoPref.getBoolean("biography", false)) {
+
+                    if (subject.getSelectedItem().toString().equalsIgnoreCase("select subject")) {
+                        Toast.makeText(getContext(), "Please select subject ", Toast.LENGTH_SHORT).show();
+                    } else if (videoRecord_title.getText().toString().matches("")) {
+                        Toast.makeText(getContext(), "Please fill Title ", Toast.LENGTH_SHORT).show();
+                    } else if (videoRecord_title.length() > 40) {
+                        Toast.makeText(getContext(), "Title's size must be minimum 40 characters ", Toast.LENGTH_SHORT).show();
+                    } else if (videoRecord_desc.getText().toString().matches("")) {
+
+                        Toast.makeText(getContext(), "Please fill Description ", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ns/");
+                        if (!mediaStorageDir.exists()) {
+                            if (!mediaStorageDir.mkdirs()) {
+                                Toast.makeText(ActivityContext, "Failed to create directory MyCameraVideo.",
+                                        Toast.LENGTH_LONG).show();
+                                Log.d("MyCameraVideo", "Failed to create directory MyCameraVideo.");
+                            }
+                        }
+                        java.util.Date date = new java.util.Date();
+                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                                .format(date.getTime());
+                        File mediaFile;
+                        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                                "VID_" + timeStamp + ".mp4");
+                        current_file_apth = mediaStorageDir.getPath() + File.separator +
+                                "VID_" + timeStamp + ".mp4";
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaFile);
+                        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 60);
+                        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+                    }
                 } else {
                     Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                     File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ns/");
@@ -240,14 +261,11 @@ public class VideoRecord extends Fragment {
         upload_video_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (subject.getSelectedItem().toString().equalsIgnoreCase("select subject"))
-                {
+                if (subject.getSelectedItem().toString().equalsIgnoreCase("select subject")) {
                     Toast.makeText(getContext(), "Please select subject ", Toast.LENGTH_SHORT).show();
-                }
-                else if (videoRecord_title.getText().toString().matches("")) {
+                } else if (videoRecord_title.getText().toString().matches("")) {
                     Toast.makeText(getContext(), "Please fill Title ", Toast.LENGTH_SHORT).show();
-                }
-                else if (videoRecord_desc.getText().toString().matches("")) {
+                } else if (videoRecord_desc.getText().toString().matches("")) {
 
                     Toast.makeText(getContext(), "Please fill Description ", Toast.LENGTH_SHORT).show();
                 } else {
@@ -411,24 +429,18 @@ public class VideoRecord extends Fragment {
             if (requestCode == SELECT_VIDEO) {
 
 
+                launchUploadActivity(generatePath(image_uri, getContext()));
 
 
-
-
-                    launchUploadActivity(generatePath(image_uri, getContext()));
-
-
-
-
-                }
-                if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
-
-
-                    launchUploadActivity(generatePath(image_uri, getContext()));
-
-                }
-                getActivity().onBackPressed();
             }
+            if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
+
+
+                launchUploadActivity(generatePath(image_uri, getContext()));
+
+            }
+            getActivity().onBackPressed();
+        }
 
     }
 
@@ -446,13 +458,9 @@ public class VideoRecord extends Fragment {
     }
 
 
-
-
-
-
     /**
      * Method to show alert dialog
-     * */
+     */
 
 
     public String generatePath(Uri uri, Context context) {
@@ -506,7 +514,6 @@ public class VideoRecord extends Fragment {
     }
 
     ArrayAdapter<String> arrayAdapter;
-
 
 
 }
