@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/frameLayout_myDetails"
-    tools:context="com.example.saubhagyam.thetalklist.com.Application.saubhagyam.thetalklist.MyDeatils">
+    tools:context="com.ttl.project.thetalklist.com.Application.saubhagyam.thetalklist.MyDeatils">
 
     <RelativeLayout
         android:layout_width="match_parent"
