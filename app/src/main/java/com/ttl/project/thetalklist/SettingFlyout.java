@@ -726,7 +726,9 @@ public class SettingFlyout extends AppCompatActivity {
     }
   /*  public void setTalknow(boolean T){
         if (T) {
-            talkNow.setChecked(true);
+
+
+            .setChecked(true);
             talkNow.setSelected(true);
         }
     }*/
