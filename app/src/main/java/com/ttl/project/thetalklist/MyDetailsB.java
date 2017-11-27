@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -399,14 +400,14 @@ public class MyDetailsB extends Fragment {
                     ImageView student, tutor;
                     student = (ImageView) view.findViewById(R.id.student);
                     tutor = (ImageView) view.findViewById(R.id.tutor);
-
+                    final FragmentStack fragmentStack = FragmentStack.getInstance();
                     student.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
 
-                            FragmentStack fragmentStack = FragmentStack.getInstance();
-                            fragmentStack.push(new MyDetailsB());
+
+                            fragmentStack.push(new Available_tutor());
                             roleIdChange(email_id, 0);
 
                             editor111.putInt("status",0);
@@ -414,17 +415,30 @@ public class MyDetailsB extends Fragment {
 
                             DesiredTutor desiredTutor = new DesiredTutor();
 
-                            fragmentStack.push(desiredTutor);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.replace(R.id.viewpager, desiredTutor);
-                            fragmentTransaction.commit();
+                            ((Switch)getActivity().findViewById(R.id.switch1)).setChecked(false);
+                            ((Switch)getActivity().findViewById(R.id.switch1)).setClickable(false);
+                            ((Switch)getActivity().findViewById(R.id.switch1)).setFocusable(false);
 
+                         /*   LoginService loginService=new LoginService();
+                            loginService.login(pref111.getString("email",""),pref111.getString("pass",""),getApplicationContext());
+*/
                             SharedPreferences pref=getContext().getSharedPreferences("fromSignup",Context.MODE_PRIVATE);
                             SharedPreferences.Editor editorpref=pref.edit();
                             editorpref.putBoolean("fromSignup",true).apply();
                             backbtn = 1;
-                            popupWindow.dismiss();
+                          /*  fragmentStack.push(desiredTutor);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.replace(R.id.viewpager, desiredTutor);
+                            fragmentTransaction.commit();*/
 
+                            popupWindow.dismiss();
+getActivity().finish();
+
+
+                            Intent ix=new Intent(getApplicationContext(),ProcessActivity.class);
+                            ix.putExtra("role",0);
+                            ix.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(ix);
                         }
                     });
                     tutor.setOnClickListener(new View.OnClickListener() {
@@ -433,12 +447,21 @@ public class MyDetailsB extends Fragment {
                             editor111.putInt("status",0);
                             editor111.putInt("roleId",1).apply();
                             roleIdChange(email_id, 1);
+                            fragmentStack.push(new Available_tutor());
 
-                            FragmentTransaction f=fragmentManager.beginTransaction();
-                            f.replace(R.id.viewpager,new Tablayout_with_viewpager()).commit();
+                        /*    LoginService loginService=new LoginService();
+                            loginService.login(pref111.getString("email",""),pref111.getString("pass",""),getApplicationContext());
+*/
+
+//                            startActivity(new Intent(getApplicationContext(),ProcessActivity.class));
                             backbtn = 1;
+                           /* FragmentTransaction f=fragmentManager.beginTransaction();
+                            f.replace(R.id.viewpager,new Tablayout_with_viewpager()).commit();*/
                             popupWindow.dismiss();
-
+                            getActivity().finish();
+                            Intent ix=new Intent(getApplicationContext(),ProcessActivity.class);
+                            ix.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(ix);
                         }
                     });
 
@@ -633,13 +656,14 @@ public class MyDetailsB extends Fragment {
 
         final Handler handler = new Handler();
 
-        handler.postDelayed(new Runnable() {
+/*        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 //Do something after 100ms
                 loginService();
             }
-        }, 5000);
+        }, 5000);*/
+        loginService();
 
         if (loginpref.getString("pic","").equals("")) {
             Glide.with(getContext()).load("https://www.thetalklist.com/images/header.jpg")
@@ -1020,7 +1044,7 @@ public class MyDetailsB extends Fragment {
                 }
             });
             sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            Volley.newRequestQueue(getActivity()).add(sr);
+            Volley.newRequestQueue(getContext()).add(sr);
         }
 
     }

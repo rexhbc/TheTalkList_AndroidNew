@@ -127,7 +127,7 @@ final LinearLayout stateLayout= (LinearLayout) findViewById(R.id.llsec4);
         ArrayAdapter langAdapter=new ArrayAdapter(this,R.layout.custom_spinner_textview,languages);
         Language1.setAdapter(langAdapter);
         String languages1[] = getResources().getStringArray(R.array.Language1);
-        ArrayAdapter langAdapter1 = new ArrayAdapter(getApplicationContext(), R.layout.custom_spinner_textview, languages1);
+        ArrayAdapter langAdapter1 = new ArrayAdapter(this, R.layout.custom_spinner_textview, languages1);
         Language2.setAdapter(langAdapter1);
 
 

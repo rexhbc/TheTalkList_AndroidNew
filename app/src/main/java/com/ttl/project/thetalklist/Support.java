@@ -19,7 +19,7 @@ public class Support extends Fragment {
     ImageView faqs_btn,video_btn;
     int faqs_bits,video_bits;
     Button supportEmailButton;
-    LinearLayout faqs_btn_layout,videos_btn_layout,support_faq_layout;
+    LinearLayout faqs_btn_layout,videos_btn_layout,support_faq_layout,supports_howitworks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,14 @@ public class Support extends Fragment {
         faqs_btn_layout= (LinearLayout) view.findViewById(R.id.faqs_btn_layout);
         videos_btn_layout= (LinearLayout) view.findViewById(R.id.videos_btn_layout);
         support_faq_layout= (LinearLayout) view.findViewById(R.id.support_faq_layout);
+        supports_howitworks= (LinearLayout) view.findViewById(R.id.supports_howitworks);
+
+        supports_howitworks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().replace(R.id.viewpager,new Supports_howitworks()).commit();
+            }
+        });
 
 
         support_faq_layout.setOnClickListener(new View.OnClickListener() {

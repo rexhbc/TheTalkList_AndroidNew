@@ -96,13 +96,13 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="13dp"
                     android:backgroundTint="#00000000"
-                    android:textSize="15dp"
                     android:hint="Age"
                     android:inputType="numberDecimal"
                     android:maxLength="2"
                     android:maxLines="1"
                     android:textColor="#000000"
-                    android:textColorHint="#000000" />
+                    android:textColorHint="#000000"
+                    android:textSize="15dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -252,10 +252,10 @@
                     android:backgroundTint="#00000000"
                     android:hint="City"
                     android:inputType="textPersonName"
-                    android:textSize="15dp"
                     android:maxLines="1"
                     android:textColor="#000000"
-                    android:textColorHint="#000000"/>
+                    android:textColorHint="#000000"
+                    android:textSize="15dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -292,13 +292,13 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="13dp"
                     android:backgroundTint="#00000000"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:hint="Email"
                     android:maxLines="1"
                     android:textColor="#000000"
-                    android:focusable="false"
-                    android:clickable="false"
-                    android:textSize="15dp"
-                    android:textColorHint="#000000" />
+                    android:textColorHint="#000000"
+                    android:textSize="15dp" />
             </LinearLayout>
 
             <LinearLayout
