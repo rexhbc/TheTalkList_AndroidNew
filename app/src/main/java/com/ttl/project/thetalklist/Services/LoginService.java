@@ -175,7 +175,7 @@ if(pref.getString("LoginWay","").equals("FacebookLogin")){
                     editor.putInt("coupon_credits", resultObj.getInt("coupon_credits"));
                     editor.putInt("province", resultObj.getInt("province"));
                     editor.putInt("status", 0);
-                    editor.putFloat("money", Float.parseFloat(resultObj.getString("money")));
+                    editor.putFloat("money", Float.parseFloat(String.format("%.02f",Float.parseFloat(resultObj.getString("money")))));
                     editor.putFloat("frMoney", (float) resultObj.getDouble("frMoney"));
                     editor.putString("email", resultObj.getString("email"));
                     editor.apply();

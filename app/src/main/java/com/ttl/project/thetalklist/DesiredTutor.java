@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -182,6 +183,10 @@ public class DesiredTutor extends Fragment {
            SharedPreferences pref = getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
             int roleId=pref.getInt("roleId", 0);
             if (roleId==1 | roleId==2 | roleId==3){
+            }else {
+                ((Switch) getActivity().findViewById(R.id.switch1)).setChecked(false);
+             getActivity().findViewById(R.id.switch1).setClickable(false);
+             getActivity().findViewById(R.id.switch1).setFocusable(false);
             }
 
 

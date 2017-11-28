@@ -97,7 +97,7 @@ public class SettingFlyout extends AppCompatActivity {
     String email, pass;
     SharedPreferences preferences;
     DrawerLayout drawer;
-    Switch talkNow;
+    public Switch talkNow;
     public NavigationView navigationView;
     LinearLayout viewPager;
     int roleId;
@@ -200,6 +200,8 @@ public class SettingFlyout extends AppCompatActivity {
         settingFlyout_bottomcontrol = (LinearLayout) findViewById(R.id.settingFlyout_bottomcontrol);
 
         displayFirebaseRegId();
+
+
         ratingBar = (RatingBar) view1.findViewById(R.id.ratingBar);
 
         if (preferences.getFloat("avgRate", 0.0f) != 0.0f)
@@ -222,16 +224,21 @@ public class SettingFlyout extends AppCompatActivity {
 
         manuallyTurnOn = 0;
 
+        if (roleId==0){
+            talkNow.setChecked(false);
+            talkNow.setClickable(false);
+            talkNow.setFocusable(false);
+        }
+
         switch_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (roleId==1) {
+                if (roleId!=0) {
                     manuallyTurnOn = 1;
                     if (talkNow.isChecked()) {
                         talkNow.setChecked(false);
                     } else talkNow.setChecked(true);
                 }else {
-                    talkNow.setEnabled(false);
                 }
             }
         });
@@ -665,7 +672,8 @@ public class SettingFlyout extends AppCompatActivity {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
             }*/
-
+            SharedPreferences pref123=getSharedPreferences("roleChange",MODE_PRIVATE);
+            SharedPreferences.Editor editor123=pref123.edit();
             if (ofMessage != null) {
                 Log.e("message", ofMessage);
                 Log.e("uid", String.valueOf(uid));
@@ -689,6 +697,12 @@ public class SettingFlyout extends AppCompatActivity {
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.viewpager, new MessageOneToOne()).commit();
                 }
+            } else
+
+            if (pref123.getInt("roleId",0)==0){
+                editor123.putInt("roleId",-1).apply();
+                getSupportFragmentManager().beginTransaction().replace(R.id.viewpager,new DesiredTutor()).commit();
+
             } else
                 fragmentTransaction.replace(R.id.viewpager, new Available_tutor()).commit();
         } else {
@@ -947,7 +961,7 @@ public class SettingFlyout extends AppCompatActivity {
                 }
             });
 
-            Volley.newRequestQueue(this).add(sr);
+            Volley.newRequestQueue(getApplicationContext()).add(sr);
         }
     }
 
@@ -1238,46 +1252,46 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if (isChecked) {
-                    online = 1;
-                } else {
-                    online = 0;
-                }
-                String Url = "https://www.thetalklist.com/api/tutor_online?uid=" + getSharedPreferences("loginStatus", MODE_PRIVATE).getInt("id", 0) + "&bit=" + online;
+                    if (isChecked) {
+                        online = 1;
+                    } else {
+                        online = 0;
+                    }
+                    String Url = "https://www.thetalklist.com/api/tutor_online?uid=" + getSharedPreferences("loginStatus", MODE_PRIVATE).getInt("id", 0) + "&bit=" + online;
 
-                Log.e("tutor online url", Url);
+                    Log.e("tutor online url", Url);
 
-                StringRequest strRequest = new StringRequest(Request.Method.POST, Url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
+                    StringRequest strRequest = new StringRequest(Request.Method.POST, Url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
 
-                                Log.e("tutor online res", response);
+                                    Log.e("tutor online res", response);
 
-                                try {
-                                    JSONObject obj = new JSONObject(response);
+                                    try {
+                                        JSONObject obj = new JSONObject(response);
 
-                                    if (obj.getInt("status") != 0) {
-                                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                        if (obj.getInt("status") != 0) {
+                                            Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+
                                 }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
 
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
-                            }
-                        });
+                    Volley.newRequestQueue(getApplicationContext()).add(strRequest);
+                }
 
-                Volley.newRequestQueue(getApplicationContext()).add(strRequest);
-
-
-            }
+//            }
         });
 
 
@@ -1890,17 +1904,27 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
         String firstName = intent.getStringExtra("uname");
         int uid = intent.getIntExtra("senderId", 0);
 
-        FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
+        SharedPreferences pref=getSharedPreferences("roleChange",MODE_PRIVATE);
+        SharedPreferences.Editor editor=pref.edit();
 
-
+            FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
           /*  if (ofpayment !=null){
                 FragmentStack.getInstance().push(new Available_tutor());
 
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
             }*/
+        Toast.makeText(getApplicationContext(), "role "+ intent.hasExtra("role"), Toast.LENGTH_SHORT).show();
 
-        if (ofMessage != null) {
+          if (intent.hasExtra("role")){
+              talkNow.setChecked(false);
+              talkNow.setClickable(false);
+              talkNow.setFocusable(false);
+              getSupportFragmentManager().beginTransaction().replace(R.id.viewpager,new DesiredTutor()).commit();
+          }
+
+
+        else if (ofMessage != null) {
             Log.e("message", ofMessage);
             Log.e("uid", String.valueOf(uid));
 
@@ -1924,6 +1948,12 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
                 ft.replace(R.id.viewpager, new MessageOneToOne()).commit();
             }
         } else
+
+              if (pref.getInt("roleId",0)==0){
+                  getSupportFragmentManager().beginTransaction().replace(R.id.viewpager,new DesiredTutor()).commit();
+              editor.clear().apply();
+
+        }else
 
             ft1.replace(R.id.viewpager, new Available_tutor()).commit();
     }

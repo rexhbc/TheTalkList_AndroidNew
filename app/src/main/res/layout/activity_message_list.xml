@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="40dp"
             android:gravity="center"
-            android:text="Message"
+            android:text="Messages"
             android:textColor="#B3B6B7"
             android:textSize="15sp" />
 
