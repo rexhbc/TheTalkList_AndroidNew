@@ -125,10 +125,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="20dp"
                             android:layout_alignParentRight="true"
+                            android:layout_marginLeft="5dp"
                             android:background="#00000000"
                             android:text="EDIT..."
                             android:textAllCaps="false"
-                            android:layout_marginLeft="5dp"
                             android:textColor="#03A9F4"
                             android:textSize="12dp" />
                     </RelativeLayout>
@@ -228,9 +228,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
                             android:text="Tutoring Subjects "
                             android:textColor="#616A6B"
-                            android:layout_marginTop="10dp"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -238,11 +238,11 @@
                         <WebView
                             android:id="@+id/biography_languages_webview"
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_below="@+id/textView9"
                             android:layout_centerHorizontal="true"
-                            android:textAlignment="viewStart"
                             android:layout_marginLeft="-13dp"
-                            android:layout_height="wrap_content" />
+                            android:textAlignment="viewStart" />
                         <!--android:layout_marginLeft="-3dp"
                         android:layout_gravity="fill_vertical"
                         android:gravity="start"-->
@@ -253,13 +253,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@+id/textView9"
-                            android:layout_gravity="fill_vertical"
                             android:layout_centerHorizontal="true"
+                            android:layout_gravity="fill_vertical"
                             android:gravity="start"
                             android:maxLines="15"
                             android:text=""
-                            android:visibility="gone"
-                            android:textSize="12dp" />
+                            android:textSize="12dp"
+                            android:visibility="gone" />
                         <!-- android:textSize="12dp"
                          android:layout_alignParentRight="true"
                          />-->
@@ -524,7 +524,6 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
                     android:id="@+id/biography_video"
                     android:layout_width="wrap_content"
@@ -569,6 +568,7 @@
                             android:src="@mipmap/ic_full_screen" />
                         <!--android:textAlignment="viewEnd" />-->
                     </LinearLayout>
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="203dp"
@@ -611,7 +611,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
                             android:src="@drawable/video_place_holder"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
 
                     </RelativeLayout>
@@ -651,11 +651,10 @@
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingTop="5dp">
                     <!--android:padding="10dp">-->
 
                     <TextView
@@ -815,6 +814,7 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
@@ -822,9 +822,10 @@
                                     android:gravity="center"
                                     android:text="Tutoring Rate ($/min): "
                                     android:textColor="#616A6B"
-                                    android:visibility="gone"
                                     android:textSize="15sp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
                                 <Button
                                     android:id="@+id/biography_edit"
                                     android:layout_width="wrap_content"
@@ -1130,6 +1131,7 @@
                 <!--</LinearLayout>-->
 
                 <LinearLayout
+                    android:id="@+id/biography_review_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -1192,12 +1194,14 @@
                                 android:src="@drawable/side_aerrow" />
                         </LinearLayout>
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/review_root_biography"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

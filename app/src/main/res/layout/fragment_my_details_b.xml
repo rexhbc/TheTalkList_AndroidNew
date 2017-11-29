@@ -512,7 +512,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_gravity="center"
                         android:layout_marginRight="20dp"
-                        android:src="@mipmap/language" />
+                        android:src="@mipmap/langlogo" />
 
                     <Spinner
                         android:id="@+id/lang1MyDetails"
@@ -553,7 +553,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:layout_marginRight="20dp"
-                        android:src="@mipmap/language" />
+                        android:src="@mipmap/langlogo" />
 
                     <Spinner
                         android:id="@+id/lang2MyDetails"

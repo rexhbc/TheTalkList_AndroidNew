@@ -100,6 +100,7 @@ public class New_videocall_activity extends AppCompatActivity
         callEndReceiver=new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Toast.makeText(getApplicationContext(), "Sorry but this tutor just went offline.  Try later or call another tutor.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         };
@@ -126,6 +127,7 @@ public class New_videocall_activity extends AppCompatActivity
         Log.d(LOG_TAG, "onPause");
 
         super.onPause();
+//        callEnd.performClick();
 
         if (mSession != null) {
             mSession.onPause();

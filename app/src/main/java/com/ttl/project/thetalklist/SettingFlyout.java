@@ -1224,7 +1224,7 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(100, notification);
         }*/
-        credits.setText(String.valueOf(pref.getFloat("money", 0.0f)));
+        credits.setText(String.format("%.02f",pref.getFloat("money", 0.0f)));
         Log.e("money", String.valueOf(pref.getFloat("money", 0.0f)));
         credits.setTypeface(typeface);
         credits.setOnClickListener(new View.OnClickListener() {
@@ -1914,13 +1914,13 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.viewpager, new Earn_Buy_tabLayout()).commit();
             }*/
-        Toast.makeText(getApplicationContext(), "role "+ intent.hasExtra("role"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "role "+ intent.hasExtra("role"), Toast.LENGTH_SHORT).show();
 
-          if (intent.hasExtra("role")){
+          if (intent.hasExtra("roll")){
               talkNow.setChecked(false);
               talkNow.setClickable(false);
               talkNow.setFocusable(false);
-              getSupportFragmentManager().beginTransaction().replace(R.id.viewpager,new DesiredTutor()).commit();
+//              getSupportFragmentManager().beginTransaction().replace(R.id.viewpager,new DesiredTutor()).commit();
           }
 
 

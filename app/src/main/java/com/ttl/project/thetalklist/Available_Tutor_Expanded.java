@@ -82,7 +82,7 @@ public class Available_Tutor_Expanded extends Fragment {
     ImageView tutorImage;
     String firstName;
 
-    LinearLayout review_root_biography;
+    LinearLayout review_root_biography, personalLinearLayout, eduLinearLayout, proLinearLayout,ratingLinearLayout;
 
     ExpandableTextView expandableTextView;
     ExpandableTextView expandableTextViewedu;
@@ -181,6 +181,13 @@ public class Available_Tutor_Expanded extends Fragment {
 //        listView = (ListView) convertView.findViewById(R.id.ratingfeedbacklist);
 //        videoView = (VideoView) convertView.findViewById(R.id.TutorExpanded_biography_videoView);
         availableTutorListCPS = (TextView) convertView.findViewById(R.id.availableTutorListCPS);
+
+
+        personalLinearLayout = (LinearLayout) convertView.findViewById(R.id.personalLinearLayout);
+        eduLinearLayout = (LinearLayout) convertView.findViewById(R.id.eduLinearLayout);
+        proLinearLayout = (LinearLayout) convertView.findViewById(R.id.proLinearLayout);
+        ratingLinearLayout = (LinearLayout) convertView.findViewById(R.id.rateLinearLayout);
+
 
         msgBtn = (ImageButton) convertView.findViewById(R.id.imageButton3);
         videoBtn = (ImageButton) convertView.findViewById(R.id.imageButton6);

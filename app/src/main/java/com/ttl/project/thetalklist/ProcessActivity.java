@@ -37,9 +37,9 @@ public class ProcessActivity extends AppCompatActivity {
     Intent i=getIntent();
         if (i.hasExtra("role")){
             Intent ix=new Intent(getApplicationContext(),SettingFlyout.class);
-            ix.putExtra("role",0);
+            ix.putExtra("roll",0);
             editor.putInt("roleId",0).apply();
-            Toast.makeText(getApplicationContext(), "set role", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "set role", Toast.LENGTH_SHORT).show();
             ix.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(ix);
         }else

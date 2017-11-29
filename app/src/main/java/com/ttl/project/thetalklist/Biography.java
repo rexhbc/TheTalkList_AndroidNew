@@ -78,7 +78,7 @@ import static com.ttl.project.thetalklist.R.array.sub;
 public class Biography extends Fragment {
 
     ImageView biography_btn, video_btn, ratings_btn, biography_subject_btn, TutorImgBiography, videoPlay_VideoCallBtn;
-    LinearLayout biography_11, video_11, ratings_11, biography_subject_11, myBioLinearLayout, tutorSubLinearLayout,
+    LinearLayout biography_11, video_11, ratings_11, biography_subject_11, myBioLinearLayout, tutorSubLinearLayout,biography_review_layout,
             videoLinearLayout, rateLinearLayout, reviewLinearLayout;
     TextView biographyFirstName;
     Button biography_rate_edit;
@@ -202,6 +202,7 @@ public class Biography extends Fragment {
         biography_educational = (TextView) view.findViewById(R.id.biography_educational);
 
         review_root_biography = (LinearLayout) view.findViewById(R.id.review_root_biography);
+        biography_review_layout = (LinearLayout) view.findViewById(R.id.biography_review_layout);
 
         biography_professional_edit = (EditText) view.findViewById(R.id.biography_professional_edit);
         biography_personal_edit = (EditText) view.findViewById(R.id.biography_personal_edit);
@@ -209,6 +210,12 @@ public class Biography extends Fragment {
         biography_rate_edittext = (EditText) view.findViewById(R.id.biography_rate_edittext);
         rateLinearLayout = (LinearLayout) view.findViewById(R.id.rateLinearLayout);
         queue = Volley.newRequestQueue(getActivity());
+
+
+        if (preferences.getInt("roleId",0)==0){
+            biography_review_layout.setVisibility(View.GONE);
+        }
+
 
         final FragmentStack fragmentStack = FragmentStack.getInstance();
         final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();

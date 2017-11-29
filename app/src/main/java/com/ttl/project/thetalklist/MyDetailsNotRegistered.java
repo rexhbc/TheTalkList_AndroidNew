@@ -367,7 +367,7 @@ final LinearLayout stateLayout= (LinearLayout) findViewById(R.id.llsec4);
                             LoginService loginService=new LoginService();
                             loginService.login(getSharedPreferences("loginStatus",MODE_PRIVATE).getString("email",""),getSharedPreferences("loginStatus",MODE_PRIVATE).getString("pass",""),getApplicationContext());
                             Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
-                            Intent sta = new Intent(getApplicationContext(), SettingFlyout.class);
+                            Intent sta = new Intent(getApplicationContext(), Registration.class);
                             SharedPreferences pref1 = getApplicationContext().getSharedPreferences("firstTime", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor=pref1.edit();
                             editor.putInt("fromSignUp",1).apply();
