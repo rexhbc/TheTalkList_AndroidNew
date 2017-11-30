@@ -197,6 +197,8 @@ public class Biography extends Fragment {
         setVideoIn();
 
 
+
+
         biography_professional = (TextView) view.findViewById(R.id.biography_professional);
         biography_personal = (TextView) view.findViewById(R.id.biography_personal);
         biography_educational = (TextView) view.findViewById(R.id.biography_educational);
@@ -215,7 +217,17 @@ public class Biography extends Fragment {
         if (preferences.getInt("roleId",0)==0){
             biography_review_layout.setVisibility(View.GONE);
         }
-
+        if (getActivity().getClass().toString().equalsIgnoreCase("class com.ttl.project.thetalklist.Registration")){
+            ((TextView)getActivity().findViewById(R.id.registration_line)).setText("Fill in bio to be seen by the world!");
+            biography_review_layout.setVisibility(View.GONE);
+            view.findViewById(R.id.biography_registration_finish).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.biography_registration_finish).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getFragmentManager().beginTransaction().replace(R.id.registration_viewpager,new Availability_page_fragment()).commit();
+                }
+            });
+        }
 
         final FragmentStack fragmentStack = FragmentStack.getInstance();
         final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();

@@ -19,6 +19,23 @@
             android:layout_height="fill_parent"
             android:background="#000000"></FrameLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:padding="10dp"
+                android:id="@+id/veesession_timer"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:text="00:00"
+                />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -168,7 +185,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/outgoingCallRootLayout"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         android:background="#455A64"
         android:orientation="vertical"

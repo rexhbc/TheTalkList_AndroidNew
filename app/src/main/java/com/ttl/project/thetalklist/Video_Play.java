@@ -544,7 +544,7 @@ public class Video_Play extends Fragment {
         JSONArray ary = jsonArray;
 
         int flag = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
-        SpannableStringBuilder str = new SpannableStringBuilder("Definition:- ");
+        SpannableStringBuilder str = new SpannableStringBuilder("Description: ");
         str.setSpan(new StyleSpan(Typeface.BOLD), 0, str.length(), flag);
 
         final String sourceString = "<b>" + "Definition:- " + "</b> ";

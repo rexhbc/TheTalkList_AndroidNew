@@ -176,6 +176,9 @@ public class MyDetailsB extends Fragment {
         });
 
 
+
+
+
         SharedPreferences pref=getApplicationContext().getSharedPreferences("firstTime", Context.MODE_PRIVATE);
         loginpref=getApplicationContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
         final SharedPreferences.Editor ed=pref.edit();
@@ -434,11 +437,13 @@ public class MyDetailsB extends Fragment {
                             popupWindow.dismiss();
 getActivity().finish();
 
+                            TabBackStack.getInstance().setTabPosition(1);
+                            fragmentTransaction.replace(R.id.registration_viewpager, new Tablayout_with_viewpager()).commit();
 
-                            Intent ix=new Intent(getApplicationContext(),ProcessActivity.class);
+                           /* Intent ix=new Intent(getApplicationContext(),ProcessActivity.class);
                             ix.putExtra("role",0);
                             ix.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(ix);
+                            startActivity(ix);*/
                         }
                     });
                     tutor.setOnClickListener(new View.OnClickListener() {
@@ -458,10 +463,13 @@ getActivity().finish();
                            /* FragmentTransaction f=fragmentManager.beginTransaction();
                             f.replace(R.id.viewpager,new Tablayout_with_viewpager()).commit();*/
                             popupWindow.dismiss();
-                            getActivity().finish();
+                            /*getActivity().finish();
                             Intent ix=new Intent(getApplicationContext(),ProcessActivity.class);
                             ix.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(ix);
+                            startActivity(ix);*/
+
+                            TabBackStack.getInstance().setTabPosition(1);
+                            fragmentTransaction.replace(R.id.registration_viewpager, new Tablayout_with_viewpager()).commit();
                         }
                     });
 

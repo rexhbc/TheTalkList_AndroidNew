@@ -47,6 +47,7 @@ import com.opentok.android.SubscriberKit;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -67,6 +68,8 @@ public class New_videocall_activity extends AppCompatActivity
     private static final int RC_SETTINGS_SCREEN_PERM = 123;
     private static final int RC_VIDEO_APP_PERM = 124;
 
+
+    AudioManager audioManager;
     // Suppressing this warning. mWebServiceCoordinator will get GarbageCollected if it is local.
     @SuppressWarnings("FieldCanBeLocal")
 
@@ -78,6 +81,8 @@ public class New_videocall_activity extends AppCompatActivity
 
     private FrameLayout mPublisherViewContainer;
     private FrameLayout mSubscriberViewContainer;
+
+    TextView veesession_timer;
 
     BroadcastReceiver callEndReceiver;
 
@@ -94,18 +99,21 @@ public class New_videocall_activity extends AppCompatActivity
         // initialize view objects from your layout
         mPublisherViewContainer = (FrameLayout) findViewById(R.id.publisher_container);
         mSubscriberViewContainer = (FrameLayout) findViewById(R.id.subscriber_container);
+        veesession_timer = (TextView) findViewById(R.id.veesession_timer);
 
         requestPermissions();
 
-        callEndReceiver=new BroadcastReceiver() {
+        callEndReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Toast.makeText(getApplicationContext(), "Sorry but this tutor just went offline.  Try later or call another tutor.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Sorry but this tutor just went offline.  Try later or call another tutor.", Toast.LENGTH_LONG).show();
                 finish();
             }
         };
-        registerReceiver(callEndReceiver,new IntentFilter("callEnd"));
+        registerReceiver(callEndReceiver, new IntentFilter("callEnd"));
 
+        audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setMicrophoneMute(false);
        /* msg_during_call= (ImageView) findViewById(R.id.msg_during_call);
         msg_during_call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +133,7 @@ public class New_videocall_activity extends AppCompatActivity
     protected void onPause() {
 
         Log.d(LOG_TAG, "onPause");
-
+        audioManager.setMicrophoneMute(false);
         super.onPause();
 //        callEnd.performClick();
 
@@ -145,7 +153,7 @@ public class New_videocall_activity extends AppCompatActivity
     FrameLayout outgoingCallRootLayout;
 
     View videocontrols;
-//    ViewGroup parent;
+    //    ViewGroup parent;
     ImageView btn_cutcall;
     FrameLayout surfaceView;
 
@@ -200,11 +208,11 @@ public class New_videocall_activity extends AppCompatActivity
         }
 
 
-        ttl=new TTL();
-        ttl.isCall=true;
+        ttl = new TTL();
+        ttl.isCall = true;
 
 
-        if (ttl.Callmin>0){
+        if (ttl.Callmin > 0) {
 
         }
 
@@ -271,7 +279,7 @@ public class New_videocall_activity extends AppCompatActivity
         final WebServiceCoordinator mWebServiceCoordinator = new WebServiceCoordinator(this, this);
         i = getIntent();
 
-        time=i.getIntExtra("min",0);
+        time = i.getIntExtra("min", 0);
         if (i.getStringExtra("from").
 
                 equalsIgnoreCase("callActivity"))
@@ -338,9 +346,8 @@ public class New_videocall_activity extends AppCompatActivity
                             }
 
 
-                        }
-                        else {
-                         String error=   jsonObject.getString("error");
+                        } else {
+                            String error = jsonObject.getString("error");
                             Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                             finish();
                             onBackPressed();
@@ -360,28 +367,110 @@ public class New_videocall_activity extends AppCompatActivity
             queue111.add(sr);
 
         }
-            btn_cutcall.setOnClickListener(new View.OnClickListener()
+        btn_cutcall.setOnClickListener(new View.OnClickListener()
 
-            {
-                @Override
-                public void onClick(View v) {
-                    if (mSession != null) {
-                        mSession.disconnect();
-                        onDisconnected(mSession);
+        {
+            @Override
+            public void onClick(View v) {
+                if (mSession != null) {
+                    mSession.disconnect();
+                    onDisconnected(mSession);
+                }
+
+
+                queue222 = Volley.newRequestQueue(getApplicationContext());
+                SharedPreferences preferences = getSharedPreferences("videoCallTutorDetails", MODE_PRIVATE);
+                SharedPreferences pref = getSharedPreferences("loginStatus", MODE_PRIVATE);
+
+
+                String URL = "https://www.thetalklist.com/api/firebase_rejectcall?sender_id=" + pref.getInt("id", 0) + "&receiver_id=" + preferences.getInt("tutorId", 0) + "&cid=" + preferences.getInt("classId", 0);
+                Log.e("firebase reject Call", URL);
+                StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        finish();
                     }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+                queue222.add(sr);
 
 
-                    queue222 = Volley.newRequestQueue(getApplicationContext());
-                    SharedPreferences preferences = getSharedPreferences("videoCallTutorDetails", MODE_PRIVATE);
-                    SharedPreferences pref = getSharedPreferences("loginStatus", MODE_PRIVATE);
+            }
+        });
+
+        callEnd = (ImageView) findViewById(R.id.callend);
+
+        callMute = (ImageView) findViewById(R.id.callmute);
+
+        callChangeCamera = (ImageView) findViewById(R.id.callchangecamera);
 
 
-                    String URL = "https://www.thetalklist.com/api/firebase_rejectcall?sender_id=" + pref.getInt("id", 0) + "&receiver_id=" + preferences.getInt("tutorId", 0) + "&cid=" + preferences.getInt("classId", 0);
-                    Log.e("firebase reject Call", URL);
-                    StringRequest sr = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+        mSubscriberViewContainer.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View v) {
+
+                if (layoutVisibilityBit == 1) {
+                    videocontrols.setVisibility(View.VISIBLE);
+                    LayoputVisibility();
+                }
+            }
+        });
+
+
+        requestPermissions();
+
+        callChangeCamera.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View v) {
+                mPublisher.cycleCamera();
+            }
+        });
+
+        callEnd.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View v) {
+                onDisconnected(mSession);
+                mSession.disconnect();
+
+
+                ttl.isCall = false;
+
+                String URL = "https://www.thetalklist.com/api/veesession_disconnect?cid=" + preferences.getInt("classId", 0);
+                connectionApiCall(URL);
+//                    if (!i.getStringExtra("from").equalsIgnoreCase("callActivity")) {
+                if (t != null)
+
+                    t.cancel();
+
+                call_end_bit = 1;
+
+                if (!i.getStringExtra("from").
+
+                        equalsIgnoreCase("callActivity")) {
+
+                    String URL2 = "https://www.thetalklist.com/api/total_cost?cid=" + preferences.getInt("classId", 0) + "&amount=" + getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f) + "&time=" + TimeCount;
+
+                    Log.e("total cost url", URL2);
+
+                    StringRequest sr = new StringRequest(Request.Method.POST, URL2, new Response.Listener<String>() {
                         @Override
-                        public void onResponse(String response) {
-finish();
+                        public void onResponse(final String response) {
+                            Log.e("total cost response", response);
+
+
+//                                mNotificationManager.cancel(200);
+
+
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -389,129 +478,41 @@ finish();
 
                         }
                     });
-                    queue222.add(sr);
-
-
-
+                    sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    Volley.newRequestQueue(getApplicationContext()).add(sr);
                 }
-            });
-
-            callEnd = (ImageView) findViewById(R.id.callend);
-
-            callMute = (ImageView) findViewById(R.id.callmute);
-
-            callChangeCamera = (ImageView) findViewById(R.id.callchangecamera);
 
 
-            mSubscriberViewContainer.setOnClickListener(new View.OnClickListener()
+            }
+        });
 
-            {
-                @Override
-                public void onClick(View v) {
+        ImageView callendMessage = (ImageView) findViewById(R.id.callendMessage);
+        callendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        callMute.setOnClickListener(new View.OnClickListener()
 
-                    if (layoutVisibilityBit == 1) {
-                        videocontrols.setVisibility(View.VISIBLE);
-                        LayoputVisibility();
-                    }
+        {
+            @Override
+            public void onClick(View v) {
+
+                if (!audioManager.isMicrophoneMute()) {
+                    audioManager.setMicrophoneMute(true);
+                    callMute.setImageResource(R.drawable.mute);
+
+                } else {
+                    callMute.setImageResource(R.drawable.unmute);
+                    audioManager.setMicrophoneMute(false);
                 }
-            });
-
-
-
-
-
-            requestPermissions();
-
-            callChangeCamera.setOnClickListener(new View.OnClickListener()
-
-            {
-                @Override
-                public void onClick(View v) {
-                    mPublisher.cycleCamera();
-                }
-            });
-
-            callEnd.setOnClickListener(new View.OnClickListener()
-
-            {
-                @Override
-                public void onClick(View v) {
-                    onDisconnected(mSession);
-                    mSession.disconnect();
-
-
-                    ttl.isCall=false;
-
-                    String URL="https://www.thetalklist.com/api/veesession_disconnect?cid="+ preferences.getInt("classId", 0);
-                    connectionApiCall(URL);
-//                    if (!i.getStringExtra("from").equalsIgnoreCase("callActivity")) {
-                        if (t != null)
-
-                            t.cancel();
-
-                    call_end_bit=1;
-
-                    if (!i.getStringExtra("from").
-
-                            equalsIgnoreCase("callActivity")) {
-
-                        String URL2 = "https://www.thetalklist.com/api/total_cost?cid=" + preferences.getInt("classId", 0) + "&amount=" + getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f) + "&time=" + TimeCount;
-
-                        Log.e("total cost url", URL2);
-
-                        StringRequest sr = new StringRequest(Request.Method.POST, URL2, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(final String response) {
-                                Log.e("total cost response", response);
-
-
-//                                mNotificationManager.cancel(200);
-
-
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        });
-                        sr.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                        Volley.newRequestQueue(getApplicationContext()).add(sr);
-                    }
-
-
-
-
-                }
-            });
-
-            ImageView callendMessage = (ImageView) findViewById(R.id.callendMessage);
-            callendMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-            callMute.setOnClickListener(new View.OnClickListener()
-
-            {
-                @Override
-                public void onClick(View v) {
-                    AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-                    if (!audioManager.isMicrophoneMute()) {
-                        audioManager.setMicrophoneMute(true);
-                        callMute.setImageResource(R.drawable.mute);
-
-                    } else {
-                        callMute.setImageResource(R.drawable.unmute);
-                        audioManager.setMicrophoneMute(false);
-                    }
-                }
-            });
-        }
-
+            }
+        });
+    }
 
 
     int layoutVisibilityBit;
+
     public void LayoputVisibility() {
           /*To make the layout invisible after 3 sec and when it touch the main layout it will again visible.*/
 
@@ -608,7 +609,6 @@ finish();
         Log.d(LOG_TAG, "onConnected: Connected to session: " + session.getSessionId());
 
 
-
         mPublisher = new Publisher(this);
         mPublisher.setPublisherListener(this);
         mPublisher.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
@@ -633,38 +633,36 @@ finish();
                 View videocontrols1 = (LinearLayout) getLayoutInflater().inflate(R.layout.videocontrol2, parent, false);
                 parent.addView(videocontrols1);
 
-                mPublisher=null;
-                mSubscriber=null;
+                mPublisher = null;
+                mSubscriber = null;
 
 //                mNotificationManager.cancel(200);
 
-                if (!i.getStringExtra("from").equalsIgnoreCase("callActivity") &&  call_end_bit==0){
+                if (!i.getStringExtra("from").equalsIgnoreCase("callActivity") && call_end_bit == 0) {
                     callEnd.performClick();
                 }
 
 
-
-
-                    ttl.isCall=false;
-                LoginService loginService=new LoginService();
-                loginService.login(pref.getString("email",""),pref.getString("pass",""),getApplicationContext());
+                ttl.isCall = false;
+                LoginService loginService = new LoginService();
+                loginService.login(pref.getString("email", ""), pref.getString("pass", ""), getApplicationContext());
 
                 if (i.getStringExtra("from").equalsIgnoreCase("callActivity")) {
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (mSession != null){
+                            if (mSession != null) {
                                 mSession.disconnect();
-                            onDisconnected(mSession);}
+                                onDisconnected(mSession);
+                            }
 //                            finish();
-                            Intent i=new Intent(getApplicationContext(),SettingFlyout.class);
+                            Intent i = new Intent(getApplicationContext(), SettingFlyout.class);
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
                         }
                     }, 5000);
-                }
-                else {
+                } else {
                     onDisconnected(mSession);
                 }
             }
@@ -682,18 +680,18 @@ finish();
     public void onDisconnected(Session session) {
 
         Log.d(LOG_TAG, "onDisconnected: Disconnected from session: " + session.getSessionId());
-        if (!i.getStringExtra("from").equalsIgnoreCase("callActivity") && TimeCount>0) {
-
+        if (!i.getStringExtra("from").equalsIgnoreCase("callActivity") && TimeCount > 0) {
 
 
             Intent i = new Intent(getApplicationContext(), StudentFeedBack.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
-        }
-        else {
+        } else {
         }
     }
+
     int minute;
+
     @Override
     public void onStreamReceived(Session session, Stream stream) {
 
@@ -710,41 +708,46 @@ finish();
             videoCallRootLayout.setVisibility(View.VISIBLE);
 
 
-            SharedPreferences Sessionpref=getSharedPreferences("sessionPref",MODE_PRIVATE);
-            SharedPreferences.Editor editor=Sessionpref.edit();
+            SharedPreferences Sessionpref = getSharedPreferences("sessionPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = Sessionpref.edit();
 
-            editor.putString("sessionId",mSession.getSessionId()).apply();
+            editor.putString("sessionId", mSession.getSessionId()).apply();
 
             String Url = "https://www.thetalklist.com/api/veesession_connect?cid=" + preferences.getInt("classId", 0);
             connectionApiCall(Url);
 
 //            if (!i.getStringExtra("from").equalsIgnoreCase("callActivity")) {
 
-                final Float money = getApplicationContext().getSharedPreferences("loginStatus", MODE_PRIVATE).getFloat("money", 0.0f);
-                SharedPreferences preferences = getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE);
-                Float creditPerMinute = preferences.getFloat("credit", 0.0f);
+            final Float money = getApplicationContext().getSharedPreferences("loginStatus", MODE_PRIVATE).getFloat("money", 0.0f);
+            SharedPreferences preferences = getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE);
+            Float creditPerMinute = preferences.getFloat("credit", 0.0f);
 
-                if (money < 10) {
+            if (money < 10) {
 
-                    minute = (int) (money / creditPerMinute);
+                minute = (int) (money / creditPerMinute);
 
-                }
+            }
 //            Toast.makeText(getApplicationContext(), "mins "+time, Toast.LENGTH_SHORT).show();
 
-                t = new Timer();
-                t.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                TimeCount++;
+            t = new Timer();
+            t.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DecimalFormat formatter = new DecimalFormat("00");
+                            int min=TimeCount/60;
+                            int sec=TimeCount%60;
 
-                                if (time>=0){
-                                    if (time*60==TimeCount){
-                                        callEnd.performClick();
-                                    }
+                            veesession_timer.setText(formatter.format(min)+":"+formatter.format(sec));
+                            TimeCount++;
+
+                            if (time >= 0) {
+                                if (time * 60 == TimeCount) {
+                                    callEnd.performClick();
                                 }
+                            }
                                 /*if (money < 10) {
                                     if (TimeCount == minute * 60) {
                                         t.cancel();
@@ -763,10 +766,10 @@ finish();
                                         }
                                     }
                                 }*/
-                            }
-                        });
-                    }
-                }, 000, 1000);
+                        }
+                    });
+                }
+            }, 000, 1000);
 
 //            }
 
@@ -809,19 +812,19 @@ finish();
     public void onStreamDestroyed(PublisherKit publisherKit, Stream stream) {
 
         Log.d(LOG_TAG, "onStreamDestroyed: Publisher Stream Destroyed. Own stream " + stream.getStreamId());
-        if (!i.getStringExtra("from").equals("callActivity")){
+        if (!i.getStringExtra("from").equals("callActivity")) {
 //            callEnd.performClick();
 
 
-startActivity(new Intent(getApplicationContext(),SettingFlyout.class));
+            startActivity(new Intent(getApplicationContext(), SettingFlyout.class));
         }
 
 //        Toast.makeText(getApplicationContext(), "call dropped", Toast.LENGTH_SHORT).show();
-        SharedPreferences totalCostPref=getSharedPreferences("totalCostPref",MODE_PRIVATE);
-        SharedPreferences.Editor totaEditor=totalCostPref.edit();
+        SharedPreferences totalCostPref = getSharedPreferences("totalCostPref", MODE_PRIVATE);
+        SharedPreferences.Editor totaEditor = totalCostPref.edit();
 
-        totaEditor.putString("disconnect","https://www.thetalklist.com/api/veesession_disconnect?cid="+ preferences.getInt("classId", 0));
-        totaEditor.putString("totalcost","https://www.thetalklist.com/api/total_cost?cid=" + preferences.getInt("classId", 0) + "&amount=" + getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f) + "&time=" + TimeCount).apply();
+        totaEditor.putString("disconnect", "https://www.thetalklist.com/api/veesession_disconnect?cid=" + preferences.getInt("classId", 0));
+        totaEditor.putString("totalcost", "https://www.thetalklist.com/api/total_cost?cid=" + preferences.getInt("classId", 0) + "&amount=" + getSharedPreferences("videoCallTutorDetails", Context.MODE_PRIVATE).getFloat("hRate", 0.0f) + "&time=" + TimeCount).apply();
 
     }
 

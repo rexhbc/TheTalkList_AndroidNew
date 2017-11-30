@@ -3,6 +3,7 @@ package com.ttl.project.thetalklist;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -74,6 +75,8 @@ public class Availability_page_fragment extends Fragment {
 
         startTime.setText("9:20 AM");
         endTime.setText("2:20 PM");
+
+
 
 //        https://www.thetalklist.com/api/tutor_availability_info?uid=17431
         String url1 = "https://www.thetalklist.com/api/tutor_availability_info?uid=" + getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE).getInt("id", 0);
@@ -345,6 +348,10 @@ public class Availability_page_fragment extends Fragment {
         });
 
 
+        if (getActivity().getClass().toString().equals("class com.ttl.project.thetalklist.Registration")){
+            ((TextView)getActivity().findViewById(R.id.registration_line)).setText("Nice! The world sees your updated profile.  Set a general availability window or just toggle your Tutor light on whenever you want.");
+
+        }
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -369,9 +376,13 @@ public class Availability_page_fragment extends Fragment {
                             JSONObject res = new JSONObject(response);
                             if (res.getInt("status") == 0) {
                                 Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
-                                SettingFlyout settingFlyout = new SettingFlyout();
-                                /*setTalknow(Boolean.parseBoolean(*/
-//                                TalkNow(getContext().getSharedPreferences("loginStatus", Context.MODE_PRIVATE), getContext());
+                                if (getActivity().getClass().toString().equals("class com.ttl.project.thetalklist.Registration")) {
+
+                                    Intent i=new Intent(getActivity(),SettingFlyout.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
+
+                                }
                             }
 
 

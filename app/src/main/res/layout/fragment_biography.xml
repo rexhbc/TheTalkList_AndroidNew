@@ -1211,6 +1211,20 @@
 
                 </LinearLayout>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/biography_registration_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/capt"
+                android:text="Finish"
+                android:visibility="gone"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                android:textSize="20dp" />
         </LinearLayout>
 
     </ScrollView>

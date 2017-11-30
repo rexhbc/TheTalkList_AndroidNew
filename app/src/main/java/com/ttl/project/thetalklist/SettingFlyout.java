@@ -9,11 +9,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +25,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -67,6 +71,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.ttl.project.thetalklist.util.NotificationUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -864,7 +869,40 @@ public class SettingFlyout extends AppCompatActivity {
                                     if (info.getInt(dayOfTheWeek.toLowerCase())==1){
                                         talkNow.setChecked(true);
                                         Log.e("availability", "yes");
-                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
+                                        if (to==t && notification==0){
+                                            notification=1;
+                                            Intent notificationIntent = new Intent(getApplication(), SettingFlyout.class);
+                                            NotificationCompat.BigTextStyle inboxStyle = new NotificationCompat.BigTextStyle();
+                                            final int icon = R.mipmap.ttlg2;
+                                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+
+                                            PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                                            NotificationCompat.Builder mBuilder =
+                                                    (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext()).setSmallIcon(icon).setTicker("Tutoring is On").setWhen(0)
+                                                            .setAutoCancel(true)
+                                                            .setContentTitle("Time to Available")
+                                                            .setSound(Uri.parse(String.valueOf(android.app.Notification.DEFAULT_SOUND)))
+                                                            .setStyle(inboxStyle)
+                                                            .setContentIntent(contentIntent)
+                                                            .setWhen(System.currentTimeMillis())
+                                                            .setSmallIcon(R.mipmap.ttlg2)
+                                                            .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ttlg2))
+                                                            .setContentText("Your scheduled tutoring window is now open and your TalkLight is on!");
+                                            NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+                                            notificationUtils.playNotificationSound();
+
+                                            String myText = "Your scheduled tutoring window is now open and your TalkLight is on!";
+                                            android.app.Notification notification = new NotificationCompat.BigTextStyle(mBuilder)
+                                                    .bigText(myText).build();
+
+                                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                            mNotificationManager.notify(100, notification);
+                                        }
+//                                        Notify(Integer.parseInt(string1.substring(0, string1.indexOf(":"))), Integer.parseInt(string1.substring(string1.indexOf(":") + 1, string1.length())));
                                     }else {
                                         Log.e("availability", "No");
                                         if (manuallyTurnOn != 1)
@@ -1463,6 +1501,17 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
                         AccessToken.setCurrentAccessToken(null);
                         finish();
                     }*/
+                    final Dialog dialog=new Dialog(SettingFlyout.this);
+                    dialog.setContentView(R.layout.threedotprogressbar);
+                    dialog.setCanceledOnTouchOutside(false);
+                    Handler mHandler = new Handler(Looper.getMainLooper());
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Your UI updates here
+                            dialog.show();
+                        }
+                    });
 
 
                     NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -1478,6 +1527,8 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
                                 if (obj.getInt("status") != 0) {
                                     Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                                 } else {
+
+
 
 
                                     pref = getSharedPreferences("loginStatus", Context.MODE_PRIVATE);
@@ -1496,6 +1547,7 @@ if (myDetailsB.getContext()!=null &&!myDetailsB.getContext().isFinishing() )
 
                                     edavailabe.clear().apply();
                                     edvideo.putInt("position", 0).apply();
+                                    dialog.dismiss();
 
                                     try {
                                         FirebaseInstanceId.getInstance().deleteInstanceId();

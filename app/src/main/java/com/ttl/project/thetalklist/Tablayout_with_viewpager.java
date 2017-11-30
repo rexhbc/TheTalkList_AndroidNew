@@ -35,7 +35,7 @@ public class Tablayout_with_viewpager extends android.support.v4.app.Fragment {
     int status;
 
 
-    int tab;
+    int tab=0;
 
     public Tablayout_with_viewpager(int tab) {
         this.tab = tab;
@@ -124,6 +124,7 @@ public class Tablayout_with_viewpager extends android.support.v4.app.Fragment {
 
     }
     public void changeTab(int tab){
+        tabLayout = (TabLayout) convertView.findViewById(R.id.tabX);
         tabLayout.getTabAt(tab);
     }
 
