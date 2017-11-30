@@ -93,14 +93,16 @@
                     android:layout_weight="0.10"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingLeft="10dp">
+                    android:paddingLeft="10dp"
+                    android:weightSum="1">
 
 
                     <TextView
                         android:id="@+id/t"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="39dp"
                         android:layout_gravity="center"
+                        android:layout_weight="0.04"
                         android:gravity="center"
                         android:text="Tutoring Rate ($/min): "
                         android:textColor="#616A6B"
@@ -108,9 +110,8 @@
                         android:textStyle="bold" />
 
                     <RelativeLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="180dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:gravity="start"
                         android:orientation="vertical"
                         android:weightSum="2">
@@ -119,24 +120,38 @@
                             android:id="@+id/biography_rate_edit"
                             android:layout_width="wrap_content"
                             android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
-                            android:layout_margin="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
                             android:src="@drawable/side_aerrow" />
-                        
-                    </RelativeLayout>
+                </LinearLayout>
 
+                    </RelativeLayout>
 
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/rateLinearLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
 
                 <TextView
                     android:id="@+id/as"
@@ -181,9 +196,11 @@
 
 
             </LinearLayout>
+    </LinearLayout>
 
 
-            <View
+
+    <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"
@@ -219,9 +236,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
                             android:text="Tutoring Subjects "
                             android:textColor="#616A6B"
-                            android:layout_marginTop="10dp"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -229,11 +246,11 @@
                         <WebView
                             android:id="@+id/biography_languages_webview"
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_below="@+id/textView9"
                             android:layout_centerHorizontal="true"
-                            android:textAlignment="viewStart"
                             android:layout_marginLeft="-13dp"
-                            android:layout_height="wrap_content" />
+                            android:textAlignment="viewStart" />
 
 
                         <TextView
@@ -241,13 +258,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@+id/textView9"
-                            android:layout_gravity="fill_vertical"
                             android:layout_centerHorizontal="true"
+                            android:layout_gravity="fill_vertical"
                             android:gravity="start"
                             android:maxLines="15"
                             android:text=""
-                            android:visibility="gone"
-                            android:textSize="12dp" />
+                            android:textSize="12dp"
+                            android:visibility="gone" />
 
                     </RelativeLayout>
 
@@ -316,7 +333,6 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
                     android:id="@+id/biography_video"
                     android:layout_width="wrap_content"
@@ -359,6 +375,7 @@
                             android:layout_weight="1"
                             android:src="@mipmap/ic_full_screen" />
                     </LinearLayout>
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="203dp"
@@ -400,11 +417,10 @@
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingTop="5dp">
 
                     <TextView
                         android:id="@+id/textView4"
@@ -559,6 +575,7 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
@@ -566,9 +583,10 @@
                                     android:gravity="center"
                                     android:text="Tutoring Rate ($/min): "
                                     android:textColor="#616A6B"
-                                    android:visibility="gone"
                                     android:textSize="15sp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
                                 <Button
                                     android:id="@+id/biography_edit"
                                     android:layout_width="wrap_content"
@@ -594,7 +612,6 @@
                     android:layout_marginTop="5dp"
                     android:background="#BDBDBD" />
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -668,12 +685,14 @@
                                 android:src="@drawable/side_aerrow" />
                         </LinearLayout>
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/review_root_biography"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
